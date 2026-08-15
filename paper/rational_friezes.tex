@@ -39,6 +39,13 @@ an equality identifying the width-five count with the case $A=1$, $B=p$ of
 $xyz=A(x+y)+B$, a problem posed by Ford in generalisation of a question of Conrey. The
 order of $C(p)$ is open, so no closed form for $T(p,5)$ should be expected.
 
+At every $N$ the count decomposes the same way. It is a finite sum of counts for Ford's
+equation, one term for each divisor $M$ of $N^2$ with $(N/\gcd(N,M))\mid M$, the term
+carrying the parameters $A=\gcd(N,M)$ and $B=M\gcd(N,M)/N$, and the number of terms is the
+number of square divisors of $N^3$. At a prime the sum has two terms and collapses to the
+display above; for composite $N$ it does not collapse, and no single instance of Ford's
+equation carries the count.
+
 We also prove $T(N,4)=d(2N^2)$, give proved search bounds at widths $5$ and $6$, so that
 the tabulated values are complete rather than observed to stabilise, and tabulate
 $T(N,n)$ for widths $3$ to $6$ and, at small $N$, for widths $8$ and $9$. The rotation
@@ -456,6 +463,72 @@ So two positions carry $M=p$ and three carry $M=p^2$. Counting over the $R$ orbi
 $A(p)=2(R-1)+5$ and $B(p)=3(R-1)$, and $T(p,5)=A+B=5R$.
 \end{proof}
 
+\section{The count at every $N$}\label{sec:ford}
+
+Theorem~\ref{thm:t5red} counts triples $(u,v,M)$ with $M$ running over the divisors of
+$N^2$. The parameter can be removed from each term at the cost of a sum: what remains at
+each contributing $M$ is an instance of the equation of Ford's problem.
+
+\begin{definition}\label{def:ford}
+For $A,B\ge1$ put
+\[
+  F(A,B)=\#\bigl\{(u,v)\in\Z_{>0}^2 : \gcd(u,v)=1,\ uv\mid A(u+v)+B\bigr\},
+\]
+the number of coprime solutions of $huv=A(u+v)+B$, the equation of Ford's problem with
+those parameters.
+\end{definition}
+
+\begin{theorem}\label{thm:fordsum}
+Let $N\ge1$. For $M\mid N^2$ write $e=\gcd(N,M)$ and $d=N/e$. Then
+\[
+  T(N,5)=\sum_{\substack{M\mid N^{2}\\ d\mid M}} F\Bigl(e,\ \frac{M}{d}\Bigr),
+\]
+and the divisors omitted from the sum contribute nothing: no solution counted by
+Theorem~\ref{thm:t5red} has $d\nmid M$.
+\end{theorem}
+
+\begin{proof}
+Fix $M\mid N^2$ and a coprime pair $(u,v)$. The first condition of Theorem~\ref{thm:t5red}
+says that $g:=\bigl(N(u+v)+M\bigr)/uv$ is an integer, and given that, the second is
+$N\mid gM$. Write $M=eM'$; then $\gcd(d,M')=1$, so $N\mid gM$ is $ed\mid geM'$, that is
+$d\mid gM'$, that is $d\mid g$.
+
+Put $g=dh$. Then $dhuv=ed(u+v)+M$, and since $d\mid ed(u+v)$ this forces $d\mid M$, which
+is the support condition; dividing by $d$ leaves
+\begin{equation}\label{eq:fordform}
+  huv=e(u+v)+\frac{M}{d}.
+\end{equation}
+Conversely, if $\gcd(u,v)=1$ and \eqref{eq:fordform} holds for some $h\ge1$, then $g:=dh$
+satisfies $guv=N(u+v)+M$ and $d\mid g$, hence $N\mid gM$. The positivity conditions are
+automatic, by the argument of Theorem~\ref{thm:t5red}. So for each $M$ in the support the
+pairs counted by Theorem~\ref{thm:t5red} correspond bijectively to those counted by
+$F(e,M/d)$, and the sum over $M$ gives the identity.
+\end{proof}
+
+\begin{corollary}\label{cor:terms}
+Write $N=\prod_p p^{a_p}$. The sum of Theorem~\ref{thm:fordsum} has
+$\prod_p\bigl(\lfloor 3a_p/2\rfloor+1\bigr)$ terms, the number of square divisors of $N^3$
+(\href{https://oeis.org/A092520}{OEIS A092520}).
+\end{corollary}
+
+\begin{proof}
+For $N=p^{a}$ and $M=p^{m}$ one has $d=p^{\max(a-m,0)}$, so $d\mid M$ reads
+$\lceil a/2\rceil\le m$, and $M\mid N^2$ reads $m\le 2a$. That leaves
+$2a-\lceil a/2\rceil+1=\lfloor 3a/2\rfloor+1$ values of $m$. Both the divisor set and the
+condition are multiplicative in $N$.
+\end{proof}
+
+At a prime the sum has two terms. The divisors of $p^2$ are $1,p,p^2$; for $M=1$ one has
+$d=p$, which does not divide $1$, while $M=p$ and $M=p^2$ both give $e=p$ and $d=1$. So
+\[
+  T(p,5)=F(p,p)+F(p,p^{2})=A(p)+B(p),
+\]
+the split of Definition~\ref{def:AB}, and Theorem~\ref{thm:orbit} evaluates it as
+$5+5C(p)$. That collapse is special to primes. For composite $N$ the sum has more terms and
+no single instance of Ford's equation carries the count; in particular the guess
+$T(N,5)=5+5C(N)$, with $C(N)$ the solution count of $auv=N+u+v$, is false, already at
+$N=12$, where the two sides are $310$ and $40$.
+
 \section{The width-five count at a prime}\label{sec:prime}
 
 No closed form for $T(p,5)$ should be expected. Setting $u=ps$ in the $M=p$ term and
@@ -661,7 +734,8 @@ So is the count at a prime, end to end. Theorem~\ref{thm:orbit} and Lemma~\ref{l
 compose in the library into a single declaration giving $T(p,5)=5+5C(p)$ for every prime
 $p\ge5$, stated over Definition~\ref{def:frieze} with periodicity derived rather than
 assumed, and with $C(p)$ the full solution count of $auv=p+u+v$ rather than a count inside a
-search box.
+search box. Theorem~\ref{thm:fordsum} is verified as well, the support condition and the
+bijection at each $M$ separately.
 
 What is not machine-checked is stated as such. The external inputs of Shiu and of Linnik are
 cited, not proved; and the passages to $O_\varepsilon$ in

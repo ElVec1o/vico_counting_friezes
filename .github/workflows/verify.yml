@@ -60,6 +60,11 @@ jobs:
           #print axioms VicoEnum.W5box_IsMp_count
           #print axioms VicoEnum.orb_IsMp_card
           #print axioms VicoEnum.acount_eq
+          #print axioms VicoEnum.T5_sum_ford
+          #print axioms VicoEnum.w5_iff_ford
+          #print axioms VicoEnum.div_gcd_dvd_of_w5
+          #print axioms VicoEnum.allint_card
+          #print axioms VicoEnum.not_four_integral
           #print axioms VicoEnum.paper_count4
           #print axioms VicoEnum.friezes4_ncard
           #print axioms VicoEnum.friezes5_ncard

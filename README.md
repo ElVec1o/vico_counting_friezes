@@ -176,6 +176,25 @@ so that `K_k(a_i,...) = C_k(p_i,...) / N^k`.
   `isMp_iff`, the dichotomy by `dich_pair`, and the exceptional orbit is identified as that
   of `(3p, p)` by `notall_of_not_orb`.
 
+- **The count at every N.** Writing `e = gcd(N,M)` and `d = N/e`,
+
+      T(N,5) = sum over M | N^2 with d | M  of  F(e, M/d),
+      F(A,B) = #{(u,v) > 0 : gcd(u,v)=1, uv | A(u+v)+B}
+
+  where `F(A,B)` is the count in Ford's problem for `xyz = A(x+y)+B`. The omitted divisors
+  contribute nothing. VERIFIED (`T5_sum_ford`, with `w5_iff_ford` the bijection at each `M`,
+  `div_gcd_dvd_of_w5` the support condition and `MarkovAt_eq_empty` the vanishing off it).
+  The number of terms is the number of square divisors of `N^3`, OEIS A092520. At `N = p`
+  only `M = p, p^2` survive and the two terms are `A(p)` and `B(p)`, so this contains the
+  split below. It does not collapse for composite `N`: `T(N,5) = 5 + 5C(N)` is false at
+  `N = 12`, where the sides are 310 and 40. Checked against the enumeration for every
+  `N <= 60`, the range `31..60` disjoint from the one that suggested it.
+
+- **Integrality at every N.** Exactly five `W5` pairs have all five quiddity entries
+  integral, for every `N`, and they form one rotation orbit, the Conway-Coxeter one; and no
+  orbit has exactly four. VERIFIED (`allint_card`, `not_four_integral`). This is the
+  structural half of the orbit split with primality removed.
+
 - **The count at a prime.** For every prime `p >= 5`,
 
       T(p,5) = 5 + 5 C(p),    C(p) = #{(a,u,v) > 0 : a u v = p + u + v}.

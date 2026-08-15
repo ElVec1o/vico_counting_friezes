@@ -52,3 +52,6 @@ import VicoEnum.ACountFull
 import VicoEnum.OrbitCount
 import VicoEnum.MSplit
 import VicoEnum.RotCount
+import VicoEnum.GeneralN
+import VicoEnum.FordGeneral
+import VicoEnum.FordSum
