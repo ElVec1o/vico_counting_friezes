@@ -1,0 +1,110 @@
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lean:
+    name: Lean library
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install elan
+        run: |
+          curl -sSfL https://github.com/leanprover/elan/releases/download/v3.1.1/elan-x86_64-unknown-linux-gnu.tar.gz \
+            | tar xz
+          ./elan-init -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Fetch Mathlib cache
+        working-directory: lean
+        run: lake exe cache get
+
+      - name: Build
+        working-directory: lean
+        run: lake build VicoEnum
+
+      - name: Assert the library is sorry-free
+        working-directory: lean
+        run: |
+          if grep -rn --include='*.lean' '\bsorry\b' VicoEnum/; then
+            echo "::error::a sorry is present in the library"
+            exit 1
+          fi
+          echo "no sorry found"
+
+      - name: Audit the axiom base
+        working-directory: lean
+        run: |
+          cat > /tmp/axioms.lean <<'EOF'
+          import VicoEnum
+          #print axioms VicoEnum.width4_card
+          #print axioms VicoEnum.width5_bound
+          #print axioms VicoEnum.width6_bound
+          #print axioms VicoEnum.width6_bound_entry
+          #print axioms VicoEnum.width7_bound_p3
+          #print axioms VicoEnum.no_pos_rat_root
+          #print axioms VicoEnum.palindromic_iff
+          #print axioms VicoEnum.lattice_criterion
+          #print axioms VicoEnum.Qp_eq_card
+          #print axioms VicoEnum.Q_conv_cube_eq_sigma_conv_square
+          #print axioms VicoEnum.W5_setOf_eq_box
+          #print axioms VicoEnum.T5_five
+          #print axioms VicoEnum.paper_count
+          #print axioms VicoEnum.paper_frieze5_count
+          #print axioms VicoEnum.T5_eq_five_add_five_mul
+          #print axioms VicoEnum.W5box_IsMp_count
+          #print axioms VicoEnum.orb_IsMp_card
+          #print axioms VicoEnum.acount_eq
+          #print axioms VicoEnum.paper_count4
+          #print axioms VicoEnum.friezes4_ncard
+          #print axioms VicoEnum.friezes5_ncard
+          #print axioms VicoEnum.five_dvd_friezes5
+          #print axioms VicoEnum.ten_dvd_friezes5_prime
+          #print axioms VicoEnum.w5cond_converse
+          #print axioms VicoEnum.intcount_frieze
+          #print axioms VicoEnum.intcount_five_frieze
+          #print axioms VicoEnum.width6_fourth
+          #print axioms VicoEnum.cc6_isFrieze
+          #print axioms VicoEnum.modhyp_card
+          #print axioms VicoEnum.factorization_dM
+          #print axioms VicoEnum.dM_dvd_iff
+          EOF
+          lake env lean /tmp/axioms.lean | tee /tmp/axioms.out
+          if grep -vE '^.*depends on axioms: \[propext(, Classical\.choice)?(, Quot\.sound)?\]$' /tmp/axioms.out; then
+            echo "::error::a declaration depends on a non-standard axiom"
+            exit 1
+          fi
+
+  scripts:
+    name: Verification scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Closed forms at widths 4 and 5
+        working-directory: code
+        run: timeout 900 python3 verify_width5_palindromic.py
+
+      - name: Proved-complete T(N,5) for N <= 40
+        working-directory: code
+        run: timeout 900 python3 verify_width5_proved.py 40
+
+      - name: Proved-complete T(N,6) for N <= 12
+        working-directory: code
+        run: timeout 900 python3 verify_width6_proved.py 12
+
+      - name: Independent cross-checks on the width-6 enumeration
+        working-directory: code
+        run: timeout 900 python3 crosscheck_width6.py
+
+      - name: The uniform bound, widths 4 to 7
+        working-directory: code
+        run: timeout 900 python3 max_numerator.py

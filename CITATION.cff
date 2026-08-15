@@ -1,0 +1,27 @@
+# Repository metadata. Nothing in the repository references this file: GitHub and
+# Zenodo read it directly, so it is deliberately unreferenced and should not be
+# treated as an orphan.
+cff-version: 1.2.0
+title: "Counting positive rational friezes over (1/N)Z"
+message: "If you use this work, please cite it as below."
+type: software
+authors:
+  - given-names: Vico
+    family-names: Bonfioli
+    email: vicobonfioli@gmail.com
+repository-code: "https://github.com/ElVec1o/vico_counting_friezes"
+license: CC-BY-4.0
+version: 1.0.0
+date-released: "2026-08-16"
+abstract: >-
+  Counts of positive rational frieze patterns of width n whose entries lie in
+  (1/N)Z, with proved search bounds, a closed form at width four, and the count
+  at a prime at width five. Accompanied by a Lean 4 library in which the count
+  at a prime is machine-checked from the definition of a frieze itself.
+keywords:
+  - frieze pattern
+  - Conway-Coxeter
+  - quiddity cycle
+  - enumeration
+  - Lean 4
+  - formalized mathematics

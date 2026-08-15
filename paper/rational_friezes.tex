@@ -1,0 +1,839 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[hidelinks]{hyperref}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Question}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\lat}{\tfrac{1}{N}\Z}
+
+\title{Counting positive rational friezes over $\tfrac{1}{N}\Z$}
+\author{Vico Bonfioli\\ \small\texttt{vicobonfioli@gmail.com}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $T(N,n)$ denote the number of positive rational frieze patterns of width $n$ all of
+whose entries lie in $\tfrac1N\Z$. Conway and Coxeter showed $T(1,n)=C_{n-2}$. We prove
+$T(N,4)=d(2N^2)$, give closed counts at widths $5$ and $6$ together with proved search
+bounds, so that the tabulated values are complete rather than observed to stabilise, and
+tabulate $T(N,n)$ for widths $3$ to $6$, and for widths $8$ and $9$ at small $N$.
+
+The structural result holds at every width. Homogenising the frieze continuant and applying
+the Desnanot--Jacobi identity collapses the lattice conditions to $gUV=N^{n-4}(U+V)+M$ with
+$M\mid N^2R$ and $N^{n-4}R\mid gM$, where $R$ is a continuant window empty at width $5$.
+The glide symmetry $m_{r,j}=m_{n-r,j+r}$ leaves only the rows $2\le r\le\lfloor n/2\rfloor$
+independent. That the cutoff cannot be lowered is a finite check rather than a theorem.
+
+At width $5$ the reduction is the equation $xyz=A(x+y)+B$ of a problem posed by Ford generalising
+a question of Conrey, so $T(N,5)$ is governed by a named open problem in analytic number
+theory and the frieze count supplies a family of instances of it. We prove
+$T(N,5)=O_\varepsilon(N^{1+\varepsilon})$, and at primes
+$T(p,5)=O_\varepsilon(p^{1/3+\varepsilon})$ by importing the method of Conrey and Shah,
+together with $T(p,5)\ge5\,d(p+1)$, which refutes the guess $T(N,5)\asymp d(N^2)\log^2N$.
+Two obstructions to closing the gap are recorded: no asymptotic formula in $d(p+1)$ and
+powers of $\log p$ can hold, and the count is a count on the modular hyperbola
+$de\equiv1\bmod p$ whose governing Weil error exceeds the target.
+
+The rotation action of $\Z/5$ on width-$5$ quiddity cycles is free, so $5\mid T(N,5)$. At a prime the count splits as
+$T(p,5)=A(p)+B(p)$ with $3A(p)-2B(p)=15$ identically, and resolving the split gives
+$T(p,5)=5+5C(p)$ for $p\ge5$, where $C(p)$ counts the positive solutions of $auv=p+u+v$. Most of the paper is formalised in
+Lean 4, the count at a prime from the definition of a frieze itself; Section~\ref{sec:lean}
+says what is verified and what is not.
+\end{abstract}
+
+\section{Introduction}\label{sec:intro}
+
+A frieze pattern of width $n$ is a finite array of rationals bordered by zeros and ones in
+which every adjacent $2\times2$ minor equals $1$. Conway and Coxeter \cite{CC} classified
+the patterns with positive integer entries: they correspond to triangulations of a convex
+$n$-gon, so there are $C_{n-2}$ of them. Allowing denominators changes the problem. Fixing
+$N$ and asking for the positive patterns with all entries in $\tfrac1N\Z$ gives a count
+$T(N,n)$, finite because $\lat$ is discrete and Cuntz and Holm \cite{CH19} showed a discrete
+subset admits only finitely many friezes of each height, and
+computing it is the subject of this paper.
+
+The point of this paper is that this count is an open problem in analytic number theory
+wearing different clothes. At a prime,
+\[
+  T(p,5)=5+5C(p),\qquad C(p)=\#\{(a,u,v)\in\Z_{>0}^3 : auv=p+u+v\}
+\]
+(Theorem~\ref{thm:orbit}). The width-5 reduction is $guv=N(u+v)+M$, which is
+$xyz=A(x+y)+B$ with $A=N$ and $B=M$, posed by Ford in generalisation of a question of
+Conrey and recorded in \cite{Huang}; the cubic $auv=p+u+v$ above is its case $A=1$, $B=p$.
+Ford appears to have published nothing further on it. The fully symmetric variant
+$n=xyz+x+y+z$, also asked by Conrey, is Problem~25 of the American Institute of Mathematics
+problem list of May 2026 and is the equation of Conrey and Shah \cite{ConreyShah}. The
+order of $C(p)$ is not known. Counting friezes over $\tfrac1p\Z$ and estimating $C(p)$ are
+the same problem.
+
+Friezes have been related to equations of this shape before, and the difference matters.
+Zhang \cite{Zhang} relates friezes to $xyz=G(x,y)$ in a different setting and direction:
+positive \emph{integral} friezes of Dynkin type, where the Fontaine--Plamondon counts are
+determined exactly, and where the Diophantine conclusion is the existence of infinitely many
+positive solutions rather than a bound on their number. The equations here are the rational
+ones over $\lat$, and the question is the counting bound asked by Conrey and, in generalised form, by Ford. Conley and
+Ovsienko \cite{CO21} enumerate the positive \emph{integer} solutions of the same matrix
+equation, graded by a parameter measuring the departure of a dissection from a triangulation;
+that parameter and the denominator $N$ are independent, and none of the sequences below
+occurs in their tables.
+
+What follows sets the limit of what that identification buys, and the limit is severe. The
+count is $O_\varepsilon(p^{1/3+\varepsilon})$ by the method of Conrey and Shah
+\cite{ConreyShah} (Theorem~\ref{thm:primecube}), while the conjectured order is
+$p^{o(1)}$ (Conjecture~\ref{conj:order}).
+Sections~\ref{sec:prime} onwards record what obstructs closing that gap. None of it is new to
+analytic number theory: the lower bounds of Propositions~\ref{prop:lower}
+and~\ref{prop:twofam}, $T(p,5)\ge5\,d(p+1)$ and $C(p)\ge d(p+1)+d(2p+1)$, are the $a=1$ and
+$a=2$ slices, and Conrey and Shah record the same two slices for their equation in
+\cite[\S2.1]{ConreyShah}, calling them easy to see and remarking that the size of the
+resulting sum of divisor functions is unclear. They are reproduced here because they
+calibrate the frieze count, not because they are new.
+Proposition~\ref{prop:modhyp} puts the count on the modular hyperbola $de\equiv1\bmod p$,
+where the Weil bound that governs such counts carries an error of size $p^{1/2}$ against a
+quantity of size $p^{1/3}$. The square-root barrier for box counts on a modular hyperbola is
+standard; what is recorded here is only that this problem sits on the wrong side of it.
+
+The reader this is addressed to is a frieze theorist, not an analytic number theorist. To the
+latter the identification supplies instances of an open problem and no leverage on it. To the
+former it explains an absence: $T(N,4)=d(2N^2)$ has a closed form, counts of friezes over
+$\Z/n\Z$ are multiplicative with explicit formulas, and no such formula has been found at
+width $5$ over $\lat$. The reason is that finding one would settle a question of Conrey.
+Karpenkov, Short, van Son and Zabolotskii \cite{KSSZ} classified exactly these friezes; the
+count they left open is hard for a reason external to frieze theory.
+
+Section~\ref{sec:data} tabulates $T(N,n)$ for widths $3$ to $6$ and for widths $8$ and $9$
+at small $N$. At width $4$ the count has a closed form,
+$T(N,4)=d(2N^2)$ (Theorem~\ref{thm:w4}). The reductions and search bounds behind the tables
+at the larger widths are routine and are carried out in the accompanying library rather than
+here.
+
+Section~\ref{sec:lean} says which results are machine-checked and which rest on a written
+proof; the per-statement map to Lean declarations is maintained with the library. Tables and computed constants are regenerated by scripts in \texttt{code/}, named at the
+point of use; \texttt{code/paper\_numbers.py} collects those that have no script of their
+own.
+
+\section{Setting}\label{sec:setting}
+
+We use the conventions of Karpenkov, Short, van Son and Zabolotskii \cite{KSSZ}.
+
+\begin{definition}\label{def:frieze}
+A \emph{rational frieze of width $n$} is a map
+$F\colon\{(i,j): 0 \le i-j \le n\}\to\Q$, written $m_{i,j}$, with $m_{i,j}=0$ when
+$i-j\in\{0,n\}$, with $m_{i,j}=1$ when $i-j\in\{1,n-1\}$, and satisfying the diamond rule
+\[
+  m_{i,j}\,m_{i+1,j+1}-m_{i,j+1}\,m_{i+1,j}=1 .
+\]
+It is \emph{positive} if every entry with $0<i-j<n$ is positive. The \emph{quiddity cycle}
+is the row $i-j=2$, a sequence $(a_0,\dots,a_{n-1})$ read cyclically.
+\end{definition}
+
+The quiddity cycle determines the frieze: writing $r$ for the row index,
+\begin{equation}\label{eq:rec}
+  m_{r,j}=\frac{m_{r-1,j}\,m_{r-1,j+1}-1}{m_{r-2,j+1}},
+\end{equation}
+with the closing conditions that row $n-1$ is constant $1$ and row $n$ is constant $0$.
+
+\begin{definition}\label{def:count}
+For $N\ge 1$ let $T(N,n)$ be the number of positive rational friezes of width $n$ all of
+whose entries lie in $\lat$. Quiddity cycles are counted as sequences, not up to rotation.
+\end{definition}
+
+Conway and Coxeter \cite{CC} showed that the positive \emph{integer} friezes of width $n$
+correspond to triangulations of a convex $n$-gon, so
+\begin{equation}\label{eq:catalan}
+  T(1,n)=C_{n-2}=\frac{1}{n-1}\binom{2n-4}{n-2}.
+\end{equation}
+Finiteness of $T(N,n)$ is Corollary~3.8 of Cuntz and Holm \cite{CH19}, which gives it for any
+discrete $R\subseteq\C$. Theorem~B of \cite{KSSZ} classifies the positive rational friezes
+over $\lat$ in terms of minimal clockwise paths in a Farey-type graph. It classifies exactly
+the objects counted here, and does not count them.
+The present note is concerned with computing it.
+
+\section{The continuant parameterisation}\label{sec:param}
+
+Let $K_k$ denote the frieze continuant, $K_k=x_kK_{k-1}-K_{k-2}$ with $K_0=1$, $K_{-1}=0$.
+Continuants and the continued-fraction geometry behind them are treated in \cite{K13}.
+
+\begin{proposition}\label{prop:param}
+A positive rational frieze of width $n\ge 4$ is determined by $a_0,\dots,a_{n-4}$, and
+\begin{align*}
+  a_{n-3}&=\frac{K_{n-4}(a_0,\dots,a_{n-5})+1}{K_{n-3}(a_0,\dots,a_{n-4})},\qquad
+  a_{n-2}=K_{n-3}(a_0,\dots,a_{n-4}),\\
+  a_{n-1}&=\frac{K_{n-4}(a_1,\dots,a_{n-4})+1}{K_{n-3}(a_0,\dots,a_{n-4})}.
+\end{align*}
+\end{proposition}
+
+\begin{proof}
+The closing conditions are $m_{n-1,j}=1$ and $m_{n,j}=0$ for every $j$, that is
+$K_{n-2}(a_j,\dots,a_{j+n-3})=1$ and $K_{n-1}(a_j,\dots,a_{j+n-2})=0$. Expanding the second
+at $j=0$ by the recursion $K_k=x_kK_{k-1}-K_{k-2}$ in its last argument and solving for
+$a_{n-2}$ gives the middle display; expanding the first at $j=0$ and at $j=1$ and solving
+for $a_{n-3}$ and $a_{n-1}$ gives the other two. The remaining $n-3$ closing conditions are
+cyclic conjugates of these under the monodromy $M(a_0)\cdots M(a_{n-1})=-I$ and impose
+nothing further.
+\end{proof}
+
+At $n=5$ this reads
+\begin{equation}\label{eq:w5param}
+  a_2=\frac{a_0+1}{D},\qquad a_3=D,\qquad a_4=\frac{a_1+1}{D},\qquad D=a_0a_1-1,
+\end{equation}
+and at $n=6$, with $D=K_3(a_0,a_1,a_2)=a_2(a_0a_1-1)-a_0$,
+\begin{equation}\label{eq:w6param}
+  a_3=\frac{a_0a_1}{D},\qquad a_4=D,\qquad a_5=\frac{a_1a_2}{D}.
+\end{equation}
+
+\begin{remark}\label{rem:glide}
+A frieze of width $n$ has a glide symmetry exchanging row $r$ with row $n-r$. For $n=5$ the
+only non-constant interior rows are $2$ and $3$, and they are exchanged, so a quiddity cycle in $\lat$
+forces every entry into $\lat$. For $n=6$ row $3$ is fixed by the glide, and carries a
+lattice condition of its own. This is the source of the extra divisibility constraints at
+width $6$.
+\end{remark}
+
+\section{Width four}\label{sec:w4}
+
+Write $d$ for the number-of-divisors function.
+
+\begin{theorem}\label{thm:w4}
+For every $N\ge 1$, $\;T(N,4)=d(2N^2)$.
+\end{theorem}
+
+\begin{proof}
+Let $(a_0,a_1,a_2,a_3)$ be the quiddity cycle. By \eqref{eq:rec} the row $3$ entries are
+$a_ja_{j+1}-1$, and row $3$ is constant $1$, so $a_ja_{j+1}=2$ for all $j$ modulo $4$.
+Hence $a_0=a_2$, $a_1=a_3$ and $a_0a_1=2$. Conversely any $a>0$ with $a\cdot(2/a)=2$ yields
+the frieze with quiddity $(a,2/a,a,2/a)$, whose remaining rows are forced and positive.
+
+Write $a_0=p/N$ with $p$ a positive integer. Then $a_1=2N/p$, and $a_1\in\lat$ if and only
+if $2N^2/p\in\Z$, that is $p\mid 2N^2$. Distinct divisors give distinct cycles, so
+$T(N,4)$ is the number of positive divisors of $2N^2$.
+\end{proof}
+
+The sequence $d(2N^2)$ is \href{https://oeis.org/A361689}{OEIS A361689}.
+
+\section{Width five}\label{sec:w5}
+
+Put $a_0=p/N$ and $a_1=q/N$ with $p,q$ positive integers, and set $e:=pq-N^2$.
+
+\begin{proposition}\label{prop:w5cond}
+The parameters $(p,q)$ arise from a positive frieze of width $5$ over $\lat$ if and only if
+\begin{equation}\label{eq:w5cond}
+  e>0,\qquad N\mid e,\qquad e \mid N^2(p+N),\qquad e\mid N^2(q+N).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+By \eqref{eq:w5param}, $a_3=D=e/N^2$, $a_2=N(p+N)/e$ and $a_4=N(q+N)/e$. Positivity of the
+frieze is equivalent to $D>0$, that is $e>0$. Membership of $a_3$ in $\lat$ is $N\mid e$,
+and membership of $a_2$ and $a_4$ is the two divisibility conditions. By
+Remark~\ref{rem:glide} no further condition is needed.
+\end{proof}
+
+\begin{lemma}[Search bound]\label{lem:w5bound}
+Any solution of \eqref{eq:w5cond} satisfies $p\le N^3+2N^2$ and $q\le N^3+2N^2$.
+\end{lemma}
+
+\begin{proof}
+Since $e>0$ and $e\mid N^2(q+N)$ with $N^2(q+N)>0$, we have $e\le N^2(q+N)$. Substituting
+$e=pq-N^2$ gives $pq-N^2\le N^2q+N^3$, that is $q(p-N^2)\le N^3+N^2$. As $q\ge 1$, either
+$p\le N^2$ or $p-N^2\le N^3+N^2$; in both cases $p\le N^3+2N^2$. The bound on $q$ is
+symmetric.
+\end{proof}
+
+Lemma~\ref{lem:w5bound} makes the enumeration finite with an explicit range. Since
+additionally $e\mid N^2(p+N)$ and $q=(e+N^2)/p$, one may loop over $p$ in the proved range
+and over the divisors $e$ of $N^2(p+N)$, which is what \texttt{code/verify\_width5\_proved.py}
+does. The resulting values of $T(N,5)$ for $N\le 40$ are recorded in
+\texttt{data/T5.txt}. They are complete, not merely stable under an increasing cutoff.
+
+\section{Symmetry at width five}\label{sec:sym}
+
+The dihedral group $D_5$ acts on width-$5$ quiddity cycles by rotation and reversal.
+
+\begin{theorem}\label{thm:free}
+The rotation action of $\Z/5$ on positive rational width-$5$ quiddity cycles is free. In
+particular $5\mid T(N,5)$ for every $N$.
+\end{theorem}
+
+\begin{proof}
+The closing condition at width $5$ is
+$(a_ja_{j+1}-1)(a_{j+1}a_{j+2}-1)=1+a_{j+1}$ for all $j$ modulo $5$. A cycle fixed by a
+nontrivial rotation is constant, say $a_j=a$, whence $(a^2-1)^2=1+a$, that is
+$a(a^3-2a-1)=0$. Since $a>0$ and $a^3-2a-1=(a+1)(a^2-a-1)$, the only positive root is the
+golden ratio $(1+\sqrt5)/2$, which is irrational. So no positive rational cycle is fixed.
+\end{proof}
+
+\section{Data and questions}\label{sec:data}
+
+Every value below is produced by a procedure whose search range is proved, so the counts are
+complete rather than stable under an increasing cutoff.
+
+\[
+\begin{array}{c|ccccc}
+ & n=3 & n=4 & n=5 & n=6 \\\hline
+N=1 & 1 & 2 & 5 & 14\\
+N=2 & 1 & 4 & 20 & 102\\
+N=3 & 1 & 6 & 40 & 259\\
+N=4 & 1 & 6 & 60 & 487
+\end{array}
+\]
+
+Neither $T(N,5)$ nor $T(N,6)$ appears in the OEIS as a function of $N$, and neither is
+multiplicative: $T(2,5)T(3,5)=800\ne 110=T(6,5)$.
+
+At widths $8$ and $9$ the same reduction, applied with the glide symmetry as a pruning rule
+and swept over the entry box of Cuntz and Holm \cite{CH19}, gives
+\[
+\begin{array}{c|cccc}
+  N & 1 & 2 & 3 & 4\\ \hline
+  T(N,8) & 132 & 2576 & 9980 & 28604\\
+  T(N,9) & 429 & 13101 & &
+\end{array}
+\]
+(\texttt{code/w89\_count.rs}). The values at $N=1$ are $C_6$ and $C_7$, as they must be, and
+neither sequence appears in the OEIS. The sweep is complete over a proved box, so these are
+counts rather than stable observations; the cost grows like $N^{3(n-3)}$, which is why the
+table stops where it does. The reduction and the search bound behind it are routine and are
+carried out in the accompanying library rather than here.
+
+\begin{theorem}[Reduced form]\label{thm:t5red}
+For every $N\ge1$,
+\begin{multline*}
+  T(N,5)=\#\bigl\{(u,v,M)\in\Z_{>0}^{3} \;:\; \gcd(u,v)=1,\ M\mid N^2,\\
+  uv\mid N(u+v)+M,\ Nuv \mid M\bigl(N(u+v)+M\bigr)\bigr\}.
+\end{multline*}
+\end{theorem}
+
+\begin{proof}
+Multiplying $gu>N$ by $v>0$ gives $guv>Nv$, that is $Nu+M>0$, which holds for $u,M>0$; the
+same argument disposes of $gv>N$. So both positivity conditions are automatic. For the
+equation, $g$ is determined by $(u,v,M)$, so requiring some $g$ with $guv=N(u+v)+M$ is
+requiring $uv\mid N(u+v)+M$. Given that, multiplying $N\mid gM$ by $uv$ gives
+$Nuv\mid M(N(u+v)+M)$, and the two are equivalent because $uv\ne0$.
+\end{proof}
+
+\begin{proposition}[Hyperbola bound]\label{prop:hyp}
+Every solution counted by Theorem~\ref{thm:t5red} satisfies $(u-N)(v-N)\le N^2+M\le 2N^2$,
+and if $u\le v$ then $u<3N$.
+\end{proposition}
+
+\begin{proof}
+Since $uv$ divides the positive integer $N(u+v)+M$ it is at most that integer, and
+$(u-N)(v-N)=uv-N(u+v)+N^2$, so $(u-N)(v-N)\le N^2+M$; and $M\le N^2$ because $M\mid N^2$. If
+$u\le N$ then $u<3N$. Otherwise $0<u-N\le v-N$, so $(u-N)^2\le(u-N)(v-N)\le 2N^2$, whereas
+$u\ge 3N$ would force $(u-N)^2\ge 4N^2$.
+\end{proof}
+
+The change is one of order: the smaller parameter is bounded \emph{linearly} in $N$, where
+Lemma~\ref{lem:w5bound} gives only $N^3+2N^2$ for the original parameters. The bound
+$(u-N)(v-N)\le2N^2$ is attained for every $2\le N\le24$ (\texttt{code/t5\_bounds.py}).
+
+\begin{corollary}\label{cor:t5upper}
+$\displaystyle T(N,5)\;\le\;2\sum_{M\mid N^2}\ \sum_{1\le u<3N} d(Nu+M)$, and consequently
+$T(N,5)=O_{\varepsilon}\bigl(N^{1+\varepsilon}\bigr)$.
+\end{corollary}
+
+\begin{proof}
+By Proposition~\ref{prop:hyp} the smaller of $u,v$ is less than $3N$; fix it as $u$ and let
+$v$ run over the divisors of $Nu+M$, which is legitimate because $v\mid N(u+v)+M$ and
+$v\mid Nv$ together give $v\mid Nu+M$. Each unordered pair is counted at most twice. For the
+second statement, $d(n)=O_\varepsilon(n^{\varepsilon})$ gives $d(N^2)=O_\varepsilon(N^{\varepsilon})$
+and $d(Nu+M)=O_\varepsilon(N^{\varepsilon})$ uniformly for $u<3N$ and $M\le N^2$, so the double
+sum is $O_\varepsilon(N^{1+\varepsilon})$.
+\end{proof}
+
+No matching lower bound of the same order appears to exist.
+
+\begin{definition}\label{def:AB}
+Let $p$ be prime. In the parametrisation of Theorem~\ref{thm:t5red} the parameter $M$ divides
+$p^2$, so $M\in\{1,p,p^2\}$, and $M=1$ cannot occur: the condition $Nuv\mid M(N(u+v)+M)$ reads
+$p\,uv\mid p(u+v)+1$ there, forcing $p\mid1$. Write $A(p)$ for the number of solutions with
+$M=p$ and $B(p)$ for the number with $M=p^2$, so that $T(p,5)=A(p)+B(p)$. At $M=p$ both
+divisibility conditions of Theorem~\ref{thm:t5red} reduce to $uv\mid p(u+v+1)$, so
+\[
+  A(p)=\#\{(u,v)\in\Z_{>0}^2:\gcd(u,v)=1,\ uv\mid p(u+v+1)\}.
+\]
+A quiddity cycle has $M=p$ exactly when its parameters do, so this is also the count of cycles
+with $M=p$ used in Theorem~\ref{thm:orbit}.
+\end{definition}
+
+\begin{proposition}\label{prop:rigid5}
+Let $p,u,v\ge1$ with $\gcd(uv,p)=1$ and $uv\mid p(u+v+1)$. Then
+\[
+  (u,v)\in\{(1,1),\,(1,2),\,(2,1),\,(2,3),\,(3,2)\},
+\]
+independently of $p$. These five pairs form a single orbit of the rotation action of $\Z/5$ of
+Theorem~\ref{thm:free}; that last assertion is
+not proved here and nothing below depends on it.
+\end{proposition}
+
+\begin{proof}
+Since $u\mid uv\mid p(u+v+1)$ and $\gcd(u,p)=1$ we get $u\mid u+v+1$, hence $u\mid v+1$;
+symmetrically $v\mid u+1$. So $u\le v+1$ and $v\le u+1$. If $u=v$ then $u\mid u+1$ gives
+$u=1$. If $v=u+1$ then $u\mid v+1=u+2$ gives $u\mid2$, so $(u,v)$ is $(1,2)$ or $(2,3)$;
+the case $u=v+1$ is symmetric. Coprimality of $u$ and $v$ is not needed.
+\end{proof}
+
+So every further solution at a prime requires $p\mid uv$, and $T(p,5)$ stays small: it is
+$160$ at $p=541$ and $130$ at $p=421$, against $T(120,5)=4170$.
+
+By Remark~\ref{rem:glide} the width-5 glide gives $a_{j+3}=a_ja_{j+1}-1$ for every $j$
+modulo $5$, which in numerators is
+\begin{equation}\label{eq:w5cyc}
+  p_jp_{j+1}=p\,(p_{j+3}+p) \qquad (j\in\Z/5),
+\end{equation}
+so $e_j=p\,p_{j+3}$ and therefore $M_j=p\,p_{j+3}/g_j$ with
+$g_j=\gcd(p_j+p,\,p_{j+1}+p)$. In particular $M_j=p^2$ forces $p\mid p_{j+3}$, so the
+$M$-profile is controlled by which entries of the quiddity are integers.
+
+\begin{proposition}\label{prop:intcount}
+Let $p$ be prime. The number of integer entries in the quiddity cycle of a positive
+width-5 frieze over $\tfrac1p\Z$ is either $3$ or $5$, and it is $5$ exactly for the
+Conway--Coxeter frieze $(2,2,1,3,1)$ and its rotations.
+\end{proposition}
+
+\begin{proof}
+Put $I=\{j: p\mid p_j\}$. If $p\nmid p_{j+3}$ then the right side of \eqref{eq:w5cyc} has
+$p$-valuation exactly one, so exactly one of $p_j$, $p_{j+1}$ is divisible by $p$, and
+that one has valuation exactly one. Taking $j=m+2$, this says: for every $m\notin I$,
+exactly one of $m+2$, $m+3$ lies in $I$. Exhausting the $32$ subsets of $\Z/5$, the only
+ones with that property have cardinality $3$ or $5$, and those of cardinality $3$ are
+exactly the sets $\{i,i+1,i+3\}$. If $|I|=5$ every entry is an integer, so the frieze is a
+Conway--Coxeter frieze of width $5$, and there are $C_3=5$ of those, forming one rotation
+orbit.
+\end{proof}
+
+\begin{theorem}[Orbit split]\label{thm:orbit}
+Let $p$ be prime and write $R=T(p,5)/5$ for the number of rotation orbits. Each orbit
+contains exactly two cycles with $M=p$ and three with $M=p^2$, except the orbit of the
+Conway--Coxeter frieze $(2,2,1,3,1)$, where all five have $M=p$. Hence $A(p)=2R+3$ and
+$B(p)=3R-3$, so that
+\[
+  3A(p)-2B(p)=15 \qquad\text{and}\qquad T(p,5)=\tfrac12\bigl(5A(p)-15\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:intcount}, $I=\{j:p\mid p_j\}$ has three or five elements. If it
+has five the frieze is $(2,2,1,3,1)$ up to rotation, and evaluating $M_j$ at each of the
+five positions gives $p$ every time.
+
+Suppose $|I|=3$. The condition established in the proof of
+Proposition~\ref{prop:intcount}, that every $m\notin I$ has exactly one of $m+2$, $m+3$ in
+$I$, forces $I=\{i,i+1,i+3\}$ for some $i$. That proof also records that the divisible one of
+$p_j,p_{j+1}$ has valuation exactly one whenever $p\nmid p_{j+3}$; applying this at $j=i-1$
+and at $j=i+1$, where $p_{i+2}$ respectively $p_{i+4}$ is prime to $p$, gives
+$v_p(p_i)=v_p(p_{i+1})=1$ exactly, while $v_p(p_{i+2})=v_p(p_{i+4})=0$ because
+$i+2,i+4\notin I$. Now take the five positions in turn.
+
+For $j=i+1$ and $j=i+4$ we have $j+3\notin I$. In each case one of the two entries
+$p_j,p_{j+1}$ is prime to $p$, hence so is $g_j$, and $v_p(M_j)=1+0-0=1$, so $M_j=p$.
+
+For $j=i+2$ and $j=i+3$ the entry $p_{i+2}$ respectively $p_{i+4}$ is prime to $p$, so
+again $g_j$ is prime to $p$, while $v_p(p_{j+3})=1$; thus $v_p(M_j)=2$ and $M_j=p^2$.
+
+For $j=i$ write $p_i=p\alpha$ and $p_{i+1}=p\beta$, so $g_i=pG$ with
+$G=\gcd(\alpha+1,\beta+1)$, and \eqref{eq:w5cyc} at $j=i$ gives $p_{i+3}=p(\alpha\beta-1)$
+with $\alpha\beta-1>0$. If $M_i=p$ then $g_i=p_{i+3}$, that is $G=\alpha\beta-1$. Since
+$G\mid\alpha+1$ this makes $\alpha\beta-1$ divide $\alpha+1$, say
+$\alpha+1=(\alpha\beta-1)s$. But \eqref{eq:w5cyc} at $j=i+2$ reads
+$p_{i+2}p_{i+3}=p(p_i+p)$, that is $p_{i+2}(\alpha\beta-1)=p(\alpha+1)$, so
+$p_{i+2}(\alpha\beta-1)=p(\alpha\beta-1)s$, and cancelling $\alpha\beta-1\ne0$ gives
+$p_{i+2}=ps$, contradicting $p\nmid p_{i+2}$. Hence $M_i=p^2$.
+
+So two positions carry $M=p$ and three carry $M=p^2$. Counting over the $R$ orbits,
+$A(p)=2(R-1)+5$ and $B(p)=3(R-1)$, and $T(p,5)=A+B=5R$.
+\end{proof}
+
+\section{The width-five count at a prime}\label{sec:prime}
+
+No closed form for $T(p,5)$ should be expected. Setting $u=ps$ in the $M=p$ term and
+writing $v+1=st$, the condition $uv\mid p(u+v+1)$ becomes $st-1\mid p+t$, and putting
+$p+t=(st-1)m$ turns it into the symmetric cubic
+\begin{equation}\label{eq:cubic}
+  stm-t-m=p, \qquad\text{equivalently}\qquad (st-1)(sm-1)=sp+1 .
+\end{equation}
+The correspondence is exact.
+
+\begin{lemma}\label{lem:acount}
+Let $p\ge5$ be prime and let $C(p)$ be the number of triples $(s,t,m)$ of positive integers
+with $stm=p+t+m$. Then $A(p)=5+2C(p)$.
+\end{lemma}
+
+\begin{proof}
+By Definition~\ref{def:AB}, $A(p)$ counts the coprime pairs $(u,v)$ with $uv\mid p(u+v+1)$, a
+condition symmetric in $u$ and $v$. If $\gcd(uv,p)=1$ it reduces to
+$uv\mid u+v+1$, and Proposition~\ref{prop:rigid5} lists the five pairs satisfying it.
+Otherwise $p\mid uv$, and $\gcd(u,v)=1$ forces $p$ to divide exactly one of $u$ and $v$; by
+the symmetry the two halves are equinumerous, so $A(p)-5=2\,\#\{(u,v): p\mid u\}$.
+
+For the pairs with $p\mid u$ write $u=ps$. Then $uv\mid p(u+v+1)$ reads
+$sv\mid ps+v+1$, whence $s\mid v+1$; put $v=st-1$ with $t\ge1$. The condition becomes
+$s(st-1)\mid s(p+t)$, that is $st-1\mid p+t$; put $p+t=(st-1)m$ with $m\ge1$. Expanding,
+$stm=p+t+m$, which is \eqref{eq:cubic}.
+
+Conversely, given $(s,t,m)$ with $stm=p+t+m$, set $u=ps$ and $v=st-1$. Then
+$st-1=(p+t)/m\ge1$, so $v\ge1$, and $\gcd(u,v)=1$: indeed $\gcd(s,st-1)=1$, and $p\nmid
+st-1$, since $st\equiv1 \bmod p$ would give $m\equiv t+m$, hence $p\mid t$ and then
+$st\equiv0$, a contradiction. The two maps are mutually inverse, so
+$\#\{(u,v):p\mid u\}=C(p)$.
+\end{proof}
+
+Checked against $A(p)$ computed directly for the primes $5\le p\le53$
+(\texttt{code/a\_count.py}), with no discrepancy. Equation~\eqref{eq:cubic} also bounds the
+count, and does so better than Corollary~\ref{cor:t5upper}.
+
+The exponent can be lowered to $\tfrac13$ by importing the method of Conrey and Shah
+\cite{ConreyShah}, who bound the number of representations $n=xyz+x+y+z$ by
+$n^{1/3}\log n(\log\log n)^4$. Their argument uses that full symmetry forces the smallest
+variable below $n^{1/3}$. Our equation $suv=p+u+v$ is symmetric only in $u$ and $v$, but
+the same bound holds.
+
+\begin{lemma}\label{lem:cuberoot}
+For $p\ge4$, every solution of $suv=p+u+v$ in positive integers has
+$\min(s,u,v)^3\le2p$.
+\end{lemma}
+
+\begin{proof}
+If $\min(s,u,v)^3>2p$ then $suv>2p$, so $p<u+v$ and hence $suv=p+u+v<2(u+v)\le4\max(u,v)$.
+Cancelling the maximum leaves a product of two of the variables below $4$. But
+$\min(s,u,v)^3>2p\ge8$ forces every variable to be at least $3$, so that product is at
+least $9$.
+\end{proof}
+
+\begin{theorem}\label{thm:primecube}
+$T(p,5)=O_{\varepsilon}\bigl(p^{1/3+\varepsilon}\bigr)$.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:cuberoot} some variable is at most $(2p)^{1/3}$. If it is $s=t$, then
+$(tu-1)(tv-1)=tp+1$ determines $(u,v)$ from a divisor of $tp+1$. If it is $u=t$ or $v=t$,
+then $v(su-1)=p+u$ determines the pair from a divisor of $p+t$. Hence
+\[
+  C(p)\;\le\sum_{1\le t\le(2p)^{1/3}}\bigl(d(tp+1)+2\,d(p+t)\bigr),
+\]
+and a divisor-sum bound of Shiu type \cite{Shiu} gives
+$\ll p^{1/3}\log p\,(\log\log p)^{c}$. The conclusion follows from
+$T(p,5)=5+5C(p)$ of Theorem~\ref{thm:orbit}.
+\end{proof}
+
+The proof of Theorem~\ref{thm:primecube} loses its exponent at a single step, and that
+step can be isolated. Writing $C(p)=\sum_t\#\{w\mid p+t: t\mid w+1\}$, each term is at most
+$d(p+t)=p^{o(1)}$, so
+\[
+  C(p)\;\le\;\#\{t: \text{the $t$-th term is nonzero}\}\;\cdot\;\max_t d(p+t),
+\]
+and Conjecture~\ref{conj:order} at a prime is equivalent to the assertion that the first
+factor is $p^{o(1)}$. The proof bounds that factor by $p^{1/3}$; the truth is much smaller.
+Over the $6055$ primes $5\le p<6\cdot10^4$, taken in five blocks of equal size, the ratio of
+that count to $\log^2p$ has block means $0.707$, $0.669$, $0.662$, $0.663$, $0.658$, while
+its ratio to $p^{1/3}$ falls from $3.05$ to $2.07$ across the same range
+(\texttt{code/atom\_b.rs}, \texttt{code/atom\_b\_stats.py}).
+
+The count is far smaller than $p^{1/3}$, but only above the point where $p^{1/3}$ exceeds
+$\log^2p$, near $p=10^7$. Over eight primes between $10^9$ and $2.4\cdot10^9$ it lies
+between $0.067$ and $0.128$ times $p^{1/3}$, while its ratio to $\log^2p$ stays between
+$0.19$ and $0.30$ (\texttt{code/s2\_witness.rs}). The natural elementary route to a saving does not work,
+and the reason is quantitative. Splitting the contributing $t$ by the least $k$ with
+$kt-1\mid p+t$, the terms with $k\le K$ are governed by divisors of $kp+1$ and number
+$O(K\log p)$; the terms with $k>K$ have a complementary divisor $v<p/K$ and satisfy
+$t\mid p+v$, so they number $O((p/K)\log p)$. Balancing gives $K=\sqrt p$ and a total of
+$O(\sqrt p\log p)$, which is worse than the trivial bound $p^{1/3}$; the balance is
+\texttt{split\_cost\_ge}, which shows $4p\le(K+q)^2$ whenever $p\le Kq$, so no choice of
+$K$ brings the two branches below $2\sqrt p$. At $p\approx10^9$ the
+least such $k$ reaches $7\cdot10^7$, so the second branch is not empty.
+
+The count admits a description in terms of fractional parts. For a divisor $D$ of $p+t$
+the shift is forced, $t=\lceil p/D\rceil D-p=D(1-\{p/D\})$, and the condition becomes
+$t\mid D+1$. So the quantity to bound is the number of $D$ for which
+$\lceil p/D\rceil D-p$ divides $D+1$, exactly for $D\ge2$. This is a statement about the
+distribution of $\{p/D\}$, and the pair $(t,D)$ it produces satisfies $t\mid D+1$ and
+$D\mid p+t$, which is the system one started from: the elementary reindexings of this
+problem are fixed points, which is why they do not reduce it.
+
+It is also worth recording that Corollary~\ref{cor:t5upper} is already optimal given that
+state of the art. Its per-$M$ input is a bound of size $N\log N$ for the solutions of
+$guv=N(u+v)+M$, and with $|AB|=NM\le N^3$ that is $|AB|^{1/3}$ up to logarithms, exactly
+the strength of \cite{ConreyShah}. Improving Corollary~\ref{cor:t5upper} therefore requires
+progress on the problem Ford posed.
+
+For all $123$ primes $5\le p<700$ the ratio $T(p,5)/\sqrt p$ has mean $15.2$, and $12.0$
+over $p>400$ (\texttt{code/t5\_primes\_split.py}); it does not decay on that range.
+Theorem~\ref{thm:primecube} forces it to decay eventually, and the paragraph above places
+the onset near $p=10^7$, so the small-prime data says nothing against it.
+
+The conjecture is not new, and it is not ours. Conrey asked whether the number of positive
+integer solutions of $xyz+x+y=n$ is $O_\varepsilon(n^{\varepsilon})$, and Ford generalised
+this to $xyz=A(x+y)+B$ with $O_\varepsilon(|AB|^{\varepsilon})$ solutions; both questions
+are recorded in \cite{Huang}. Our width-5 equation $guv=N(u+v)+M$ is Ford's equation with
+$A=N$ and $B=M$, so Conjecture~\ref{conj:order} below is a case of Ford's problem, summed
+over $M\mid N^2$. Writing $R_a(n)=\#\{(x,y)\in\N^2: axy-x-y=n\}$ for the quantity studied
+in \cite{Huang}, at a prime
+\[
+  C(p)=\sum_{a\ge1}R_a(p), \qquad R_1(p)=d(p+1),
+\]
+both verified for every prime $p<200$. The second identity is Proposition~\ref{prop:lower}:
+our lower bound is the $a=1$ term. Huang proves an asymptotic for $\sum_{n\le N}R_a(n)$
+with $a$ fixed, which is the averaged form of the inner sum.
+
+That the frieze count is governed by a problem of Conrey and Ford is the reason
+Conjecture~\ref{conj:order} is stated and not proved here.
+
+\begin{conjecture}\label{conj:order}
+$T(N,5)=N^{o(1)}$.
+\end{conjecture}
+
+The natural sharper guess, $T(N,5)\asymp d(N^2)\log^2 N$, is false, and the reason is a
+lower bound that the numerics cannot see.
+
+\begin{proposition}\label{prop:lower}
+$C(p)\ge d(p+1)$, hence $T(p,5)\ge 5\,d(p+1)$, for every prime $p$. Consequently
+$T(N,5)\asymp d(N^2)\log^2 N$ fails.
+\end{proposition}
+
+\begin{proof}
+Taking $u=1$ in \eqref{eq:cubic}, written as $suv=p+u+v$, leaves $sv=p+1+v$, which is
+solvable exactly when $v\mid p+1$, with $s=(p+1)/v+1$. Distinct divisors give distinct
+solutions, so $C(p)\ge d(p+1)$, and $T(p,5)=5+5C(p)$ by Theorem~\ref{thm:orbit}.
+
+For the consequence, let $m_r$ be the product of the first $r$ primes, so $d(m_r)=2^r$ and
+$\log m_r\sim r\log r$. By Linnik's theorem there is a prime $p\equiv-1\pmod{m_r}$ with
+$\log p\ll\log m_r$. Then $m_r\mid p+1$, so $d(p+1)\ge2^r$ while $\log^2p\ll(r\log r)^2$,
+and $2^r/(r\log r)^2\to\infty$. Since $d(p^2)=3$ at a prime, the asserted equivalence would
+force $d(p+1)=O(\log^2p)$.
+\end{proof}
+
+The crossover is far out of computational reach: $2^r$ overtakes $(r\log r)^2$ near
+$r=20$, where $m_r$ already exceeds $10^{25}$. So the flat ratios observed for $N\le3000$
+are what the proposition predicts, not evidence against it. This is why the equivalence
+form survived the out-of-sample test of the previous paragraph and is nonetheless false:
+numerical stability over three decades is not an asymptotic.
+
+The heuristic is that for each $M\mid N^2$ and each $u$, the admissible $v$ are the
+divisors of $Nu+M$ in a fixed residue class modulo $u$, of which there are $d(Nu+M)/u$ on
+average; summing $1/u$ over $u$ and averaging $d$ contributes one logarithm each.
+
+The statement was frozen on the range $N\le600$ and then tested on $601\le N\le3000$, a
+disjoint range four times larger. The mean of
+$T(N,5)/\bigl(d(N^2)\log^2(N+2)\bigr)$ moves from $2.979$ to $2.838$, a shift of $0.953$,
+and its block means over the new range are $2.847$, $2.832$, $2.835$, $2.839$. Every
+rival normalisation drifts on the same test: $d(N^2)\sqrt N$ by a factor $0.676$,
+$d(N^2)\log N$ by $1.313$, $d(N^2)\log^3 N$ by $0.657$, and $T(N,5)/N$ by $0.424$
+(\texttt{code/t5\_growth.rs}, \texttt{data/T5\_growth.csv}). Over the full range
+$\min T(N,5)/N$ falls to $0.0673$ at $N=2971$, so $T(N,5)=o(N)$ is not in doubt. This
+is evidence, not a proof: the numerics are out of sample, and no proof is offered.
+
+The obstruction can be made exact. Counting by $(g,M)$ rather than $(u,v)$ turns the
+width-5 count into a count of divisors in residue classes, with no frieze structure left
+in it.
+
+The bound $g\le N^2+2N$ is attained, and is exactly the largest $g$ occurring, for every
+$6\le N\le25$. The correspondence has been checked for every $N\le25$: the refined count
+is $T(N,5)$ on the nose, and the upper bound obtained by dropping the gcd condition
+overshoots by a factor between $1.95$ and $7.33$ on that range
+(\texttt{code/paper\_numbers.py}).
+
+So Conjecture~\ref{conj:order} is the statement that
+$\sum_{M\mid N^2}\sum_{g\le N^2+2N}\#\{D\mid N^2+gM: D\equiv-N \bmod g\}$, refined by the
+gcd condition, is $N^{o(1)}$. Every elementary route available bounds this by $O(N^{1+o(1)})$
+and no further: pairing divisors gives $\#\{D\}\le2\bigl(\sqrt{N^2+gM}/g+1\bigr)$, and the
+$+1$ alone sums to $\Theta(N)$. Removing it means showing that for most $g$ no divisor of
+$N^2+gM$ lies in the prescribed class, which is a statement about divisors in residue
+classes uniform in the modulus. It is worth recording that the per-$M$ counts are
+\emph{not} of size $N^{o(1)}$: at $N=420$ a single $M$ contributes $765$ ordered pairs (\texttt{code/paper\_numbers.py}), so any
+proof must exploit cancellation across $M$ rather than bound each term separately. Multiplying $auv=p+u+v$ through by $a$ gives
+\begin{equation}\label{eq:shift}
+  (au-1)(av-1)=ap+1,
+\end{equation}
+so the solutions with leading coefficient $a$ are the divisors of the shifted number
+$ap+1$ lying in the class $-1 \bmod a$, and
+\begin{equation}\label{eq:cdecomp}
+  C(p)=\sum_{a\ge1}\#\{D\mid ap+1 \,:\, D\equiv-1 \bmod a\}.
+\end{equation}
+The term $a=1$ is $d(p+1)$, the same count as the $u=1$ family of Proposition~\ref{prop:lower}
+though a different family. The term $a=2$ is the
+one that costs nothing: $2p+1$ is odd, so every divisor of it is odd and hence of the form
+$2u-1$, and no divisor is lost to the congruence. Thus $R_2(p)=d(2p+1)$ exactly, and since
+the two families carry different values of $a$ they are disjoint.
+
+\begin{proposition}\label{prop:twofam}
+$C(p)\ge d(p+1)+d(2p+1)$.
+\end{proposition}
+
+\begin{proof}
+Formula~\eqref{eq:shift} at $a=1$ and $a=2$; the two families are disjoint because $a$ is
+determined by the solution. Formalised as \texttt{cubic\_lower\_two\_families}.
+\end{proof}
+
+The upper-bound half of \eqref{eq:cdecomp} over a box is \texttt{cubic\_shift\_decomp}, with the
+factorisation~\eqref{eq:shift} as \texttt{cube\_factor\_nat} and the injectivity of the
+fibre as \texttt{cube\_det}. It is the decomposition every upper bound passes through: the
+$a$-th term is at most $d(ap+1)$, which the divisor bound of \texttt{card\_divisors\_pow\_le} controls, and
+$\min(a,u,v)^3\le 2p$ caps the range of $a$ at $(2p)^{1/3}$, giving $C(p)\ll_\varepsilon
+p^{1/3+\varepsilon}$.
+
+The fibres carry a constraint that is group-theoretic rather than analytic. Reducing
+mod $a$, the divisors of $ap+1$ land in the multiplicative subsemigroup of $(\Z/a)^\times$
+generated by the prime factors of $ap+1$, so the $a$-th fibre is empty unless $-1$ lies in
+that subsemigroup.
+
+The full subsemigroup criterion was measured against the fibres directly, for $a$ up to
+$(2p)^{1/3}$ and $p$ sampled over four decades. It never once failed, and it accounts for
+$28.6\%$, $31.7\%$, $31.4\%$, $33.1\%$ of all $a$ at $p\approx10^4,10^5,10^6,10^7$. The
+proportion does not grow, so the criterion improves the implied constant in
+$C(p)\ll_\varepsilon p^{1/3+\varepsilon}$ and not the exponent. Over the same sample the
+number of $a$ with a nonempty fibre grew as $13,19,25,33$ against a range growing as
+$38,64,161,330$, consistent with the heuristic $\sum_{a}d(ap+1)/\varphi(a)\asymp\log^2p$.
+
+\subsection{The count on the modular hyperbola}
+
+The decomposition~\eqref{eq:cdecomp} can be run in the other direction, eliminating $a$
+instead of $u$ and $v$. Setting $d=au-1$ and $e=av-1$, identity~\eqref{eq:shift} reads
+$de=ap+1$, so $de\equiv1\bmod p$ and $a=(de-1)/p$, while $a\mid d+1$ and $a\mid e+1$ are
+exactly the conditions defining $u$ and $v$.
+
+\begin{proposition}\label{prop:modhyp}
+$C(p)=\#\bigl\{(d,e)\in\Z_{>0}^2 \,:\, de\equiv1 \bmod p,\ \tfrac{de-1}{p}\mid\gcd(d+1,e+1)\bigr\}$.
+\end{proposition}
+
+\begin{proof}
+The maps $(a,u,v)\mapsto(au-1,av-1)$ and $(d,e)\mapsto\bigl((de-1)/p,(d+1)p/(de-1),
+(e+1)p/(de-1)\bigr)$ are mutually inverse by~\eqref{eq:shift}. That the second is defined on
+the whole target set, which is where the divisibilities $(de-1)/p\mid d+1$ and
+$(de-1)/p\mid e+1$ are used, is checked rather than argued below, so this proposition rests
+on a computation at that point.
+Checked against $C(p)$ for all primes $5\le p<120$ with no discrepancy
+(\texttt{code/modular\_hyperbola.py}).
+\end{proof}
+
+So $C(p)$ counts points of the modular hyperbola $de\equiv1\bmod p$ cut by a divisibility
+that ties the level $a=(de-1)/p$ to $\gcd(d+1,e+1)$. The same substitution turns the sum
+that every upper bound passes through into a hyperbola count with no side condition,
+\begin{equation}\label{eq:hyp}
+  \sum_{a\le A}d(ap+1)=\#\{(d,e)\in\Z_{>0}^2 \,:\, de\equiv1\bmod p,\ 1<de\le Ap+1\},
+\end{equation}
+and this locates the wall. Counts of points of $de\equiv1\bmod p$ in regions are governed by
+Kloosterman sums, and Weil's bound gives them with an error $O_\varepsilon(p^{1/2+\varepsilon})$.
+With $A=(2p)^{1/3}$ the main term of~\eqref{eq:hyp} is of size $A\log p$, that is
+$p^{1/3+o(1)}$. The error term exceeds the main term. Kloosterman technology therefore does
+not reach the trivial bound $C(p)\ll_\varepsilon p^{1/3+\varepsilon}$ of
+Theorem~\ref{thm:primecube}, let alone improve on it, and the improvement would have to come
+from below the square root barrier rather than from a sharper application of Weil.
+
+This is consistent with the state of the divisor function in arithmetic progressions.
+Grimmelt and Merikoski~\cite{GrimmeltMerikoski} reach exponent of distribution $2/3$, but
+for almost all moduli with two small factors. Conjecture~\ref{conj:order} needs a bound for
+one fixed $p$ and every modulus $a\le p^{1/3}$, and averaging over the modulus is exactly
+what is unavailable.
+
+It is worth being precise about where the exponent $1/3$ is lost, because it is not lost
+where one might expect. The sum in~\eqref{eq:hyp} is genuinely of size $A\log p$: computed
+at the primes nearest $10^4,10^5,10^6,10^7$ with $A=(2p)^{1/3}$, the values of $\sum_{a\le A}d(ap+1)$ are
+$348,906,2314,5928$ against $A\log p=249,668,1727,4368$, a ratio near $1.36$ throughout.
+So Theorem~\ref{thm:primecube} does not throw anything away in the summation. Everything is
+lost in the single step $R_a(p)\le d(ap+1)$, which discards the congruence $D\equiv-1\bmod
+a$. The same computation gives $\sum_{a\le A}d(ap+1)$ against $\sum_{a\le A}R_a(p)$ as
+$4.97, 11.92, 23.61, 47.81$: the ratio doubles with each decade of $p$, tracking
+$A=27,58,125,271$, which is of the order of the average of $\varphi(a)$ over $a\le A$, itself
+$\sim(3/\pi^2)A$; the measured ratios are about $0.18A$. The whole gap
+between $p^{1/3}$ and $\log^2p$ is that one discarded factor
+(\texttt{code/loss\_accounting.py}).
+
+This also identifies which technology would have to apply. The one method that goes past
+Weil's bound in problems of this shape is to average over the modulus and appeal to
+Kuznetsov's formula, as in Deshouillers and Iwaniec and in Bombieri, Friedlander and
+Iwaniec. Here the moduli $a$ do vary, over $a\le p^{1/3}$, so averaging is available in
+principle. What is not available is independence: the number $ap+1$ whose divisors are being
+counted is itself a function of the modulus $a$. That linkage, and not the absence of a
+range of moduli, is what removes the standard route.
+
+Every change of variable applied to $auv=p+u+v$ in the course of this work returns an
+instance of the same equation. Setting $s=u+v$ and $m=uv$ and splitting the discriminant
+$(am-p)^2-4m$ produces $aXY-2X-2Y=4p$ with $X=2u$, $Y=2v$; writing the divisor as $ut-1$
+with cofactor $k$ produces $tuk=p+u+k$; normalising by $g=\gcd(d+1,e+1)$ and writing
+$d=gD-1$, $e=gE-1$ produces $gDE-D-E=p$; and the passage to the modular hyperbola is
+reversible. Each of these is an algebraic identity and each is formalised
+(\texttt{fixed\_point\_double}, \texttt{fixed\_point\_reindex}, \texttt{fixed\_point\_gcd},
+\texttt{fixed\_point\_hyperbola}). The general assertion, that every elementary reindexing
+behaves this way, is not a formal statement and is not claimed as one.
+
+The substitution~\eqref{eq:shift} is an identity over any commutative ring
+(\texttt{fixed\_point\_ring}), which is why the analogue over $\F_q[t]$ inherits the
+structure of the problem intact rather than simplifying it.
+
+\section{Formalization}\label{sec:lean}
+
+The development accompanying this paper is a Lean 4 library against Mathlib. It contains no
+\texttt{sorry}, no \texttt{native\_decide} and no additional axioms: every declaration cited
+below depends only on \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound},
+which continuous integration checks on each commit.
+
+What is machine-checked is the enumeration and the reductions it rests on. In particular the
+counts are taken over Definition~\ref{def:frieze} itself rather than over a convenient class:
+the definition is transcribed with no periodicity assumed (periodicity is derived, not
+assumed, at widths $4$ and $5$), and the resulting sets are put in bijection with the
+arithmetic conditions the search enumerates. Theorem~\ref{thm:w4} and the divisibility
+statements of Section~\ref{sec:sym} are verified in that sense.
+
+So is the count at a prime, end to end. Theorem~\ref{thm:orbit} and Lemma~\ref{lem:acount}
+compose in the library into a single declaration giving $T(p,5)=5+5C(p)$ for every prime
+$p\ge5$, stated over Definition~\ref{def:frieze} with periodicity derived rather than
+assumed, and with $C(p)$ the full solution count of $auv=p+u+v$ rather than a count inside a
+search box.
+
+What is not machine-checked is stated as such. The external inputs of Shiu and of Linnik are
+cited, not proved; and the passages to $O_\varepsilon$ in
+Theorem~\ref{thm:primecube} and Corollary~\ref{cor:t5upper} are written proofs.
+
+A per-statement table naming, for each result, the Lean declaration that verifies it or
+recording that none exists, is maintained with the library rather than here, since it changes
+with the library and not with the paper. Tables and computed constants in this paper are
+regenerated by the scripts named alongside them.
+
+\begin{thebibliography}{9}
+\bibitem{Zhang} R.~Zhang, \emph{A positive Siegel theorem: Dynkin friezes and positive
+Mordell--Schinzel}, arXiv:2503.08800.
+\bibitem{CO21} C.~H.~Conley and V.~Ovsienko, \emph{Quiddities of polygon dissections and the
+Conway--Coxeter frieze equation}, arXiv:2107.01234.
+\bibitem{CH19} M.~Cuntz and T.~Holm, \emph{Frieze patterns over integers and other subsets of
+the complex numbers}, J. Comb. Algebra \textbf{3} (2019), 153--188. arXiv:1711.03724.
+\bibitem{CC} J.~H. Conway and H.~S.~M. Coxeter, \emph{Triangulated polygons and frieze
+patterns}, Math. Gaz. \textbf{57} (1973), 87--94 and 175--183.
+\bibitem{KSSZ} O.~Karpenkov, I.~Short, M.~van Son and A.~Zabolotskii, \emph{Classifying
+integer tilings and hypertilings}, arXiv:2601.21445.
+\bibitem{K13} O.~Karpenkov, \emph{Geometry of Continued Fractions}, Algorithms and
+Computation in Mathematics \textbf{26}, Springer, 2013.
+\bibitem{GrimmeltMerikoski}
+L.~Grimmelt and J.~Merikoski, \emph{The divisor function along arithmetic
+  progressions and binary cubic polynomials}, arXiv:2508.17979, 2025.
+
+\bibitem{ConreyShah} B.~Conrey and N.~Shah, \emph{Which numbers are not the sum plus the
+product of three positive integers?}, arXiv:2112.15551.
+
+\bibitem{Shiu} P.~Shiu, \emph{A Brun--Titchmarsh theorem for multiplicative functions},
+J. Reine Angew. Math. \textbf{313} (1980), 161--170.
+
+\bibitem{Huang} J.~Huang, \emph{A mean value theorem for the Diophantine equation
+$axy-x-y=n$}, arXiv:1108.0095. The questions of Conrey and Ford quoted above are stated in
+its introduction.
+
+\end{thebibliography}
+
+\end{document}

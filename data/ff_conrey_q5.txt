@@ -1,0 +1,7 @@
+  q = 5   C(P) = #{(A,U,V) nonzero : A U V = P + U + V},  P irreducible
+    n     irreducibles used     min C      max C      mean C     mean/n^2
+    2            3               100        100       100.0      25.000
+    3            3               180        180       180.0      20.000
+    4            3               270        320       303.3      18.958
+    5            3               500        500       500.0      20.000
+    6            3               492        492       492.0      13.667

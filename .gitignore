@@ -1,0 +1,17 @@
+private/
+*.aux
+*.log
+*.out
+*.synctex.gz
+__pycache__/
+*.pyc
+.DS_Store
+lean/.lake/
+lean/lakefile.olean
+*.ckpt.json
+*.log
+t5_primes
+t5_primes500
+*.tmp
+t5_*_out.txt
+code/t5_primes*.csv
