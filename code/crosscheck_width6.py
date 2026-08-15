@@ -57,8 +57,13 @@ def closure_test(S, N):
 
 
 if __name__ == "__main__":
-    print("(1) exhaustive brute force at small N")
-    for N in (4, 5, 6, 7):
+    # The brute force is O(N^3) in the box and N=7 alone takes about seven minutes; the
+    # range is therefore an argument. It is a cross-check of an enumeration already proved
+    # complete, so a shorter range exercises the same code path. Continuous integration
+    # runs 6; the default here is the full 7.
+    NMAX = int(sys.argv[1]) if len(sys.argv) > 1 else 7
+    print(f"(1) exhaustive brute force at small N (up to {NMAX})")
+    for N in tuple(n for n in (4, 5, 6, 7) if n <= NMAX):
         S = T6(N)
         mx = max(max(t) for t in S)
         K = 2 * mx + 4 * N

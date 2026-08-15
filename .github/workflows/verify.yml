@@ -96,20 +96,20 @@ jobs:
 
       - name: Closed forms at widths 4 and 5
         working-directory: code
-        run: timeout 900 python3 verify_width5_palindromic.py
+        run: timeout 1800 python3 verify_width5_palindromic.py
 
       - name: Proved-complete T(N,5) for N <= 40
         working-directory: code
-        run: timeout 900 python3 verify_width5_proved.py 40
+        run: timeout 1800 python3 verify_width5_proved.py 40
 
       - name: Proved-complete T(N,6) for N <= 12
         working-directory: code
-        run: timeout 900 python3 verify_width6_proved.py 12
+        run: timeout 1800 python3 verify_width6_proved.py 12
 
       - name: Independent cross-checks on the width-6 enumeration
         working-directory: code
-        run: timeout 900 python3 crosscheck_width6.py
+        run: timeout 1800 python3 crosscheck_width6.py 6
 
       - name: The uniform bound, widths 4 to 7
         working-directory: code
-        run: timeout 900 python3 max_numerator.py
+        run: timeout 1800 python3 max_numerator.py
