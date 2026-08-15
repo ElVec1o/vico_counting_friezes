@@ -31,31 +31,30 @@
 \begin{abstract}
 Let $T(N,n)$ denote the number of positive rational frieze patterns of width $n$ all of
 whose entries lie in $\tfrac1N\Z$. Conway and Coxeter showed $T(1,n)=C_{n-2}$. We prove
-$T(N,4)=d(2N^2)$, give closed counts at widths $5$ and $6$ together with proved search
-bounds, so that the tabulated values are complete rather than observed to stabilise, and
-tabulate $T(N,n)$ for widths $3$ to $6$, and for widths $8$ and $9$ at small $N$.
+that for every prime $p\ge5$
+\[
+  T(p,5)=5+5C(p),\qquad C(p)=\#\{(a,u,v)\in\Z_{>0}^3 : auv=p+u+v\},
+\]
+an equality identifying the width-five count with the case $A=1$, $B=p$ of
+$xyz=A(x+y)+B$, a problem posed by Ford in generalisation of a question of Conrey. The
+order of $C(p)$ is open, so no closed form for $T(p,5)$ should be expected.
 
-The structural result holds at every width. Homogenising the frieze continuant and applying
-the Desnanot--Jacobi identity collapses the lattice conditions to $gUV=N^{n-4}(U+V)+M$ with
-$M\mid N^2R$ and $N^{n-4}R\mid gM$, where $R$ is a continuant window empty at width $5$.
-The glide symmetry $m_{r,j}=m_{n-r,j+r}$ leaves only the rows $2\le r\le\lfloor n/2\rfloor$
-independent. That the cutoff cannot be lowered is a finite check rather than a theorem.
+We also prove $T(N,4)=d(2N^2)$, give proved search bounds at widths $5$ and $6$, so that
+the tabulated values are complete rather than observed to stabilise, and tabulate
+$T(N,n)$ for widths $3$ to $6$ and, at small $N$, for widths $8$ and $9$. The rotation
+action of $\Z/5$ on width-$5$ quiddity cycles is free, so $5\mid T(N,5)$. We prove
+$T(N,5)=O_\varepsilon(N^{1+\varepsilon})$, and $T(p,5)=O_\varepsilon(p^{1/3+\varepsilon})$
+at primes by importing the method of Conrey and Shah, while $T(p,5)\ge5\,d(p+1)$ refutes
+the guess $T(N,5)\asymp d(N^2)\log^2N$.
 
-At width $5$ the reduction is the equation $xyz=A(x+y)+B$ of a problem posed by Ford generalising
-a question of Conrey, so $T(N,5)$ is governed by a named open problem in analytic number
-theory and the frieze count supplies a family of instances of it. We prove
-$T(N,5)=O_\varepsilon(N^{1+\varepsilon})$, and at primes
-$T(p,5)=O_\varepsilon(p^{1/3+\varepsilon})$ by importing the method of Conrey and Shah,
-together with $T(p,5)\ge5\,d(p+1)$, which refutes the guess $T(N,5)\asymp d(N^2)\log^2N$.
-Two obstructions to closing the gap are recorded: no asymptotic formula in $d(p+1)$ and
-powers of $\log p$ can hold, and the count is a count on the modular hyperbola
-$de\equiv1\bmod p$ whose governing Weil error exceeds the target.
+The reduction behind the tables holds at every width: homogenising the frieze continuant
+and applying the Desnanot--Jacobi identity collapses the lattice conditions to
+$gUV=N^{n-4}(U+V)+M$ with $M\mid N^2R$ and $N^{n-4}R\mid gM$, where $R$ is a continuant
+window empty at width $5$.
 
-The rotation action of $\Z/5$ on width-$5$ quiddity cycles is free, so $5\mid T(N,5)$. At a prime the count splits as
-$T(p,5)=A(p)+B(p)$ with $3A(p)-2B(p)=15$ identically, and resolving the split gives
-$T(p,5)=5+5C(p)$ for $p\ge5$, where $C(p)$ counts the positive solutions of $auv=p+u+v$. Most of the paper is formalised in
-Lean 4, the count at a prime from the definition of a frieze itself; Section~\ref{sec:lean}
-says what is verified and what is not.
+The count at a prime is machine-checked in Lean 4 from the definition of a frieze itself,
+with periodicity derived rather than assumed; Section~\ref{sec:lean} says what else is
+verified and what is not.
 \end{abstract}
 
 \section{Introduction}\label{sec:intro}
@@ -94,29 +93,24 @@ equation, graded by a parameter measuring the departure of a dissection from a t
 that parameter and the denominator $N$ are independent, and none of the sequences below
 occurs in their tables.
 
-What follows sets the limit of what that identification buys, and the limit is severe. The
-count is $O_\varepsilon(p^{1/3+\varepsilon})$ by the method of Conrey and Shah
-\cite{ConreyShah} (Theorem~\ref{thm:primecube}), while the conjectured order is
-$p^{o(1)}$ (Conjecture~\ref{conj:order}).
-Sections~\ref{sec:prime} onwards record what obstructs closing that gap. None of it is new to
-analytic number theory: the lower bounds of Propositions~\ref{prop:lower}
+Theorem~\ref{thm:orbit} is an equality, not an estimate, so an asymptotic for either side
+transfers to the other. Neither side is settled here. The count is
+$O_\varepsilon(p^{1/3+\varepsilon})$ by the method of Conrey and Shah \cite{ConreyShah}
+(Theorem~\ref{thm:primecube}), against a conjectured $p^{o(1)}$
+(Conjecture~\ref{conj:order}). The lower bounds of Propositions~\ref{prop:lower}
 and~\ref{prop:twofam}, $T(p,5)\ge5\,d(p+1)$ and $C(p)\ge d(p+1)+d(2p+1)$, are the $a=1$ and
-$a=2$ slices, and Conrey and Shah record the same two slices for their equation in
-\cite[\S2.1]{ConreyShah}, calling them easy to see and remarking that the size of the
-resulting sum of divisor functions is unclear. They are reproduced here because they
-calibrate the frieze count, not because they are new.
-Proposition~\ref{prop:modhyp} puts the count on the modular hyperbola $de\equiv1\bmod p$,
-where the Weil bound that governs such counts carries an error of size $p^{1/2}$ against a
-quantity of size $p^{1/3}$. The square-root barrier for box counts on a modular hyperbola is
-standard; what is recorded here is only that this problem sits on the wrong side of it.
+$a=2$ slices; Conrey and Shah record the same two for their equation in
+\cite[\S2.1]{ConreyShah}. Proposition~\ref{prop:modhyp} puts the count on the modular
+hyperbola $de\equiv1\bmod p$, where the Weil error is of size $p^{1/2}$ against a quantity
+of size $p^{1/3}$, which is why the standard route does not reach even the trivial bound.
 
-The reader this is addressed to is a frieze theorist, not an analytic number theorist. To the
-latter the identification supplies instances of an open problem and no leverage on it. To the
-former it explains an absence: $T(N,4)=d(2N^2)$ has a closed form, counts of friezes over
-$\Z/n\Z$ are multiplicative with explicit formulas, and no such formula has been found at
-width $5$ over $\lat$. The reason is that finding one would settle a question of Conrey.
-Karpenkov, Short, van Son and Zabolotskii \cite{KSSZ} classified exactly these friezes; the
-count they left open is hard for a reason external to frieze theory.
+For frieze theory this explains an absence. $T(N,4)=d(2N^2)$ has a closed form, counts of
+friezes over $\Z/n\Z$ are multiplicative with explicit formulas, and no such formula has
+been found at width $5$ over $\lat$: finding one would settle a question of Conrey.
+Karpenkov, Short, van Son and Zabolotskii \cite{KSSZ} classified exactly these friezes and
+left the count open. In the other direction it gives $C(p)$ a combinatorial reading, as the
+count of a set of friezes, which is not how the quantity in Ford's problem arises
+elsewhere.
 
 Section~\ref{sec:data} tabulates $T(N,n)$ for widths $3$ to $6$ and for widths $8$ and $9$
 at small $N$. At width $4$ the count has a closed form,
@@ -534,46 +528,6 @@ $\ll p^{1/3}\log p\,(\log\log p)^{c}$. The conclusion follows from
 $T(p,5)=5+5C(p)$ of Theorem~\ref{thm:orbit}.
 \end{proof}
 
-The proof of Theorem~\ref{thm:primecube} loses its exponent at a single step, and that
-step can be isolated. Writing $C(p)=\sum_t\#\{w\mid p+t: t\mid w+1\}$, each term is at most
-$d(p+t)=p^{o(1)}$, so
-\[
-  C(p)\;\le\;\#\{t: \text{the $t$-th term is nonzero}\}\;\cdot\;\max_t d(p+t),
-\]
-and Conjecture~\ref{conj:order} at a prime is equivalent to the assertion that the first
-factor is $p^{o(1)}$. The proof bounds that factor by $p^{1/3}$; the truth is much smaller.
-Over the $6055$ primes $5\le p<6\cdot10^4$, taken in five blocks of equal size, the ratio of
-that count to $\log^2p$ has block means $0.707$, $0.669$, $0.662$, $0.663$, $0.658$, while
-its ratio to $p^{1/3}$ falls from $3.05$ to $2.07$ across the same range
-(\texttt{code/atom\_b.rs}, \texttt{code/atom\_b\_stats.py}).
-
-The count is far smaller than $p^{1/3}$, but only above the point where $p^{1/3}$ exceeds
-$\log^2p$, near $p=10^7$. Over eight primes between $10^9$ and $2.4\cdot10^9$ it lies
-between $0.067$ and $0.128$ times $p^{1/3}$, while its ratio to $\log^2p$ stays between
-$0.19$ and $0.30$ (\texttt{code/s2\_witness.rs}). The natural elementary route to a saving does not work,
-and the reason is quantitative. Splitting the contributing $t$ by the least $k$ with
-$kt-1\mid p+t$, the terms with $k\le K$ are governed by divisors of $kp+1$ and number
-$O(K\log p)$; the terms with $k>K$ have a complementary divisor $v<p/K$ and satisfy
-$t\mid p+v$, so they number $O((p/K)\log p)$. Balancing gives $K=\sqrt p$ and a total of
-$O(\sqrt p\log p)$, which is worse than the trivial bound $p^{1/3}$; the balance is
-\texttt{split\_cost\_ge}, which shows $4p\le(K+q)^2$ whenever $p\le Kq$, so no choice of
-$K$ brings the two branches below $2\sqrt p$. At $p\approx10^9$ the
-least such $k$ reaches $7\cdot10^7$, so the second branch is not empty.
-
-The count admits a description in terms of fractional parts. For a divisor $D$ of $p+t$
-the shift is forced, $t=\lceil p/D\rceil D-p=D(1-\{p/D\})$, and the condition becomes
-$t\mid D+1$. So the quantity to bound is the number of $D$ for which
-$\lceil p/D\rceil D-p$ divides $D+1$, exactly for $D\ge2$. This is a statement about the
-distribution of $\{p/D\}$, and the pair $(t,D)$ it produces satisfies $t\mid D+1$ and
-$D\mid p+t$, which is the system one started from: the elementary reindexings of this
-problem are fixed points, which is why they do not reduce it.
-
-It is also worth recording that Corollary~\ref{cor:t5upper} is already optimal given that
-state of the art. Its per-$M$ input is a bound of size $N\log N$ for the solutions of
-$guv=N(u+v)+M$, and with $|AB|=NM\le N^3$ that is $|AB|^{1/3}$ up to logarithms, exactly
-the strength of \cite{ConreyShah}. Improving Corollary~\ref{cor:t5upper} therefore requires
-progress on the problem Ford posed.
-
 For all $123$ primes $5\le p<700$ the ratio $T(p,5)/\sqrt p$ has mean $15.2$, and $12.0$
 over $p>400$ (\texttt{code/t5\_primes\_split.py}); it does not decay on that range.
 Theorem~\ref{thm:primecube} forces it to decay eventually, and the paragraph above places
@@ -623,42 +577,10 @@ force $d(p+1)=O(\log^2p)$.
 The crossover is far out of computational reach: $2^r$ overtakes $(r\log r)^2$ near
 $r=20$, where $m_r$ already exceeds $10^{25}$. So the flat ratios observed for $N\le3000$
 are what the proposition predicts, not evidence against it. This is why the equivalence
-form survived the out-of-sample test of the previous paragraph and is nonetheless false:
-numerical stability over three decades is not an asymptotic.
+are what the proposition predicts, not evidence against it: numerical stability over
+three decades is not an asymptotic.
 
-The heuristic is that for each $M\mid N^2$ and each $u$, the admissible $v$ are the
-divisors of $Nu+M$ in a fixed residue class modulo $u$, of which there are $d(Nu+M)/u$ on
-average; summing $1/u$ over $u$ and averaging $d$ contributes one logarithm each.
-
-The statement was frozen on the range $N\le600$ and then tested on $601\le N\le3000$, a
-disjoint range four times larger. The mean of
-$T(N,5)/\bigl(d(N^2)\log^2(N+2)\bigr)$ moves from $2.979$ to $2.838$, a shift of $0.953$,
-and its block means over the new range are $2.847$, $2.832$, $2.835$, $2.839$. Every
-rival normalisation drifts on the same test: $d(N^2)\sqrt N$ by a factor $0.676$,
-$d(N^2)\log N$ by $1.313$, $d(N^2)\log^3 N$ by $0.657$, and $T(N,5)/N$ by $0.424$
-(\texttt{code/t5\_growth.rs}, \texttt{data/T5\_growth.csv}). Over the full range
-$\min T(N,5)/N$ falls to $0.0673$ at $N=2971$, so $T(N,5)=o(N)$ is not in doubt. This
-is evidence, not a proof: the numerics are out of sample, and no proof is offered.
-
-The obstruction can be made exact. Counting by $(g,M)$ rather than $(u,v)$ turns the
-width-5 count into a count of divisors in residue classes, with no frieze structure left
-in it.
-
-The bound $g\le N^2+2N$ is attained, and is exactly the largest $g$ occurring, for every
-$6\le N\le25$. The correspondence has been checked for every $N\le25$: the refined count
-is $T(N,5)$ on the nose, and the upper bound obtained by dropping the gcd condition
-overshoots by a factor between $1.95$ and $7.33$ on that range
-(\texttt{code/paper\_numbers.py}).
-
-So Conjecture~\ref{conj:order} is the statement that
-$\sum_{M\mid N^2}\sum_{g\le N^2+2N}\#\{D\mid N^2+gM: D\equiv-N \bmod g\}$, refined by the
-gcd condition, is $N^{o(1)}$. Every elementary route available bounds this by $O(N^{1+o(1)})$
-and no further: pairing divisors gives $\#\{D\}\le2\bigl(\sqrt{N^2+gM}/g+1\bigr)$, and the
-$+1$ alone sums to $\Theta(N)$. Removing it means showing that for most $g$ no divisor of
-$N^2+gM$ lies in the prescribed class, which is a statement about divisors in residue
-classes uniform in the modulus. It is worth recording that the per-$M$ counts are
-\emph{not} of size $N^{o(1)}$: at $N=420$ a single $M$ contributes $765$ ordered pairs (\texttt{code/paper\_numbers.py}), so any
-proof must exploit cancellation across $M$ rather than bound each term separately. Multiplying $auv=p+u+v$ through by $a$ gives
+Multiplying $auv=p+u+v$ through by $a$ gives
 \begin{equation}\label{eq:shift}
   (au-1)(av-1)=ap+1,
 \end{equation}
@@ -681,26 +603,6 @@ $C(p)\ge d(p+1)+d(2p+1)$.
 Formula~\eqref{eq:shift} at $a=1$ and $a=2$; the two families are disjoint because $a$ is
 determined by the solution. Formalised as \texttt{cubic\_lower\_two\_families}.
 \end{proof}
-
-The upper-bound half of \eqref{eq:cdecomp} over a box is \texttt{cubic\_shift\_decomp}, with the
-factorisation~\eqref{eq:shift} as \texttt{cube\_factor\_nat} and the injectivity of the
-fibre as \texttt{cube\_det}. It is the decomposition every upper bound passes through: the
-$a$-th term is at most $d(ap+1)$, which the divisor bound of \texttt{card\_divisors\_pow\_le} controls, and
-$\min(a,u,v)^3\le 2p$ caps the range of $a$ at $(2p)^{1/3}$, giving $C(p)\ll_\varepsilon
-p^{1/3+\varepsilon}$.
-
-The fibres carry a constraint that is group-theoretic rather than analytic. Reducing
-mod $a$, the divisors of $ap+1$ land in the multiplicative subsemigroup of $(\Z/a)^\times$
-generated by the prime factors of $ap+1$, so the $a$-th fibre is empty unless $-1$ lies in
-that subsemigroup.
-
-The full subsemigroup criterion was measured against the fibres directly, for $a$ up to
-$(2p)^{1/3}$ and $p$ sampled over four decades. It never once failed, and it accounts for
-$28.6\%$, $31.7\%$, $31.4\%$, $33.1\%$ of all $a$ at $p\approx10^4,10^5,10^6,10^7$. The
-proportion does not grow, so the criterion improves the implied constant in
-$C(p)\ll_\varepsilon p^{1/3+\varepsilon}$ and not the exponent. Over the same sample the
-number of $a$ with a nonempty fibre grew as $13,19,25,33$ against a range growing as
-$38,64,161,330$, consistent with the heuristic $\sum_{a}d(ap+1)/\varphi(a)\asymp\log^2p$.
 
 \subsection{The count on the modular hyperbola}
 
@@ -736,43 +638,6 @@ $p^{1/3+o(1)}$. The error term exceeds the main term. Kloosterman technology the
 not reach the trivial bound $C(p)\ll_\varepsilon p^{1/3+\varepsilon}$ of
 Theorem~\ref{thm:primecube}, let alone improve on it, and the improvement would have to come
 from below the square root barrier rather than from a sharper application of Weil.
-
-This is consistent with the state of the divisor function in arithmetic progressions.
-Grimmelt and Merikoski~\cite{GrimmeltMerikoski} reach exponent of distribution $2/3$, but
-for almost all moduli with two small factors. Conjecture~\ref{conj:order} needs a bound for
-one fixed $p$ and every modulus $a\le p^{1/3}$, and averaging over the modulus is exactly
-what is unavailable.
-
-It is worth being precise about where the exponent $1/3$ is lost, because it is not lost
-where one might expect. The sum in~\eqref{eq:hyp} is genuinely of size $A\log p$: computed
-at the primes nearest $10^4,10^5,10^6,10^7$ with $A=(2p)^{1/3}$, the values of $\sum_{a\le A}d(ap+1)$ are
-$348,906,2314,5928$ against $A\log p=249,668,1727,4368$, a ratio near $1.36$ throughout.
-So Theorem~\ref{thm:primecube} does not throw anything away in the summation. Everything is
-lost in the single step $R_a(p)\le d(ap+1)$, which discards the congruence $D\equiv-1\bmod
-a$. The same computation gives $\sum_{a\le A}d(ap+1)$ against $\sum_{a\le A}R_a(p)$ as
-$4.97, 11.92, 23.61, 47.81$: the ratio doubles with each decade of $p$, tracking
-$A=27,58,125,271$, which is of the order of the average of $\varphi(a)$ over $a\le A$, itself
-$\sim(3/\pi^2)A$; the measured ratios are about $0.18A$. The whole gap
-between $p^{1/3}$ and $\log^2p$ is that one discarded factor
-(\texttt{code/loss\_accounting.py}).
-
-This also identifies which technology would have to apply. The one method that goes past
-Weil's bound in problems of this shape is to average over the modulus and appeal to
-Kuznetsov's formula, as in Deshouillers and Iwaniec and in Bombieri, Friedlander and
-Iwaniec. Here the moduli $a$ do vary, over $a\le p^{1/3}$, so averaging is available in
-principle. What is not available is independence: the number $ap+1$ whose divisors are being
-counted is itself a function of the modulus $a$. That linkage, and not the absence of a
-range of moduli, is what removes the standard route.
-
-Every change of variable applied to $auv=p+u+v$ in the course of this work returns an
-instance of the same equation. Setting $s=u+v$ and $m=uv$ and splitting the discriminant
-$(am-p)^2-4m$ produces $aXY-2X-2Y=4p$ with $X=2u$, $Y=2v$; writing the divisor as $ut-1$
-with cofactor $k$ produces $tuk=p+u+k$; normalising by $g=\gcd(d+1,e+1)$ and writing
-$d=gD-1$, $e=gE-1$ produces $gDE-D-E=p$; and the passage to the modular hyperbola is
-reversible. Each of these is an algebraic identity and each is formalised
-(\texttt{fixed\_point\_double}, \texttt{fixed\_point\_reindex}, \texttt{fixed\_point\_gcd},
-\texttt{fixed\_point\_hyperbola}). The general assertion, that every elementary reindexing
-behaves this way, is not a formal statement and is not claimed as one.
 
 The substitution~\eqref{eq:shift} is an identity over any commutative ring
 (\texttt{fixed\_point\_ring}), which is why the analogue over $\F_q[t]$ inherits the
@@ -820,10 +685,6 @@ patterns}, Math. Gaz. \textbf{57} (1973), 87--94 and 175--183.
 integer tilings and hypertilings}, arXiv:2601.21445.
 \bibitem{K13} O.~Karpenkov, \emph{Geometry of Continued Fractions}, Algorithms and
 Computation in Mathematics \textbf{26}, Springer, 2013.
-\bibitem{GrimmeltMerikoski}
-L.~Grimmelt and J.~Merikoski, \emph{The divisor function along arithmetic
-  progressions and binary cubic polynomials}, arXiv:2508.17979, 2025.
-
 \bibitem{ConreyShah} B.~Conrey and N.~Shah, \emph{Which numbers are not the sum plus the
 product of three positive integers?}, arXiv:2112.15551.
 

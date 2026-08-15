@@ -11,8 +11,9 @@ authors:
     email: vicobonfioli@gmail.com
 repository-code: "https://github.com/ElVec1o/vico_counting_friezes"
 license: CC-BY-4.0
-version: 1.0.0
+version: 1.1.0
 date-released: "2026-08-16"
+doi: 10.5281/zenodo.21958792
 abstract: >-
   Counts of positive rational frieze patterns of width n whose entries lie in
   (1/N)Z, with proved search bounds, a closed form at width four, and the count
