@@ -65,6 +65,13 @@ jobs:
           #print axioms VicoEnum.div_gcd_dvd_of_w5
           #print axioms VicoEnum.allint_card
           #print axioms VicoEnum.not_four_integral
+          #print axioms VicoEnum.fordParam_iff
+          #print axioms VicoEnum.T5_squarefree
+          #print axioms VicoEnum.ford_min_bound
+          #print axioms VicoEnum.ford_sum_five_dvd
+          #print axioms VicoEnum.support_iff_dvd_sq
+          #print axioms VicoEnum.W5_diag_iff
+          #print axioms VicoEnum.W5_diag_shift
           #print axioms VicoEnum.paper_count4
           #print axioms VicoEnum.friezes4_ncard
           #print axioms VicoEnum.friezes5_ncard

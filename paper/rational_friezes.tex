@@ -40,17 +40,24 @@ $xyz=A(x+y)+B$, a problem posed by Ford in generalisation of a question of Conre
 order of $C(p)$ is open, so no closed form for $T(p,5)$ should be expected.
 
 At every $N$ the count decomposes the same way. It is a finite sum of counts for Ford's
-equation, one term for each divisor $M$ of $N^2$ with $(N/\gcd(N,M))\mid M$, the term
-carrying the parameters $A=\gcd(N,M)$ and $B=M\gcd(N,M)/N$, and the number of terms is the
-number of square divisors of $N^3$. At a prime the sum has two terms and collapses to the
+equation, one term for each divisor $M$ of $N^2$ with $N\mid M^2$, the term carrying the
+parameters $A=\gcd(N,M)$ and $B=M\gcd(N,M)/N$. The map $M\mapsto M+N$ identifies that index
+set with the reflection-symmetric friezes, so the number of terms is $Q(N)$, the number of
+square divisors of $N^3$, and $T(N,5)\equiv 5Q(N)\bmod 10$. At a prime the sum has two terms and collapses to the
 display above; for composite $N$ it does not collapse, and no single instance of Ford's
-equation carries the count.
+equation carries the count. Sorting each term by its least variable, which
+\eqref{eq:minbound} bounds, improves the general upper bound to
+$T(N,5)=O_\varepsilon(N^{2/3+\varepsilon})$. The parameters that occur are determined
+exactly: a pair $(A,B)$ arises if and only if $B\mid\gcd(A,B)^2$. So the conjecture
+$T(N,5)=N^{o(1)}$ is not merely implied by Ford's, it is equivalent to Ford's restricted
+to that family. The transfer also runs backwards: the free rotation action forces
+$5$ to divide the sum of Ford counts, although it divides almost none of the summands.
 
 We also prove $T(N,4)=d(2N^2)$, give proved search bounds at widths $5$ and $6$, so that
 the tabulated values are complete rather than observed to stabilise, and tabulate
 $T(N,n)$ for widths $3$ to $6$ and, at small $N$, for widths $8$ and $9$. The rotation
 action of $\Z/5$ on width-$5$ quiddity cycles is free, so $5\mid T(N,5)$. We prove
-$T(N,5)=O_\varepsilon(N^{1+\varepsilon})$, and $T(p,5)=O_\varepsilon(p^{1/3+\varepsilon})$
+$T(N,5)=O_\varepsilon(N^{2/3+\varepsilon})$, and $T(p,5)=O_\varepsilon(p^{1/3+\varepsilon})$
 at primes by importing the method of Conrey and Shah, while $T(p,5)\ge5\,d(p+1)$ refutes
 the guess $T(N,5)\asymp d(N^2)\log^2N$.
 
@@ -481,10 +488,10 @@ those parameters.
 \begin{theorem}\label{thm:fordsum}
 Let $N\ge1$. For $M\mid N^2$ write $e=\gcd(N,M)$ and $d=N/e$. Then
 \[
-  T(N,5)=\sum_{\substack{M\mid N^{2}\\ d\mid M}} F\Bigl(e,\ \frac{M}{d}\Bigr),
+  T(N,5)=\sum_{\substack{M\mid N^{2}\\ N\mid M^{2}}} F\Bigl(e,\ \frac{M}{d}\Bigr),
 \]
-and the divisors omitted from the sum contribute nothing: no solution counted by
-Theorem~\ref{thm:t5red} has $d\nmid M$.
+and the divisors omitted from the sum contribute nothing. The condition $N\mid M^2$ is the
+condition $d\mid M$: writing $M=eM'$, both say $d\mid e$, since $\gcd(d,M')=1$.
 \end{theorem}
 
 \begin{proof}
@@ -505,18 +512,34 @@ pairs counted by Theorem~\ref{thm:t5red} correspond bijectively to those counted
 $F(e,M/d)$, and the sum over $M$ gives the identity.
 \end{proof}
 
-\begin{corollary}\label{cor:terms}
-Write $N=\prod_p p^{a_p}$. The sum of Theorem~\ref{thm:fordsum} has
-$\prod_p\bigl(\lfloor 3a_p/2\rfloor+1\bigr)$ terms, the number of square divisors of $N^3$
-(\href{https://oeis.org/A092520}{OEIS A092520}).
-\end{corollary}
+The index set has a second description, as a set of friezes.
+
+\begin{theorem}\label{thm:diag}
+Let $N\ge1$. A pair $(x,x)$ satisfies \eqref{eq:w5cond} if and only if $x>N$, $N\mid x^2$
+and $x-N\mid N^2$. The map $M\mapsto M+N$ is a bijection from the index set of
+Theorem~\ref{thm:fordsum} onto these pairs. Hence the sum has $Q(N)$ terms, where
+\[
+  Q(N)=\prod_p\bigl(\lfloor 3a_p/2\rfloor+1\bigr),\qquad N=\prod_p p^{a_p},
+\]
+the number of square divisors of $N^3$ (\href{https://oeis.org/A092520}{OEIS A092520}).
+\end{theorem}
 
 \begin{proof}
-For $N=p^{a}$ and $M=p^{m}$ one has $d=p^{\max(a-m,0)}$, so $d\mid M$ reads
-$\lceil a/2\rceil\le m$, and $M\mid N^2$ reads $m\le 2a$. That leaves
-$2a-\lceil a/2\rceil+1=\lfloor 3a/2\rfloor+1$ values of $m$. Both the divisor set and the
-condition are multiplicative in $N$.
+Positivity of the pair is $x>0$, and $N^2<x^2$ is $x>N$. Writing $x=N+k$ with $k\ge1$,
+$x^2-N^2=k(k+2N)$ and $x+N=k+2N$, so the two divisibility conditions of \eqref{eq:w5cond}
+coincide and read $k\mid N^2$; and $N\mid x^2$ is the remaining one. Substituting $x=M+N$,
+the conditions become $M\mid N^{2}$ and, since $(M+N)^2=M^2+N(2M+N)$, also $N\mid M^{2}$.
+These are the conditions of Theorem~\ref{thm:fordsum}, so the map is a bijection.
+
+For the count, take $N=p^{a}$ and $M=p^{m}$: then $M\mid N^2$ reads $m\le 2a$ and
+$N\mid M^2$ reads $\lceil a/2\rceil\le m$, leaving
+$2a-\lceil a/2\rceil+1=\lfloor 3a/2\rfloor+1$ values. Both conditions are multiplicative in
+$N$, and so is the count.
 \end{proof}
+
+The pairs of Theorem~\ref{thm:diag} are exactly the quiddity cycles fixed by the reflection
+of the dihedral action, so the decomposition carries one Ford term for each
+reflection-symmetric frieze.
 
 At a prime the sum has two terms. The divisors of $p^2$ are $1,p,p^2$; for $M=1$ one has
 $d=p$, which does not divide $1$, while $M=p$ and $M=p^2$ both give $e=p$ and $d=1$. So
@@ -528,6 +551,136 @@ $5+5C(p)$. That collapse is special to primes. For composite $N$ the sum has mor
 no single instance of Ford's equation carries the count; in particular the guess
 $T(N,5)=5+5C(N)$, with $C(N)$ the solution count of $auv=N+u+v$, is false, already at
 $N=12$, where the two sides are $310$ and $40$.
+
+\begin{theorem}\label{thm:twothirds}
+$T(N,5)=O_{\varepsilon}\bigl(N^{2/3+\varepsilon}\bigr)$.
+\end{theorem}
+
+\begin{proof}
+Fix a term of Theorem~\ref{thm:fordsum}, with parameters $A=e\le N$ and $B=M/d\le N^2$,
+and let $(h,u,v)$ be counted by $F(A,B)$, so $huv=A(u+v)+B$. Put $T=\min(h,u,v)$. Taking
+$u\le v$, which is no loss since the equation is symmetric in $u$ and $v$, one has
+$huv\le 2Av+B$, while $T^2\le hu$ and $T\le v$, so $T^2v\le huv\le 2Av+B$ and hence
+$v(T^2-2A)\le B$. If $T^2\le 2A$ then $T^3\le 2AT$; otherwise $T\le v$ gives
+$T(T^2-2A)\le B$. Either way
+\begin{equation}\label{eq:minbound}
+  T^{3}\le 2AT+B .
+\end{equation}
+With $A\le N$ and $B\le N^2$ this forces $T^3\le 8N^2$. Indeed if $2T\le N$ then
+$2NT\le N^2$ and $T^3\le 2N^2$; and if $2T>N$ then $N^2<2NT$, so $T^3<4NT$, whence
+$T^2<4N$ and $T^6<64N^3\le 64N^4$.
+
+Now sort the solutions by which of $h,u,v$ is least. If $u$ is least then
+$v(hu-A)=Au+B$, so $v$ divides $Au+B$; the case of $v$ is symmetric. If $h$ is least then
+$(hu-A)(hv-A)=A^2+Bh$, so $hu-A$ divides $A^2+Bh$. In each case the least variable is at
+most $2N^{2/3}$ by the previous paragraph, and it determines the remaining two up to the
+number of divisors of an integer that is at most a fixed power of $N$. Since
+$d(n)=O_\varepsilon(n^{\varepsilon})$,
+\[
+  F(A,B)=O_\varepsilon\bigl(N^{2/3+\varepsilon}\bigr).
+\]
+By Theorem~\ref{thm:diag} there are $N^{o(1)}$ terms, which gives the theorem.
+\end{proof}
+
+The least variable does reach order $N^{2/3}$, so no sharper exponent follows from
+\eqref{eq:minbound} alone.
+Theorem~\ref{thm:twothirds} improves Corollary~\ref{cor:t5upper}, which gives
+$O_\varepsilon(N^{1+\varepsilon})$, and it uses only the divisor bound, not the
+Shiu-type input of Theorem~\ref{thm:primecube}. At a prime Theorem~\ref{thm:primecube}
+remains sharper, at $O_\varepsilon(p^{1/3+\varepsilon})$, because the substitution of
+Lemma~\ref{lem:acount} lowers the parameter $B$ from $p^2$ to $p$ there.
+
+\begin{theorem}\label{thm:params}
+A pair $(A,B)$ of positive integers occurs as the parameters of a term of
+Theorem~\ref{thm:fordsum}, for some $N$, if and only if
+\[
+  B\mid\gcd(A,B)^{2}.
+\]
+When it does, it occurs at $N=d^{2}f$ with $f=\gcd(A,B)$ and $d=A/f$, so at some
+$N\le A^{2}$.
+\end{theorem}
+
+\begin{proof}
+Suppose $(A,B)$ occurs, with $A=\gcd(N,M)$, $d=N/A$ and $B=M/d$. The support condition
+gives $d\mid M$, and $d\mid N$, so $d\mid\gcd(N,M)=A$; write $A=df$. Then $N=d^{2}f$, and
+with $M'=M/A$ one has $\gcd(d,M')=1$ and $B=fM'$, so $\gcd(A,B)=f\gcd(d,M')=f$. From
+$M\mid N^{2}$, that is $dfM'\mid d^{4}f^{2}$, cancelling $df$ gives $M'\mid d^{3}f$, and
+$\gcd(M',d)=1$ gives $M'\mid f$. Hence $B=fM'\mid f^{2}=\gcd(A,B)^2$.
+
+Conversely, suppose $B\mid\gcd(A,B)^{2}$ and put $f=\gcd(A,B)$, $d=A/f$, $m=B/f$. Then
+$\gcd(d,m)=1$ and $m\mid f$. Take $N=d^{2}f$ and $M=dfm$. Then $\gcd(N,M)=df\gcd(d,m)=A$,
+so $N/\gcd(N,M)=d$, which divides $M$; and $M\mid N^{2}$ because $m\mid f$. Finally
+$M/d=fm=B$. Since $f\mid A$ we have $N=d^{2}f=A^{2}/f\le A^{2}$.
+\end{proof}
+
+Theorem~\ref{thm:params} turns the relation with Ford's problem from an implication into an
+equivalence.
+
+\begin{corollary}\label{cor:equiv}
+Conjecture~\ref{conj:order} holds if and only if $F(A,B)=A^{o(1)}$ for every pair with
+$B\mid\gcd(A,B)^{2}$.
+\end{corollary}
+
+\begin{proof}
+If the bound on $F$ holds then, by Theorem~\ref{thm:fordsum}, $T(N,5)$ is a sum of
+$N^{o(1)}$ terms by Theorem~\ref{thm:diag}, each $F(A,B)$ with $A\le N$ and, by
+Theorem~\ref{thm:params}, with $B\mid\gcd(A,B)^{2}$; so $T(N,5)=N^{o(1)}$. Conversely,
+given such a pair, Theorem~\ref{thm:params} places $F(A,B)$ as one term of $T(N,5)$ for
+some $N\le A^{2}$, and every term is at most the whole sum, so
+$F(A,B)\le T(N,5)=N^{o(1)}=A^{o(1)}$.
+\end{proof}
+
+So the width-five count is not merely an instance of Ford's problem: it is a faithful
+reformulation of the subfamily $B\mid\gcd(A,B)^{2}$, and settling one settles the other.
+The subfamily is proper, since $\gcd(A,B)^2$ can be smaller than $B$; the case $A=B=p$,
+which is $A(p)$, lies in it, and so does $A=p$, $B=p^{2}$, which is $B(p)$.
+
+Theorems~\ref{thm:fordsum} and~\ref{thm:params} carry information from the Diophantine
+side to the frieze side. The transfer also runs the other way, and gives a statement about
+Ford's equation that its shape does not suggest.
+
+\begin{theorem}\label{thm:modten}
+For every $N\ge1$,
+\[
+  T(N,5)\equiv 5\,Q(N) \pmod{10},
+\]
+with $Q$ as in Theorem~\ref{thm:diag}. Hence $10\mid T(N,5)$ if and only if $Q(N)$ is even,
+that is, if and only if some exponent in the factorisation of $N$ is congruent to $1$ or
+$2$ modulo $4$.
+\end{theorem}
+
+\begin{proof}
+Reversal of the quiddity cycle acts on the pairs of \eqref{eq:w5cond} by $(p,q)\mapsto(q,p)$,
+an involution whose fixed points are the pairs $(x,x)$. So $T(N,5)$ and the number of those
+pairs have the same parity, and by Theorem~\ref{thm:diag} that number is $Q(N)$. With
+$5\mid T(N,5)$ from Theorem~\ref{thm:free}, and $5Q(N)\equiv Q(N)\bmod 2$, the congruence
+follows. For the last clause, $\lfloor 3a/2\rfloor+1$ is even exactly when $a\equiv1,2
+\pmod 4$, so $Q(N)$ is odd exactly when every exponent is $\equiv0,3\pmod4$.
+\end{proof}
+
+At $N=p$ this gives $10\mid T(p,5)$, since $a=1$. The first $N$ with $10\nmid T(N,5)$ and
+$N>1$ is $N=8$, where $Q(8)=5$ and $T(8,5)=145$.
+
+\begin{corollary}\label{cor:fivedvd}
+For every $N\ge1$,
+\[
+  5\ \Bigm|\ \sum_{\substack{M\mid N^{2}\\ d\mid M}} F\Bigl(\gcd(N,M),\ \frac{M}{d}\Bigr),
+  \qquad d=\frac{N}{\gcd(N,M)} .
+\]
+For squarefree $N$ this reads $5\mid\sum_{m\mid N}F(N,Nm)$.
+\end{corollary}
+
+\begin{proof}
+The sum is $T(N,5)$ by Theorem~\ref{thm:fordsum}, and $5\mid T(N,5)$ by
+Theorem~\ref{thm:free}.
+\end{proof}
+
+The summands are not themselves divisible by $5$. At $N=8$ the five terms are $17$, $27$,
+$31$, $31$, $39$, and they sum to $145$; over $N\le25$ only $23$ of the $101$ terms are
+divisible by $5$, while all $25$ sums are (\texttt{code/ford\_congruence.py}). Each term is
+odd, since $(u,v)\mapsto(v,u)$ fixes only $u=v=1$, so by Theorem~\ref{thm:diag} the sum of
+$Q(N)$ odd numbers is congruent to $Q(N)$ modulo $2$, which is Theorem~\ref{thm:modten}
+again.
 
 \section{The width-five count at a prime}\label{sec:prime}
 

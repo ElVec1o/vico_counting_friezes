@@ -55,3 +55,8 @@ import VicoEnum.RotCount
 import VicoEnum.GeneralN
 import VicoEnum.FordGeneral
 import VicoEnum.FordSum
+import VicoEnum.FordMin
+import VicoEnum.FordParam
+import VicoEnum.FordSquarefree
+import VicoEnum.FordCongruence
+import VicoEnum.FordDiagonal
