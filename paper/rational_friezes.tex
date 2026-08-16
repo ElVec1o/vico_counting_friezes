@@ -1339,6 +1339,31 @@ the construction is width-uniform. The naive choice $g_0/K$ replaced by $1$ does
 failing for $15$ friezes at $N=12$, which is why the greatest common divisor of column zero
 enters.
 
+The formula of Theorem~\ref{thm:transfer} is pointwise. Read as a function of an arbitrary
+vector it is a linear map, which is what makes it an element of $SL_2(\Z)$ rather than a
+list of coincidences.
+
+\begin{proposition}\label{prop:transferlin}
+Fix $a,b$ and four vertices of each path, and define
+\[
+  T(x)=a[v_{i_0},x]\,v'_{j_0}-a[v_{j_0},x]\,v'_{i_0}
+       +b[v_{i_1},x]\,v'_{j_1}-b[v_{j_1},x]\,v'_{i_1}.
+\]
+Then $T$ is additive and homogeneous, so it is given by an integer matrix; under the
+hypotheses of Theorem~\ref{thm:transfer} it satisfies $T(v_k)=v'_k$ for every $k$ and
+$[T(v_k),T(v_l)]=[v_k,v_l]$, so its determinant is $1$.
+\end{proposition}
+
+\begin{proof}
+Each $[u,\cdot]$ is linear, so $T$ is a fixed linear combination of linear functions of $x$,
+hence linear; the matrix entries are the values at the two standard basis vectors, which are
+integers. The identity $T(v_k)=v'_k$ is Theorem~\ref{thm:transfer}. Then
+$[T(v_k),T(v_l)]=[v'_k,v'_l]=[v_k,v_l]$ by hypothesis, and a linear map multiplying every
+determinant by its own determinant has determinant $1$ once some $[v_k,v_l]\neq0$.
+\end{proof}
+
+So the fibres of the map from paths to friezes are exactly the $SL_2(\Z)$ orbits.
+
 \begin{lemma}\label{lem:sl2inv}
 If $A\in SL_2(\Z)$ then $[Au,Aw]=[u,w]$.
 \end{lemma}

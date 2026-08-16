@@ -154,6 +154,12 @@ so that `K_k(a_i,...) = C_k(p_i,...) / N^k`.
   size `p^(1/2)` against a quantity of size `p^(1/3)`. The analytic half is not a missing
   trick, it is this problem at that modulus.
 
+- **The fibres are exactly the SL_2(Z) orbits.** The transfer formula, read as a function
+  of an arbitrary vector, is additive and homogeneous (`transferMap_add`,
+  `transferMap_smul`, VERIFIED), so it is an integer matrix; it carries `v k` to `v' k`
+  (`transferMap_apply`) and preserves every determinant (`transferMap_det`), so it lies in
+  `SL_2(Z)`. This is the quotient statement of the classification.
+
 - **The initial pair exists, constructively.** Two adjacent columns determine a frieze:
   for fixed `j`, both `m_{i,j}` and `m_{j,0} m_{i,1} - m_{j,1} m_{i,0}` satisfy the same
   three-term recurrence in `i` and agree at `i = j` and `i = j+1` (`two_column`, VERIFIED).

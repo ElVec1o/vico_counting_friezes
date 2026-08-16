@@ -117,6 +117,10 @@ jobs:
           #print axioms VicoEnum.sum_dvd_of_dvd
           #print axioms VicoEnum.initial_pair_congruence
           #print axioms VicoEnum.e_exists
+          #print axioms VicoEnum.transferMap_add
+          #print axioms VicoEnum.transferMap_smul
+          #print axioms VicoEnum.transferMap_apply
+          #print axioms VicoEnum.transferMap_det
           #print axioms VicoEnum.paper_count4
           #print axioms VicoEnum.friezes4_ncard
           #print axioms VicoEnum.friezes5_ncard
