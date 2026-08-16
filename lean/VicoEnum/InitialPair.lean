@@ -106,4 +106,26 @@ theorem e_exists {K : ℤ} {n : ℕ} {ν lam : ℕ → ℤ} (hKν : ∀ j, K ∣
     K ∣ ∑ j ∈ range n, lam j * ν j :=
   Finset.dvd_sum fun j _ => Dvd.dvd.mul_left (hKν j) (lam j)
 
+/-- **From the frieze to the hypotheses.** The two-column identity of `two_column` is a
+statement about rational frieze entries. Cleared of denominators, with `μ_i = N m_{i,0}`,
+`ν_i = N m_{i,1}` and `w_{j,i} = N m_{j,i}`, it becomes the integer relation
+
+    μ_i ν_j - ν_i μ_j = N w_{j,i}
+
+which is the hypothesis `hkey` of `initial_pair_congruence`. This is the bridge between the
+abstract congruence theorem and an actual frieze, and it is what makes the theorem apply at
+every width rather than only in the abstract. -/
+theorem numerator_relation {N : ℚ} {mi0 mi1 mj0 mj1 mji : ℚ} {μi νi μj νj wji : ℤ}
+    (h : mji = mi0 * mj1 - mi1 * mj0)
+    (hμi : (μi : ℚ) = N * mi0) (hνi : (νi : ℚ) = N * mi1)
+    (hμj : (μj : ℚ) = N * mj0) (hνj : (νj : ℚ) = N * mj1)
+    (hw : (wji : ℚ) = N * mji) :
+    (μi : ℚ) * νj - νi * μj = N * wji := by
+  rw [hμi, hνi, hμj, hνj, hw, h]; ring
+
+/-- The same relation as an identity of integers, once the casts are discharged. -/
+theorem numerator_relation_int {N : ℤ} {μi νi μj νj wji : ℤ}
+    (h : (μi : ℚ) * νj - νi * μj = (N : ℚ) * wji) :
+    μi * νj - νi * μj = N * wji := by exact_mod_cast h
+
 end VicoEnum

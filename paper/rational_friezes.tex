@@ -336,6 +336,19 @@ counts rather than stable observations; the cost grows like $N^{3(n-3)}$, which 
 table stops where it does. The reduction and the search bound behind it are routine and are
 carried out in the accompanying library rather than here.
 
+At the other extreme, fixing $N$ and varying the width gives a sequence. At $N=1$ it is
+Catalan, $T(1,n)=C_{n-2}$. At $N=2$ the first six values are
+\[
+  T(2,n)=4,\;20,\;102,\;511,\;2576,\;13101\qquad (n=4,\dots,9),
+\]
+complete rather than truncated, the search box being the entry bound
+$a_i\le(n-4)N^2+2N$ (\texttt{code/width\_sequence.py}, \texttt{data/T\_N2\_widths.txt}).
+The sequence is not in the OEIS, and admits no recurrence
+$(\alpha n+\beta)T(2,n+1)=(\gamma n+\delta)T(2,n)$: the linear system these six values impose
+has only the trivial solution. Whether the sequence is P-recursive at all is open, and six
+terms cannot decide it; the enumeration cost is $\bigl(((n-4)N^2+2N)N\bigr)^{n-3}$, which at
+$N=2$, $n=10$ is already of size $10^{12}$.
+
 \begin{theorem}[Reduced form]\label{thm:t5red}
 For every $N\ge1$,
 \begin{multline*}

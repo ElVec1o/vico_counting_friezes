@@ -135,6 +135,28 @@ so that `K_k(a_i,...) = C_k(p_i,...) / N^k`.
   friezes over `(1/N)Z[i]` are `55, 580, 815` for `N = 1, 2, 3`
   (`code/gaussian_width5.py`), against `T(1,5) = 5` over `Z`.
 
+## The width direction at fixed N
+
+- **A new sequence.** `T(2,n) = 4, 20, 102, 511, 2576, 13101` for `n = 4..9`, proved-complete
+  via the Cuntz-Holm entry bound `a_i <= (n-4)N^2+2N` (`code/width_sequence.py`,
+  `data/T_N2_widths.txt`). `T(2,7) = 511` is new. The sequence is **not in the OEIS** (the
+  Catalan control returns matches, this returns none), and `T(1,n)` is the Catalan number
+  `C_{n-2}`.
+
+- **No first-order recurrence.** There is no `(alpha n + beta) T(n+1) = (gamma n + delta) T(n)`:
+  the five equations these six terms impose have rank four, so only the trivial solution.
+  Whether the sequence is P-recursive at all is OPEN, and six terms cannot decide it.
+
+- **Why not more terms.** The proved box costs `(((n-4)N^2+2N)N)^(n-3)`, which at `N=2`,
+  `n=10` is already `10^12`. A transfer-matrix enumeration over path states was considered,
+  legitimate now that the path model is proved, and killed at the consistency pass: the
+  frieze's column entries grow by a factor of about 2.4 per width at `N=2` (8, 20, 48 at
+  `n = 5, 6, 7`), so the state space is exponential and the DP does not beat direct
+  enumeration. No machinery was built.
+
+- **The N direction is different.** A closed form for `T(N,5)` is Ford-hard: `T(p,5) = 5 + 5C(p)`
+  means it would determine the order of `C(p)`.
+
 ## Where the analytic difficulty sits
 
 - **The cubic is a divisor sum in progressions.** Multiplying `auv = n+u+v` by `a` gives
