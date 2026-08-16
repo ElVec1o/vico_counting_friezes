@@ -135,6 +135,32 @@ so that `K_k(a_i,...) = C_k(p_i,...) / N^k`.
   friezes over `(1/N)Z[i]` are `55, 580, 815` for `N = 1, 2, 3`
   (`code/gaussian_width5.py`), against `T(1,5) = 5` over `Z`.
 
+## Where the analytic difficulty sits
+
+- **The cubic is a divisor sum in progressions.** Multiplying `auv = n+u+v` by `a` gives
+  `(au-1)(av-1) = an+1`, so the solutions on the `a`-slice are the divisors `d` of `an+1`
+  with `d = -1 mod a`; the congruence on the complementary divisor is automatic
+  (`cubic_slice_factor`, `complement_congr`, `slice_divisor_dvd`, `solution_of_divisor`,
+  VERIFIED). Hence
+
+      C(n) = sum over a = 1..n+2 of #{ d | an+1 : d = -1 mod a }
+
+  needing no primality; checked on 36 values (`code/divisor_slice.py`).
+
+  This locates the difficulty rather than removing it. The modulus `a` and the quantity
+  `an+1` move together, so at `a` of size `n^(1/2)` the modulus is comparable to the square
+  root of the quantity: the range where equidistribution of divisors in progressions gives
+  nothing. It is the same obstruction the modular hyperbola records, with a Weil error of
+  size `p^(1/2)` against a quantity of size `p^(1/3)`. The analytic half is not a missing
+  trick, it is this problem at that modulus.
+
+- **The initial pair is a congruence, not a normalisation.** With `[v0,v1] = R` every vertex
+  is `m_{i,0} v1 - m_{i,1} v0` (`path_from_frieze`, VERIFIED), so a path realising a
+  prescribed frieze has no freedom once the initial pair is fixed. Writing the two leading
+  columns as `mu_i/N` and `nu_i/N`, the vertex lies in `Z^2` exactly when `N` divides both
+  components of `mu_i v1 - nu_i v0` (`vertex_exists_iff`, VERIFIED). The criterion is
+  formalized; its solvability for every `R` and every width is the one open step.
+
 ## Closed counts
 
 - **Width 4.** `T(N,4) = d(2N^2)`, the number of divisors of `2N^2` (OEIS A361689).

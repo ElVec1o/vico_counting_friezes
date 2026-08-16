@@ -791,6 +791,37 @@ with $a$ fixed, which is the averaged form of the inner sum.
 That the frieze count is governed by a problem of Conrey and Ford is the reason
 Conjecture~\ref{conj:order} is stated and not proved here.
 
+\subsection{The count as a divisor sum in progressions}
+
+The cubic factors on each slice, which locates the analytic difficulty precisely.
+
+\begin{proposition}\label{prop:sliceform}
+Let $n\ge1$ and $a\ge1$. The solutions of $auv=n+u+v$ with that value of $a$ correspond
+bijectively to the divisors $d$ of $an+1$ with $d\equiv-1\pmod a$, by $d=au-1$. Consequently
+\[
+  C(n)=\sum_{a=1}^{n+2}\#\{d\mid an+1 \;:\; d\equiv-1 \pmod a\}.
+\]
+\end{proposition}
+
+\begin{proof}
+Multiplying $auv=n+u+v$ by $a$ gives $(au-1)(av-1)=a(auv-u-v)+1=an+1$, and conversely
+dividing by $a\neq0$ recovers the equation, so the two are equivalent. If $(u,v)$ is a
+solution then $d=au-1$ divides $an+1$ and $d\equiv-1\pmod a$. Conversely let
+$d\mid an+1$ with $d\equiv-1\pmod a$ and put $e=(an+1)/d$. Then $de\equiv1\pmod a$ and
+$d\equiv-1$, so $e\equiv-1\pmod a$; hence $u=(d+1)/a$ and $v=(e+1)/a$ are positive integers
+and $(au-1)(av-1)=de=an+1$. The two constructions are mutually inverse. Finally $u,v\ge1$
+forces $a\le n+2$, attained at $u=v=1$.
+\end{proof}
+
+So counting $C(n)$ is counting divisors of $an+1$ in one residue class modulo $a$, summed
+over $a$. The modulus and the quantity move together: at $a$ of size $n^{1/2}$ the modulus
+$a$ is comparable to the square root of $an+1$, which is exactly the range in which the
+equidistribution results for divisors in progressions give nothing. Proposition~\ref{prop:modhyp}
+records the same obstruction in its modular-hyperbola form, where the Weil error is of size
+$p^{1/2}$ against a quantity of size $p^{1/3}$. The analytic half of the problem is therefore
+not a missing trick: it is the divisor-in-progressions problem at the modulus where the known
+technology stops.
+
 \begin{conjecture}\label{conj:order}
 $T(N,5)=N^{o(1)}$.
 \end{conjecture}
@@ -1220,6 +1251,23 @@ Theorem~\ref{thm:minspan} applies to $\gamma'$ with $x=v'_k$. Rewriting each
 $[v'_\bullet,v'_k]$ as $[v_\bullet,v_k]$ gives the display.
 \end{proof}
 
+\begin{theorem}\label{thm:pathrecon}
+If $[v_0,v_1]=R$ then every vertex satisfies $R\,v_i=[v_0,v_i]\,v_1-[v_1,v_i]\,v_0$, that is
+$v_i=m_{i,0}v_1-m_{i,1}v_0$.
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{lem:plucker3} with $(u,w,x)=(v_0,v_1,v_i)$.
+\end{proof}
+
+So a path realising a prescribed frieze has no freedom once the initial pair is fixed, and
+the remaining question is integrality. Writing the two leading columns as
+$m_{i,0}=\mu_i/N$ and $m_{i,1}=\nu_i/N$, the vertex $v_i$ lies in $\Z^2$ if and only if $N$
+divides both components of $\mu_iv_1-\nu_iv_0$. The choice of an initial pair is therefore
+that single congruence at every index, with $(v_0,v_1)$ otherwise free subject to
+$[v_0,v_1]=R$; it is not an unspecified normalisation. Whether such a pair exists for every
+$R$ and every width is the one step of the correspondence left open here.
+
 \begin{lemma}\label{lem:sl2inv}
 If $A\in SL_2(\Z)$ then $[Au,Aw]=[u,w]$.
 \end{lemma}
@@ -1317,7 +1365,10 @@ width five, as set out after Lemma~\ref{lem:sl2inv}: surjectivity onto paths
 (Theorem~\ref{thm:forced}), the frieze relations (Theorem~\ref{thm:pathfrieze}), positivity
 (Theorem~\ref{thm:clockpos}) and injectivity modulo $SL_2(\Z)$
 (Theorem~\ref{thm:transfer}). At general $R$ and general width the remaining step is the
-choice of an initial pair realising a prescribed frieze, which is not formalized. The external inputs of Shiu and of Linnik are
+existence of an initial pair satisfying the congruence of Theorem~\ref{thm:pathrecon}; the
+criterion itself is formalized, its solvability in general is not.
+Proposition~\ref{prop:sliceform} is formalized as the slice bijection together with the
+automatic congruence on the complementary divisor. The external inputs of Shiu and of Linnik are
 cited, not proved; and the passages to $O_\varepsilon$ in
 Theorem~\ref{thm:primecube} and Corollary~\ref{cor:t5upper} are written proofs.
 

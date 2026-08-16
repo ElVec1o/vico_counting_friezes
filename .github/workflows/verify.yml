@@ -105,6 +105,13 @@ jobs:
           #print axioms VicoEnum.span_of_coprime_dets
           #print axioms VicoEnum.transfer_of_same_frieze
           #print axioms VicoEnum.fdet_sl2_invariant
+          #print axioms VicoEnum.cubic_slice_factor
+          #print axioms VicoEnum.complement_congr
+          #print axioms VicoEnum.slice_divisor_congr
+          #print axioms VicoEnum.slice_divisor_dvd
+          #print axioms VicoEnum.solution_of_divisor
+          #print axioms VicoEnum.path_from_frieze
+          #print axioms VicoEnum.vertex_exists_iff
           #print axioms VicoEnum.paper_count4
           #print axioms VicoEnum.friezes4_ncard
           #print axioms VicoEnum.friezes5_ncard

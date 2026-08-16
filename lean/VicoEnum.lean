@@ -74,3 +74,4 @@ import VicoEnum.PathToFrieze
 import VicoEnum.Clockwise
 import VicoEnum.PathFriezeIso
 import VicoEnum.Surjectivity
+import VicoEnum.DivisorSum

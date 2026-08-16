@@ -113,4 +113,28 @@ theorem fdet_sl2_invariant (a b c d : ℤ) (hdet : a * d - b * c = 1) (u w : ℤ
   simp only [fdet]
   linear_combination (u.1 * w.2 - u.2 * w.1) * hdet
 
+/-- **The path is determined by the frieze's first two columns.** With `[v₀,v₁] = R` and
+`m i j = [v_j, v_i]/R`, every vertex is `v i = m i 0 * v₁ - m i 1 * v₀`. So a path realising
+a prescribed frieze has no freedom once the initial pair is fixed. -/
+theorem path_from_frieze {R : ℤ} {v₀ v₁ x : ℤ × ℤ} (h : fdet v₀ v₁ = R) :
+    R * x.1 = fdet v₀ x * v₁.1 - fdet v₁ x * v₀.1 ∧
+    R * x.2 = fdet v₀ x * v₁.2 - fdet v₁ x * v₀.2 := by
+  obtain ⟨p1, p2⟩ := plucker3 v₀ v₁ x
+  rw [h] at p1 p2
+  exact ⟨by linarith, by linarith⟩
+
+/-- **The remaining normalisation, as a congruence.** Writing the two leading columns of the
+frieze as `m i 0 = μ / N` and `m i 1 = ν / N`, the vertex attached to a given index exists in
+`Z²` exactly when `N` divides both components of `μ v₁ - ν v₀`.
+
+So the choice of an initial pair realising a prescribed frieze is not an unspecified
+normalisation: it is the requirement that this one congruence hold at every index, and the
+pair `(v₀, v₁)` is otherwise free subject to `[v₀,v₁] = R`. -/
+theorem vertex_exists_iff {N : ℤ} (hN : N ≠ 0) (μ ν : ℤ) (v₀ v₁ : ℤ × ℤ) :
+    (∃ w : ℤ × ℤ, N * w.1 = μ * v₁.1 - ν * v₀.1 ∧ N * w.2 = μ * v₁.2 - ν * v₀.2)
+      ↔ (N ∣ μ * v₁.1 - ν * v₀.1 ∧ N ∣ μ * v₁.2 - ν * v₀.2) := by
+  constructor
+  · rintro ⟨w, h1, h2⟩; exact ⟨⟨w.1, h1.symm⟩, ⟨w.2, h2.symm⟩⟩
+  · rintro ⟨⟨c, hc⟩, ⟨d, hd⟩⟩; exact ⟨(c, d), hc.symm, hd.symm⟩
+
 end VicoEnum
