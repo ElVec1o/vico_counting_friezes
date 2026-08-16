@@ -15,4 +15,21 @@
 # returns none).  T(1,n) is the Catalan number C_{n-2}.
 # No P-recursive recurrence of order 1 with degree-1 polynomial coefficients:
 # the 5-by-4 system from these six terms has rank 4, so only the trivial
-# solution.  Higher orders are not testable at six terms.
+# solution.
+#
+# WHY THE SEQUENCE STOPS HERE.  A recurrence of order r with coefficients of
+# degree d has (r+1)(d+1) unknowns and K-r equations from K terms, so the test
+# is vacuous whenever K-r < (r+1)(d+1).  With six terms only (r,d) = (1,1) is
+# testable, and it fails.  Seven terms would add (1,2) as a binary test with no
+# confirmation; nine terms are needed before any order-2 class is informative.
+#
+# The enumeration cost tracks the raw box: measured wall times for N = 1..2 are
+# 0.54 s at width 8 and 74 s at width 9, a ratio of 137 against a raw box ratio
+# of 120, so the pruning gives no asymptotic help.  Extrapolating, width 10 is
+# about 2.9 hours, width 11 about 20 days, width 12 about 9 years.
+#
+# So the ninth term is out of reach by this method and the question of whether
+# T(2,n) is P-recursive is blocked by the algorithm, not by patience.  A
+# transfer-matrix enumeration over path states was the natural alternative and
+# was killed at its consistency pass: the frieze column entries grow by about a
+# factor 2.4 per width, so that state space is exponential too.

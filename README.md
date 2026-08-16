@@ -6,6 +6,12 @@ Let `T(N,n)` be the number of positive rational frieze patterns of width `n` who
 all lie in `(1/N)Z`, in the sense of Karpenkov, Short, van Son and Zabolotskii
 (arXiv:2601.21445, section 6). Conway and Coxeter give `T(1,n) = C_(n-2)`.
 
+**Per-statement map.** `lean/PAPER_MAP.md` names, for each of the fifty numbered statements
+of the paper, the declarations that verify it or the reason none exists: **39 VERIFIED, 10
+PROVED, 1 CONJECTURE**. Every one of the ten written proofs is asymptotic or rests on a cited
+analytic input, and four carry a verified core lemma. `code/paper_map_audit.py` checks the
+map against the paper and the library; CI checks the declarations are axiom-clean.
+
 Every claim below carries one of five labels. **VERIFIED** means formalized in Lean 4:
 `lake build` clean, zero `sorry`, and `#print axioms` reporting nothing beyond
 `propext`, `Classical.choice`, `Quot.sound`. **PROVED** means a complete written proof,

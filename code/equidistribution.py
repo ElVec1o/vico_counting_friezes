@@ -14,6 +14,14 @@ The predictions below were fixed before the computation was run:
   P2  C(p) >= 0.3 H(p)    for every prime tested
   P3  slices a <= 10 carry at least 30 percent of C(p) on average
 All three held.
+
+A refinement was tried and failed.  Since gcd(an+1, a) = 1, every divisor of an+1 is
+coprime to a, so the divisors land in the phi(a) invertible classes and the natural model
+is d(an+1)/phi(a) rather than d(an+1)/a.  Empirically that overshoots: C(p)/H*(p) has mean
+0.505 and range [0.274, 0.746] over the same 72 primes, and its relative spread, 0.217, is
+slightly worse than the 0.194 of C(p)/H(p).  The cause is that sum 1/phi(a) is about
+1.94 log x against log x for sum 1/a.  Since phi(a) <= a we have H* >= H, so C = O(H) is
+the stronger hypothesis and is the one the reduction uses.
 """
 import sys
 import random
