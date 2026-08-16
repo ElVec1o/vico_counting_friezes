@@ -228,7 +228,8 @@ so that `K_k(a_i,...) = C_k(p_i,...) / N^k`.
   frieze and the number of terms is `Qp(N)`, the number of square divisors of `N^3`, OEIS
   A092520. VERIFIED (`support_iff_dvd_sq`, `W5_diag_iff`, `W5_diag_shift`).
 
-- **T(N,5) mod 10, exactly.** `T(N,5) = 5 Qp(N) mod 10`, so `10 | T(N,5)` if and only if
+- **T(N,5) mod 10, exactly.** VERIFIED end to end (`card_swap_parity`,
+  `support_card_eq_diag`, `support_card_eq_Qp`, `T5_mod_ten`, `ten_dvd_T5_iff`). `T(N,5) = 5 Qp(N) mod 10`, so `10 | T(N,5)` if and only if
   some exponent in the factorisation of `N` is `1` or `2` mod `4`. The reflection is an
   involution on the `W5` pairs whose fixed points are the symmetric ones, so `T` and `Qp`
   share parity; `five_dvd_T5` supplies the other factor. At a prime this recovers

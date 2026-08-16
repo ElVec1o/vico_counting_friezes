@@ -39,8 +39,8 @@ an equality identifying the width-five count with the case $A=1$, $B=p$ of
 $xyz=A(x+y)+B$, a problem posed by Ford in generalisation of a question of Conrey. The
 order of $C(p)$ is open, so no closed form for $T(p,5)$ should be expected.
 
-Karpenkov, Short, van Son and Zabolotskii classify these friezes by the minimal clockwise
-paths of a Farey graph. Their classification is counted here: the number of minimal closed
+These friezes are classified in \cite{KSSZ} by the minimal clockwise paths of a Farey
+graph. That classification is counted here: the number of minimal closed
 clockwise paths of length five in $\mathcal F_R$, modulo $SL_2(\Z)$, is
 $\sum_{d\mid R}\mu(R/d)T(d,5)$, and at a prime it is $5C(p)$.
 
@@ -126,8 +126,7 @@ of size $p^{1/3}$, which is why the standard route does not reach even the trivi
 For frieze theory this explains an absence. $T(N,4)=d(2N^2)$ has a closed form, counts of
 friezes over $\Z/n\Z$ are multiplicative with explicit formulas, and no such formula has
 been found at width $5$ over $\lat$: finding one would settle a question of Conrey.
-Karpenkov, Short, van Son and Zabolotskii \cite{KSSZ} classified exactly these friezes and
-left the count open. In the other direction it gives $C(p)$ a combinatorial reading, as the
+The friezes counted here are exactly those classified in \cite{KSSZ}. In the other direction it gives $C(p)$ a combinatorial reading, as the
 count of a set of friezes, which is not how the quantity in Ford's problem arises
 elsewhere.
 
@@ -144,7 +143,7 @@ own.
 
 \section{Setting}\label{sec:setting}
 
-We use the conventions of Karpenkov, Short, van Son and Zabolotskii \cite{KSSZ}.
+We use the conventions of \cite{KSSZ}.
 
 \begin{definition}\label{def:frieze}
 A \emph{rational frieze of width $n$} is a map
@@ -874,10 +873,10 @@ The substitution~\eqref{eq:shift} is an identity over any commutative ring
 (\texttt{fixed\_point\_ring}), which is why the analogue over $\F_q[t]$ inherits the
 structure of the problem intact rather than simplifying it.
 
-\section{Counting the paths of Theorem B of \cite{KSSZ}}\label{sec:farey}
+\section{The Farey-path count}\label{sec:farey}
 
-Karpenkov, Short, van Son and Zabolotskii classify the objects counted here. For positive
-integers $N,K,R$ with $N=KR$, their Theorem~B puts the minimal clockwise paths of length
+The objects counted here are classified in \cite{KSSZ}. For positive integers $N,K,R$
+with $N=KR$, Theorem~B of that paper puts the minimal clockwise paths of length
 $n$ in the Farey graph $\mathcal F_R$, modulo $SL_2(\Z)$, in one-to-one correspondence with
 the positive friezes over $\lat$ of width $n$ and greatest common divisor $K$. Here
 $\mathcal F_R$ has as vertices the integer pairs $(a,b)$ with $\gcd(a,b)\mid R$ and a
@@ -905,8 +904,8 @@ with $T(d,5)$ given by Theorem~\ref{thm:fordsum}. For every prime $p\ge5$,
 
 \begin{proof}
 The displayed sum over $R\mid N$ is a partition of the friezes over $\lat$ by their greatest
-common divisor, and Theorem~B of \cite{KSSZ} identifies the class with divisor $K$ with the
-path classes in $\mathcal F_{N/K}$; the count therefore depends only on $R=N/K$. Möbius
+common divisor, and Theorem~B of \cite{KSSZ} identifies the class with divisor $K$ with the path classes
+in $\mathcal F_{N/K}$; the count therefore depends only on $R=N/K$. Möbius
 inversion gives the first display. At $R=p$ the divisors are $1$ and $p$, so
 $P(p)=T(p,5)-T(1,5)$, which is $5+5C(p)-5$ by Theorem~\ref{thm:orbit} and
 \eqref{eq:catalan}.
@@ -936,7 +935,10 @@ compose in the library into a single declaration giving $T(p,5)=5+5C(p)$ for eve
 $p\ge5$, stated over Definition~\ref{def:frieze} with periodicity derived rather than
 assumed, and with $C(p)$ the full solution count of $auv=p+u+v$ rather than a count inside a
 search box. Theorem~\ref{thm:fordsum} is verified as well, the support condition and the
-bijection at each $M$ separately.
+bijection at each $M$ separately, as are Theorems~\ref{thm:diag}, \ref{thm:modten}
+and~\ref{thm:farey}: the parity of the reflection, the count of the index set by the
+divisor complement $M\mapsto N^2/M$, and the Möbius inversion are each separate
+declarations.
 
 What is not machine-checked is stated as such. The external inputs of Shiu and of Linnik are
 cited, not proved; and the passages to $O_\varepsilon$ in

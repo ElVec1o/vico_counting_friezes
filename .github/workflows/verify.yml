@@ -73,6 +73,10 @@ jobs:
           #print axioms VicoEnum.W5_diag_iff
           #print axioms VicoEnum.W5_diag_shift
           #print axioms VicoEnum.path_count_of_T5
+          #print axioms VicoEnum.card_swap_parity
+          #print axioms VicoEnum.support_card_eq_Qp
+          #print axioms VicoEnum.T5_mod_ten
+          #print axioms VicoEnum.ten_dvd_T5_iff
           #print axioms VicoEnum.paper_count4
           #print axioms VicoEnum.friezes4_ncard
           #print axioms VicoEnum.friezes5_ncard
