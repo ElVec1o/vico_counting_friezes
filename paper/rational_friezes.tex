@@ -1405,7 +1405,12 @@ not, and is stated as a conjecture rather than assumed.
 Proposition~\ref{prop:sliceform} is formalized as the slice bijection together with the
 automatic congruence on the complementary divisor. The external inputs of Shiu and of Linnik are
 cited, not proved; and the passages to $O_\varepsilon$ in
-Theorem~\ref{thm:primecube} and Corollary~\ref{cor:t5upper} are written proofs.
+Theorem~\ref{thm:primecube} and Corollary~\ref{cor:t5upper} are written proofs. What blocks
+their formalization is stated precisely rather than left as an absence: Mathlib at the
+version used here contains no divisor bound of the form $d(n)=O_\varepsilon(n^\varepsilon)$,
+no Brun--Titchmarsh theorem for multiplicative functions in the sense of Shiu, and no
+results on divisors in arithmetic progressions. Each of the three would have to be developed
+before those two statements could be formalized, and none of them is specific to friezes.
 
 A per-statement table naming, for each result, the Lean declaration that verifies it or
 recording that none exists, is maintained with the library rather than here, since it changes
