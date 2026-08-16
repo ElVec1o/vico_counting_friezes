@@ -57,6 +57,67 @@ so that `K_k(a_i,...) = C_k(p_i,...) / N^k`.
   `((n-4)N^2+2N, 1/N, N+1, 2,...,2, N+1, 1/N)` attains it (`fan_monodromy`, `fan_col_one`,
   `fan_col_zero`, VERIFIED).
 
+## The path model, width six, and other coefficient rings
+
+- **The frieze relation is the Plucker relation.** For a sequence of integer vectors with
+  `v_{i+1} = c_i v_i - v_{i-1}`, every consecutive determinant is equal to the first
+  (`fdet_step`, `fpath_det`, VERIFIED), so one edge check places the whole path in a single
+  Farey graph `F_R`. Setting `m_{i,j} = det(v_j, v_i) / R`, every adjacent 2x2 minor equals
+  `1`, the diagonal is `0` and the first subdiagonal is `1` (`plucker`, `path_minor`,
+  `path_frieze_minor`, VERIFIED). The proof is the Plucker relation
+  `[ab][cd] - [ac][bd] + [ad][bc] = 0` applied to `(v_j, v_i, v_{j+1}, v_{i+1})`, which
+  turns the minor into `[v_j,v_{j+1}][v_i,v_{i+1}] = R^2`.
+
+  This is width-uniform. The width-five and width-six reductions each need a continuant
+  window and hold at one width; this holds for all `i` and `j` at once.
+
+- **Positivity is clockwiseness.** For vertices with positive second coordinate,
+  `det(v_j, v_i) > 0` exactly when the vertices are in strict clockwise order on the real
+  line, since `R m_{i,j} = b_i b_j (a_j/b_j - a_i/b_i)` (`fdet_pos_iff`,
+  `clockwise_frieze_pos`, VERIFIED). Positivity of a frieze and the clockwise condition on
+  the path are one condition read on two sides.
+
+- **The path is the frieze's own columns.** `det(v_j, -)` is linear, so a column of the path
+  array satisfies the same three-term recurrence as the path, and a solution of a three-term
+  recurrence is fixed by two consecutive values (`fdet_recurrence`, `recurrence_unique`,
+  `frieze_col_eq_fdet`, VERIFIED). This is the passage back from frieze to path.
+
+  Not formalized: the quotient by `SL_2(Z)` and surjectivity, which are what make Theorem B
+  of arXiv:2601.21445 a bijection of sets. That theorem is cited, not reproved.
+
+- **The width-six reduced form.** With `A = pq - N^2`, `B = qr - N^2`, `g = gcd(A,B)`,
+  `U = A/g`, `V = B/g`, `R = q`, the defining relation is the single master identity
+
+      A B = N^4 + N^2 q f,     that is     g^2 U V = N^4 + N^2 R f,
+
+  again of Ford type (`width6_master`, VERIFIED). The frieze conditions then become a
+  divisibility system in `(g,U,V,R)` that is necessary and sufficient (`W6_of_red6`,
+  `red6_of_W6`, VERIFIED). `R` is not free: it divides `gcd(gU+N^2, gV+N^2)`.
+
+  The defining conditions alone do not suffice. The lattice condition on the row fixed by
+  the glide adds `N | A` and `N | B`; without them `(p,q,r,f) = (1,5,8,1)` at `N = 2`
+  satisfies the relations but is not a frieze.
+
+- **Width five over any coefficient ring.** The width-five parameterisation closes after
+  five steps over any field (`quid5_cycle`, VERIFIED), and the reduction uses no order.
+  Eliminating `p` and `q` gives Ford's equation over any commutative domain,
+
+      D k l = N^4 + N^3 (k + l),
+
+  where `D = pq - N^2`, `N^2(p+N) = Dk`, `N^2(q+N) = Dl` (`ford_general`, VERIFIED).
+
+  Two conditions that positivity hides must be imposed separately: `a_2 = 0` exactly when
+  `a_0 = -1`, and `a_4 = 0` exactly when `a_1 = -1` (`quid5_two_eq_zero_iff`,
+  `quid5_four_eq_zero_iff`, VERIFIED). Without them the divisibility is vacuous and the
+  solution set is infinite.
+
+- **Finiteness over the Gaussian integers.** Over `Z[i]` there is no order, and finiteness
+  comes from the norm instead: `min(||k||, ||l||) <= 8N^6 + 2N^8` (`ford_min_norm_bound`,
+  VERIFIED), while `l (Dk - N^3) = N^4 + N^3 k` pins the third variable
+  (`ford_determines_l`, `ford_degenerate_branch`, VERIFIED). The counts of width-five
+  friezes over `(1/N)Z[i]` are `55, 580, 815` for `N = 1, 2, 3`
+  (`code/gaussian_width5.py`), against `T(1,5) = 5` over `Z`.
+
 ## Closed counts
 
 - **Width 4.** `T(N,4) = d(2N^2)`, the number of divisors of `2N^2` (OEIS A361689).

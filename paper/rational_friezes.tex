@@ -130,6 +130,17 @@ The friezes counted here are exactly those classified in \cite{KSSZ}. In the oth
 count of a set of friezes, which is not how the quantity in Ford's problem arises
 elsewhere.
 
+Three further reductions are carried out below. Section~\ref{sec:w6red} gives the width-six
+analogue of the width-five reduction: a master identity $AB=N^4+N^2qf$ of Ford type and a
+system of divisibilities in four variables that is necessary and sufficient, where the
+defining conditions alone are not. Section~\ref{sec:rings} observes that the width-five
+reduction uses no order, so it holds over any commutative domain; over $\Z[i]$ the solution
+set is still finite, by a norm bound in place of the search bounds of the real theory, and
+two nondegeneracy conditions that positivity hides must be imposed. Section~\ref{sec:farey}
+makes the passage to the Farey graph explicit rather than numerical: the frieze relation is
+the Pl\"ucker relation in the plane, which gives the correspondence at every width at once,
+and positivity of a frieze is exactly the clockwise order of the path.
+
 Section~\ref{sec:data} tabulates $T(N,n)$ for widths $3$ to $6$ and for widths $8$ and $9$
 at small $N$. At width $4$ the count has a closed form,
 $T(N,4)=d(2N^2)$ (Theorem~\ref{thm:w4}). The reductions and search bounds behind the tables
@@ -873,22 +884,281 @@ The substitution~\eqref{eq:shift} is an identity over any commutative ring
 (\texttt{fixed\_point\_ring}), which is why the analogue over $\F_q[t]$ inherits the
 structure of the problem intact rather than simplifying it.
 
-\section{The Farey-path count}\label{sec:farey}
+\section{The width-six reduced form}\label{sec:w6red}
 
-The objects counted here are classified in \cite{KSSZ}. For positive integers $N,K,R$
-with $N=KR$, Theorem~B of that paper puts the minimal clockwise paths of length
-$n$ in the Farey graph $\mathcal F_R$, modulo $SL_2(\Z)$, in one-to-one correspondence with
-the positive friezes over $\lat$ of width $n$ and greatest common divisor $K$. Here
-$\mathcal F_R$ has as vertices the integer pairs $(a,b)$ with $\gcd(a,b)\mid R$ and a
-directed edge from $(a,b)$ to $(c,d)$ when $ad-bc=R$, and a path is minimal when the
-integers $a_jb_i-b_ja_i$ have greatest common divisor $1$.
+At width five the conditions reduce to Ford's equation in three variables
+(Theorem~\ref{thm:t5red}). The same reduction is available at width six, with one further
+variable, and it is again of Ford type.
 
-Write $P(R)$ for the number of those path classes at width five. Every frieze over $\lat$
-has a greatest common divisor dividing $N$, so
+Write the quiddity numerators of a width-six frieze over $\lat$ as $p,q,r$ for
+$a_0,a_1,a_2$, and $f$ for the middle numerator $Na_4$. By \eqref{eq:w6param} these satisfy
+\begin{equation}\label{eq:w6def}
+  pqr=N^2(f+p+r),\qquad f\mid pq,\qquad f\mid qr,\qquad f\mid N(p+r).
+\end{equation}
+Put
 \[
-  T(N,5)=\sum_{R\mid N}P(R),
+  A=pq-N^2,\qquad B=qr-N^2,\qquad g=\gcd(A,B),\qquad U=A/g,\qquad V=B/g,\qquad R=q .
 \]
-and Möbius inversion evaluates $P$ from the counts of Theorem~\ref{thm:fordsum}.
+
+\begin{theorem}[Master identity]\label{thm:w6master}
+$AB=N^4+N^2qf$, that is $g^2UV=N^4+N^2Rf$.
+\end{theorem}
+
+\begin{proof}
+$AB=(pq-N^2)(qr-N^2)=q\,(pqr)-N^2(pq+qr)+N^4$. Substituting $pqr=N^2(f+p+r)$ gives
+$qN^2(f+p+r)-N^2(pq+qr)+N^4=N^2qf+N^4$.
+\end{proof}
+
+The variable $R$ is not free. Since $pq=A+N^2$ and $qr=B+N^2$, the numerator $q$ divides
+both $gU+N^2$ and $gV+N^2$, so $R$ ranges over the divisors of $\gcd(gU+N^2,gV+N^2)$.
+
+\begin{theorem}[Reduced form at width six]\label{thm:w6red}
+The assignment $(p,q,r)\mapsto(g,U,V,R)$ is a bijection from the width-six friezes over
+$\lat$ onto the quadruples of positive integers satisfying
+\[
+  \gcd(U,V)=1,\qquad N\mid gU,\qquad N\mid gV,\qquad R\mid gU+N^2,\qquad R\mid gV+N^2,
+\]
+\[
+  N^2R\mid g^2UV-N^4,
+\]
+and, writing $f=(g^2UV-N^4)/(N^2R)$,
+\[
+  f\mid gU+N^2,\qquad f\mid gV+N^2,\qquad fR\mid N\bigl(g(U+V)+2N^2\bigr).
+\]
+The inverse is $p=(gU+N^2)/R$, $q=R$, $r=(gV+N^2)/R$.
+\end{theorem}
+
+\begin{proof}
+Let a width-six frieze be given. The row below the quiddity has entries $a_ja_{j+1}-1$; at
+$j=0$ this is $A/N^2$, which lies in $\lat$ exactly when $N\mid A$, and at $j=1$ it is
+$B/N^2$, giving $N\mid B$. These are the conditions $N\mid gU$ and $N\mid gV$. Integrality
+of $p$ and $r$ gives $R\mid gU+N^2$ and $R\mid gV+N^2$, and Theorem~\ref{thm:w6master}
+gives $N^2R\mid g^2UV-N^4$ with quotient $f$. The three divisibilities of \eqref{eq:w6def}
+are the last three conditions, since $pq=gU+N^2$, $qr=gV+N^2$ and
+$N(p+r)R=N(g(U+V)+2N^2)$. As $\gcd(A,B)=g$ we have $\gcd(U,V)=1$.
+
+Conversely, let a quadruple satisfy the conditions and define $p,q,r,f$ by the stated
+formulas. Then $pR=gU+N^2$ and $rR=gV+N^2$, so
+\[
+  (pR)(rR)=g^2UV+N^2g(U+V)+N^4=(N^4+N^2Rf)+N^2g(U+V)+N^4 ,
+\]
+while $g(U+V)+2N^2=(p+r)R$ gives $N^2g(U+V)=N^2(p+r)R-2N^4$. Substituting and dividing by
+$R$ yields $prR=N^2(f+p+r)$, which is $pqr=N^2(f+p+r)$. The remaining conditions of
+\eqref{eq:w6def} are the last three hypotheses, and $\gcd(A,B)=g\gcd(U,V)=g$, so the two
+assignments are mutually inverse.
+\end{proof}
+
+The conditions $N\mid gU$ and $N\mid gV$ are exactly the lattice condition on the row fixed
+by the glide, as in Remark~\ref{rem:glide}; without them \eqref{eq:w6def} admits solutions
+that are not friezes, for example $(p,q,r,f)=(1,5,8,1)$ at $N=2$, where $A=pq-N^2=1$ is
+not divisible by $N$. The system is
+checked against the enumeration for $N\le 8$ by \texttt{code/width6\_reduced.py}.
+
+\section{Friezes over other coefficient rings}\label{sec:rings}
+
+Nothing in the width-five reduction uses an order. Over any field the parameterisation
+\eqref{eq:w5param} closes after five steps, and over $\tfrac1N\mathcal O$ for a commutative
+domain $\mathcal O$ the conditions of Proposition~\ref{prop:w5cond} are the same
+divisibilities read in $\mathcal O$. Positivity selects solutions; it is not part of the
+reduction.
+
+Two conditions that positivity hides must then be imposed separately.
+
+\begin{proposition}\label{prop:nondeg}
+In \eqref{eq:w5param} the entry $a_2$ vanishes exactly when $a_0=-1$, and $a_4$ vanishes
+exactly when $a_1=-1$.
+\end{proposition}
+
+\begin{proof}
+$a_2=(a_0+1)/D$ and $a_4=(a_1+1)/D$ with $D\neq0$.
+\end{proof}
+
+Over an ordered field with all entries positive these cases cannot occur, which is why the
+real theory does not record them. Over a general domain they are genuine conditions: at
+$p=-N$ the requirement $(pq-N^2)\mid N^2(p+N)$ is vacuous, the solution set is infinite,
+and the array has a zero entry.
+
+\begin{theorem}[Ford's equation over a domain]\label{thm:fordanyring}
+Let $\mathcal O$ be a commutative domain and let $N,p,q,k,l\in\mathcal O$ satisfy
+$D:=pq-N^2\neq0$, $N^2(p+N)=Dk$ and $N^2(q+N)=Dl$. Then
+\[
+  Dkl=N^4+N^3(k+l).
+\]
+\end{theorem}
+
+\begin{proof}
+Multiplying the two hypotheses gives $D^2kl=N^4(p+N)(q+N)$, and adding them gives
+$N^2(p+q)+2N^3=D(k+l)$. Since $(p+N)(q+N)=D+2N^2+N(p+q)$,
+\[
+  D^2kl=N^4\bigl(D+2N^2+N(p+q)\bigr)=N^4D+2N^6+N^3\bigl(D(k+l)-2N^3\bigr)
+       =D\bigl(N^4+N^3(k+l)\bigr),
+\]
+and cancelling $D$ gives the identity.
+\end{proof}
+
+\begin{theorem}[Finiteness over the Gaussian integers]\label{thm:gaussfinite}
+Let $\lVert\cdot\rVert$ be the norm on $\Z[i]$. A solution of $Dkl=N^4+N^3(k+l)$ over
+$\Z[i]$ with $D\neq0$ satisfies
+\[
+  \min\bigl(\lVert k\rVert,\lVert l\rVert\bigr)\le 8N^6+2N^8 .
+\]
+Moreover $l\,(Dk-N^3)=N^4+N^3k$, so $l$ is determined by $D$ and $k$ unless $Dk=N^3$, in
+which case $k=-N$ and $p=0$. The set of width-five friezes over $\tfrac1N\Z[i]$ is
+therefore finite.
+\end{theorem}
+
+\begin{proof}
+The norm is multiplicative and satisfies $\lVert x+y\rVert\le2\lVert x\rVert+2\lVert
+y\rVert$, since $(x_1+y_1)^2+(x_2+y_2)^2\le2(x_1^2+x_2^2)+2(y_1^2+y_2^2)$. As $D\neq0$ we
+have $\lVert D\rVert\ge1$, so with $\alpha=\lVert k\rVert$ and $\beta=\lVert l\rVert$,
+\[
+  \alpha\beta\le\lVert D\rVert\alpha\beta=\lVert N^4+N^3(k+l)\rVert
+    \le 2N^8+2N^6\lVert k+l\rVert\le 2N^8+4N^6(\alpha+\beta).
+\]
+Suppose both $\alpha$ and $\beta$ exceed $8N^6+2N^8$. Then $\alpha-4N^6$ and $\beta-4N^6$
+both exceed $4N^6+2N^8$, so
+$\alpha\beta-4N^6(\alpha+\beta)=(\alpha-4N^6)(\beta-4N^6)-16N^{12}>16N^{14}\ge2N^8$,
+contradicting the display. The rearrangement $l(Dk-N^3)=N^4+N^3k$ is immediate from the
+equation; if $Dk=N^3$ then $N^4+N^3k=0$, so $k=-N$, and then $N^2(p+N)=Dk=N^3$ gives $p=0$,
+which is not a quiddity numerator, so that branch is empty. By
+Proposition~\ref{prop:nondeg} neither $k$ nor $l$ vanishes. The equation is symmetric in $k$
+and $l$, so assume $\lVert k\rVert\le 8N^6+2N^8$. If $\lVert D\rVert\lVert k\rVert>4N^6$
+then the display gives $\lVert l\rVert\bigl(\lVert D\rVert\lVert k\rVert-4N^6\bigr)\le
+2N^8+4N^6\lVert k\rVert$, so $\lVert l\rVert$ is bounded, and $D=(N^4+N^3(k+l))/kl$ is then
+determined by $k$ and $l$. Otherwise $\lVert D\rVert\le4N^6$ and $\lVert k\rVert\le4N^6$,
+and $l$ is determined by $D$ and $k$. Either way the solutions are finite in number.
+\end{proof}
+
+The counts of width-five friezes over $\tfrac1N\Z[i]$ are $55$, $580$ and $815$ for
+$N=1,2,3$ (\texttt{code/gaussian\_width5.py}); the value at $N=1$ is to be compared with
+$T(1,5)=5$ over $\Z$.
+
+\section{The Farey-path dictionary}\label{sec:farey}
+
+The friezes counted here are classified in \cite{KSSZ}. For positive integers $N,K,R$ with
+$N=KR$, Theorem~B of that paper puts the minimal clockwise paths of length $n$ in the Farey
+graph $\mathcal F_R$, modulo $SL_2(\Z)$, in one-to-one correspondence with the positive
+friezes over $\lat$ of width $n$ and greatest common divisor $K$, through
+$m_{i,j}=\frac1R(a_jb_i-b_ja_i)$. Here $\mathcal F_R$ has as vertices the integer pairs
+$(a,b)$ with $\gcd(a,b)\mid R$ and a directed edge from $(a,b)$ to $(c,d)$ when $ad-bc=R$,
+and a path is minimal when the integers $a_jb_i-b_ja_i$ have greatest common divisor $1$.
+
+This section makes the passage between the two sides explicit, and does so at every width at
+once. Write $[u,w]=u_1w_2-u_2w_1$ for $u,w\in\Z^2$.
+
+\begin{definition}\label{def:path}
+The path attached to integers $c_0,c_1,\dots$ and a pair $v_0,v_1\in\Z^2$ is the sequence
+$v_{i+1}=c_iv_i-v_{i-1}$.
+\end{definition}
+
+\begin{lemma}\label{lem:pathdet}
+$[v_i,v_{i+1}]=[v_0,v_1]$ for every $i$.
+\end{lemma}
+
+\begin{proof}
+$[v_i,v_{i+1}]=[v_i,c_iv_i-v_{i-1}]=-[v_i,v_{i-1}]=[v_{i-1},v_i]$, and induction on $i$.
+\end{proof}
+
+So one edge decides the graph: if $[v_0,v_1]=R$ then every edge of the path is an edge of
+$\mathcal F_R$, and no further checking is required.
+
+\begin{theorem}\label{thm:pathfrieze}
+Let $v_i\in\Z^2$ satisfy $[v_i,v_{i+1}]=R$ for all $i$, with $R\neq0$, and put
+$m_{i,j}=\frac1R[v_j,v_i]$. Then $m_{i,i}=0$, $m_{i+1,i}=1$, and
+\[
+  m_{i,j}m_{i+1,j+1}-m_{i,j+1}m_{i+1,j}=1
+\]
+for all $i$ and $j$.
+\end{theorem}
+
+\begin{proof}
+$m_{i,i}=0$ because $[u,u]=0$, and $m_{i+1,i}=1$ by hypothesis. For any four vectors in the
+plane the Pl\"ucker relation
+\[
+  [a,b][c,d]-[a,c][b,d]+[a,d][b,c]=0
+\]
+holds identically. Taking $(a,b,c,d)=(v_j,v_i,v_{j+1},v_{i+1})$ and using
+$[v_i,v_{j+1}]=-[v_{j+1},v_i]$ gives
+\[
+  [v_j,v_i][v_{j+1},v_{i+1}]-[v_j,v_{i+1}][v_{j+1},v_i]=[v_j,v_{j+1}][v_i,v_{i+1}]=R^2,
+\]
+and dividing by $R^2$ is the assertion.
+\end{proof}
+
+Theorem~\ref{thm:pathfrieze} carries no width. The reductions of Sections~\ref{sec:w5}
+and~\ref{sec:w6red} each rest on a continuant window and hold at one width; this holds for
+all $i$ and $j$ simultaneously.
+
+\begin{theorem}\label{thm:clockpos}
+Write $v_i=(a_i,b_i)$ and suppose $b_i>0$ and $b_j>0$. Then $m_{i,j}>0$ if and only if
+$a_j/b_j>a_i/b_i$.
+\end{theorem}
+
+\begin{proof}
+$Rm_{i,j}=a_jb_i-b_ja_i=b_ib_j\bigl(a_j/b_j-a_i/b_i\bigr)$, and $b_ib_j>0$.
+\end{proof}
+
+Positivity of the frieze and clockwise order of the path are therefore one condition, read
+on the two sides. In particular the positivity of a frieze can be decided on the path,
+without computing the frieze.
+
+\begin{theorem}\label{thm:pathback}
+Fix $j$. The function $i\mapsto[v_j,v_i]$ satisfies $x_{i+2}=c_ix_{i+1}-x_i$. Consequently a
+solution of that recurrence agreeing with it at two consecutive indices agrees with it
+everywhere.
+\end{theorem}
+
+\begin{proof}
+$[u,\cdot]$ is linear, so $[v_j,v_{i+2}]=[v_j,c_iv_{i+1}-v_i]=c_i[v_j,v_{i+1}]-[v_j,v_i]$.
+A solution of a three-term recurrence is determined by two consecutive values.
+\end{proof}
+
+The columns of a frieze satisfy that same recurrence, so Theorem~\ref{thm:pathback} recovers
+the path from the frieze: the vertices are the frieze's own columns, and the two
+constructions are mutually inverse on representatives.
+
+\begin{theorem}\label{thm:pentclose}
+At width five, with $c_i$ the quiddity of \eqref{eq:w5param}, the path satisfies $v_5=-v_0$
+and $v_6=-v_1$.
+\end{theorem}
+
+\begin{proof}
+The recurrence $v_{i+1}=c_iv_i-v_{i-1}$ is the action of
+$M(c_i)=\left(\begin{smallmatrix}c_i&-1\\1&0\end{smallmatrix}\right)$ on consecutive pairs,
+and the monodromy of \eqref{eq:w5param} is $M(a_0)\cdots M(a_4)=-I$ by
+Proposition~\ref{prop:param}. Applying the five factors to $(v_0,v_1)$ returns $(-v_0,-v_1)$.
+\end{proof}
+
+The closure is antipodal rather than literal, which is the identification of $(a,b)$ with
+$(-a,-b)$ used to view $\mathcal F_R$ in the plane.
+
+\begin{corollary}\label{cor:fordpent}
+Let $p\ge5$ be prime and let $(s,t,m)$ satisfy $stm=p+t+m$. Put $u=ps$, $v=st-1$ and
+$g=p(u+v+1)/uv$, and let $(P,Q)=(gu-p,gv-p)$ be the pair of Theorem~\ref{thm:orbit}. The
+path of Definition~\ref{def:path} with $v_0=(1,0)$, $v_1=(0,p)$ and $c_i$ the quiddity of
+$(P,Q)$ is a closed clockwise pentagon in $\mathcal F_p$, it is minimal, and distinct
+triples give pentagons differing by more than a rotation.
+\end{corollary}
+
+\begin{proof}
+The vertices are integral and every edge determinant equals $[v_0,v_1]=p$ by
+Lemma~\ref{lem:pathdet}, so the path lies in $\mathcal F_p$; closure is
+Theorem~\ref{thm:pentclose}; the clockwise order is Theorem~\ref{thm:clockpos} applied to
+the positivity of the frieze. For minimality, one edge determinant is $p$, so the greatest
+common divisor of the determinants divides $p$; it equals $p$ only if every $m_{i,j}$ is an
+integer, that is only if the frieze is integral, which by Theorem~\ref{thm:orbit} is not the
+case for a frieze arising from a solution of the cubic. Distinct triples give distinct
+rotation orbits of friezes by Theorem~\ref{thm:orbit}, and the frieze is recovered from the
+path by Theorem~\ref{thm:pathfrieze}.
+\end{proof}
+
+Corollary~\ref{cor:fordpent} is checked for every solution of the cubic at each prime
+$p\le31$ by \texttt{code/ford\_to\_pentagon.py} and \texttt{code/clockwise\_certificate.py},
+and the passage back from the pentagon to the frieze by \texttt{code/path\_to\_frieze.py}.
+
+Write $P(R)$ for the number of path classes at width five. Every frieze over $\lat$ has a
+greatest common divisor dividing $N$, so $T(N,5)=\sum_{R\mid N}P(R)$, and M\"obius inversion
+evaluates $P$ from the counts of Theorem~\ref{thm:fordsum}.
 
 \begin{theorem}\label{thm:farey}
 For every $R\ge1$ the number of minimal closed clockwise paths of length five in
@@ -903,17 +1173,16 @@ with $T(d,5)$ given by Theorem~\ref{thm:fordsum}. For every prime $p\ge5$,
 \end{theorem}
 
 \begin{proof}
-The displayed sum over $R\mid N$ is a partition of the friezes over $\lat$ by their greatest
-common divisor, and Theorem~B of \cite{KSSZ} identifies the class with divisor $K$ with the path classes
-in $\mathcal F_{N/K}$; the count therefore depends only on $R=N/K$. Möbius
-inversion gives the first display. At $R=p$ the divisors are $1$ and $p$, so
-$P(p)=T(p,5)-T(1,5)$, which is $5+5C(p)-5$ by Theorem~\ref{thm:orbit} and
-\eqref{eq:catalan}.
+The sum over $R\mid N$ partitions the friezes over $\lat$ by greatest common divisor, and
+Theorem~B of \cite{KSSZ} identifies the class with divisor $K$ with the path classes in
+$\mathcal F_{N/K}$, so the count depends only on $R=N/K$. M\"obius inversion gives the first
+display. At $R=p$ the divisors are $1$ and $p$, so $P(p)=T(p,5)-T(1,5)$, which is
+$5+5C(p)-5$ by Theorem~\ref{thm:orbit} and \eqref{eq:catalan}.
 \end{proof}
 
-So the Farey graph $\mathcal F_p$ carries exactly $5C(p)$ closed clockwise pentagons up to
-$SL_2(\Z)$, and counting them is the problem of Ford. The values of $P$ are
-$5,15,35,40,55,55,65,85,100,95$ for $R=1,\dots,10$
+So $\mathcal F_p$ carries exactly $5C(p)$ closed clockwise pentagons up to $SL_2(\Z)$, and
+counting them is the problem of Ford; Corollary~\ref{cor:fordpent} exhibits them. The values
+of $P$ are $5,15,35,40,55,55,65,85,100,95$ for $R=1,\dots,10$
 (\texttt{code/farey\_paths.py}).
 
 \section{Formalization}\label{sec:lean}
@@ -940,7 +1209,20 @@ and~\ref{thm:farey}: the parity of the reflection, the count of the index set by
 divisor complement $M\mapsto N^2/M$, and the Möbius inversion are each separate
 declarations.
 
-What is not machine-checked is stated as such. The external inputs of Shiu and of Linnik are
+The reductions of Sections~\ref{sec:w6red}, \ref{sec:rings} and~\ref{sec:farey} are
+verified in the same sense. Theorems~\ref{thm:w6master} and~\ref{thm:w6red} are separate
+declarations, the second in both directions; Theorems~\ref{thm:fordanyring}
+and~\ref{thm:gaussfinite} are stated over an arbitrary commutative domain and over $\Z[i]$
+respectively, with the norm bound proved rather than sampled; and
+Lemma~\ref{lem:pathdet}, Theorems~\ref{thm:pathfrieze}, \ref{thm:clockpos},
+\ref{thm:pathback} and~\ref{thm:pentclose} are each a declaration, with the Pl\"ucker
+relation isolated as its own lemma.
+
+What is not machine-checked is stated as such. Theorem~\ref{thm:farey} rests on Theorem~B
+of \cite{KSSZ}, which is cited and not reproved: the quotient by $SL_2(\Z)$ and the
+surjectivity of the correspondence are not formalized here, and the results of
+Section~\ref{sec:farey} are statements about the explicit construction rather than a proof
+of that classification. The external inputs of Shiu and of Linnik are
 cited, not proved; and the passages to $O_\varepsilon$ in
 Theorem~\ref{thm:primecube} and Corollary~\ref{cor:t5upper} are written proofs.
 

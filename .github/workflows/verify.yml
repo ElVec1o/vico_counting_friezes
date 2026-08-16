@@ -77,6 +77,27 @@ jobs:
           #print axioms VicoEnum.support_card_eq_Qp
           #print axioms VicoEnum.T5_mod_ten
           #print axioms VicoEnum.ten_dvd_T5_iff
+          #print axioms VicoEnum.width6_master
+          #print axioms VicoEnum.W6_of_red6
+          #print axioms VicoEnum.red6_of_W6
+          #print axioms VicoEnum.quid5_cycle
+          #print axioms VicoEnum.quid5_two_eq_zero_iff
+          #print axioms VicoEnum.quid5_four_eq_zero_iff
+          #print axioms VicoEnum.fdet_step
+          #print axioms VicoEnum.fpath_det
+          #print axioms VicoEnum.pentagon_closes
+          #print axioms VicoEnum.plucker
+          #print axioms VicoEnum.path_minor
+          #print axioms VicoEnum.path_frieze_minor
+          #print axioms VicoEnum.fdet_pos_iff
+          #print axioms VicoEnum.clockwise_frieze_pos
+          #print axioms VicoEnum.fdet_recurrence
+          #print axioms VicoEnum.recurrence_unique
+          #print axioms VicoEnum.frieze_col_eq_fdet
+          #print axioms VicoEnum.ford_general
+          #print axioms VicoEnum.ford_determines_l
+          #print axioms VicoEnum.ford_degenerate_branch
+          #print axioms VicoEnum.ford_min_norm_bound
           #print axioms VicoEnum.paper_count4
           #print axioms VicoEnum.friezes4_ncard
           #print axioms VicoEnum.friezes5_ncard

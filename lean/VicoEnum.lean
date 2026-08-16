@@ -62,3 +62,14 @@ import VicoEnum.FordCongruence
 import VicoEnum.FordDiagonal
 import VicoEnum.FareyPaths
 import VicoEnum.FordParity
+import VicoEnum.FordToFrieze
+import VicoEnum.Monodromy
+import VicoEnum.DiscreteRings
+import VicoEnum.WidthSixNoGo
+import VicoEnum.Width6Reduced
+import VicoEnum.Width5AnyRing
+import VicoEnum.FareyPentagon
+import VicoEnum.FordAnyDomain
+import VicoEnum.PathToFrieze
+import VicoEnum.Clockwise
+import VicoEnum.PathFriezeIso
