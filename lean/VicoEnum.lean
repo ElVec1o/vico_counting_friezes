@@ -60,3 +60,4 @@ import VicoEnum.FordParam
 import VicoEnum.FordSquarefree
 import VicoEnum.FordCongruence
 import VicoEnum.FordDiagonal
+import VicoEnum.FareyPaths

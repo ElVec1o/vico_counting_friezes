@@ -39,6 +39,11 @@ an equality identifying the width-five count with the case $A=1$, $B=p$ of
 $xyz=A(x+y)+B$, a problem posed by Ford in generalisation of a question of Conrey. The
 order of $C(p)$ is open, so no closed form for $T(p,5)$ should be expected.
 
+Karpenkov, Short, van Son and Zabolotskii classify these friezes by the minimal clockwise
+paths of a Farey graph. Their classification is counted here: the number of minimal closed
+clockwise paths of length five in $\mathcal F_R$, modulo $SL_2(\Z)$, is
+$\sum_{d\mid R}\mu(R/d)T(d,5)$, and at a prime it is $5C(p)$.
+
 At every $N$ the count decomposes the same way. It is a finite sum of counts for Ford's
 equation, one term for each divisor $M$ of $N^2$ with $N\mid M^2$, the term carrying the
 parameters $A=\gcd(N,M)$ and $B=M\gcd(N,M)/N$. The map $M\mapsto M+N$ identifies that index
@@ -868,6 +873,49 @@ from below the square root barrier rather than from a sharper application of Wei
 The substitution~\eqref{eq:shift} is an identity over any commutative ring
 (\texttt{fixed\_point\_ring}), which is why the analogue over $\F_q[t]$ inherits the
 structure of the problem intact rather than simplifying it.
+
+\section{Counting the paths of Theorem B of \cite{KSSZ}}\label{sec:farey}
+
+Karpenkov, Short, van Son and Zabolotskii classify the objects counted here. For positive
+integers $N,K,R$ with $N=KR$, their Theorem~B puts the minimal clockwise paths of length
+$n$ in the Farey graph $\mathcal F_R$, modulo $SL_2(\Z)$, in one-to-one correspondence with
+the positive friezes over $\lat$ of width $n$ and greatest common divisor $K$. Here
+$\mathcal F_R$ has as vertices the integer pairs $(a,b)$ with $\gcd(a,b)\mid R$ and a
+directed edge from $(a,b)$ to $(c,d)$ when $ad-bc=R$, and a path is minimal when the
+integers $a_jb_i-b_ja_i$ have greatest common divisor $1$.
+
+Write $P(R)$ for the number of those path classes at width five. Every frieze over $\lat$
+has a greatest common divisor dividing $N$, so
+\[
+  T(N,5)=\sum_{R\mid N}P(R),
+\]
+and Möbius inversion evaluates $P$ from the counts of Theorem~\ref{thm:fordsum}.
+
+\begin{theorem}\label{thm:farey}
+For every $R\ge1$ the number of minimal closed clockwise paths of length five in
+$\mathcal F_R$, modulo $SL_2(\Z)$, is
+\[
+  P(R)=\sum_{d\mid R}\mu\!\left(\frac{R}{d}\right)T(d,5),
+\]
+with $T(d,5)$ given by Theorem~\ref{thm:fordsum}. For every prime $p\ge5$,
+\[
+  P(p)=5\,C(p),\qquad C(p)=\#\{(a,u,v)\in\Z_{>0}^3 : auv=p+u+v\}.
+\]
+\end{theorem}
+
+\begin{proof}
+The displayed sum over $R\mid N$ is a partition of the friezes over $\lat$ by their greatest
+common divisor, and Theorem~B of \cite{KSSZ} identifies the class with divisor $K$ with the
+path classes in $\mathcal F_{N/K}$; the count therefore depends only on $R=N/K$. Möbius
+inversion gives the first display. At $R=p$ the divisors are $1$ and $p$, so
+$P(p)=T(p,5)-T(1,5)$, which is $5+5C(p)-5$ by Theorem~\ref{thm:orbit} and
+\eqref{eq:catalan}.
+\end{proof}
+
+So the Farey graph $\mathcal F_p$ carries exactly $5C(p)$ closed clockwise pentagons up to
+$SL_2(\Z)$, and counting them is the problem of Ford. The values of $P$ are
+$5,15,35,40,55,55,65,85,100,95$ for $R=1,\dots,10$
+(\texttt{code/farey\_paths.py}).
 
 \section{Formalization}\label{sec:lean}
 
