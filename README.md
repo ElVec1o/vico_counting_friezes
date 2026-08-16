@@ -154,6 +154,24 @@ so that `K_k(a_i,...) = C_k(p_i,...) / N^k`.
   size `p^(1/2)` against a quantity of size `p^(1/3)`. The analytic half is not a missing
   trick, it is this problem at that modulus.
 
+- **The initial pair exists, constructively.** Two adjacent columns determine a frieze:
+  for fixed `j`, both `m_{i,j}` and `m_{j,0} m_{i,1} - m_{j,1} m_{i,0}` satisfy the same
+  three-term recurrence in `i` and agree at `i = j` and `i = j+1` (`two_column`, VERIFIED).
+  The proof uses only the frieze recurrence, not the path model, which would be circular.
+  Cleared of denominators this is `mu_i nu_j - nu_i mu_j = N w_{j,i}` with `K | w_{j,i}`.
+
+  Choosing `lambda` with `sum lambda_j mu_j = g0` and `K e = sum lambda_j nu_j` then gives
+  `K(mu_i e - nu_i d) = N sum_j lambda_j w_{j,i} = N K (integer)`, and cancelling `K` gives
+  the congruence (`initial_pair_congruence`, VERIFIED). `e` is exhibited, not merely shown
+  to exist.
+
+  **With this the correspondence no longer rests on Theorem B of arXiv:2601.21445**, for all
+  `R` and all widths: surjectivity (`path_recurrence_forced`), the frieze relations
+  (`path_minor`), positivity (`clockwise_frieze_pos`), injectivity modulo `SL_2(Z)`
+  (`transfer_of_same_frieze`), and the initial pair (`initial_pair_congruence`). Each is a
+  Lean declaration; the packaging of the five into one statement about sets in bijection is
+  assembled in the paper, not in Lean.
+
 - **The canonical initial pair.** With `g0` the gcd of the column-zero numerators, taking
   `v0 = (g0/K, 0)` and `v1 = (e, N/g0)` gives `[v0,v1] = R`, and the second coordinate of
   every vertex is then integral automatically, being `mu_i/g0` (`second_coord_integral`,

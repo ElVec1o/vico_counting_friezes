@@ -113,6 +113,10 @@ jobs:
           #print axioms VicoEnum.path_from_frieze
           #print axioms VicoEnum.vertex_exists_iff
           #print axioms VicoEnum.second_coord_integral
+          #print axioms VicoEnum.two_column
+          #print axioms VicoEnum.sum_dvd_of_dvd
+          #print axioms VicoEnum.initial_pair_congruence
+          #print axioms VicoEnum.e_exists
           #print axioms VicoEnum.paper_count4
           #print axioms VicoEnum.friezes4_ncard
           #print axioms VicoEnum.friezes5_ncard

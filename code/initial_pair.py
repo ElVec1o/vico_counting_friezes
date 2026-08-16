@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Certificate for the canonical initial pair (VicoEnum/Surjectivity.lean).
+"""Certificate for the canonical initial pair (VicoEnum/InitialPair.lean).
 
 With [v0,v1] = R every vertex is m_{i,0} v1 - m_{i,1} v0, so realising a prescribed frieze
 as a path is the choice of an initial pair.  The choice is canonical: writing g0 for the

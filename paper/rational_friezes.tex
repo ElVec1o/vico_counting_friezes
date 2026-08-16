@@ -1290,17 +1290,54 @@ remains, which is the congruence
 \begin{equation}\label{eq:econg}
   N \mid \mu_i e-\nu_i\,\tfrac{g_0}{K}\qquad\text{for every } i
 \end{equation}
-in the single unknown $e$.
+in the single unknown $e$. That congruence is solvable, and solvable explicitly. Two
+ingredients are needed.
 
-\begin{conjecture}\label{conj:initpair}
-For every positive frieze over $\lat$ there is a rotation of its quiddity for which
-\eqref{eq:econg} is solvable.
-\end{conjecture}
+\begin{lemma}[Two adjacent columns determine the frieze]\label{lem:twocol}
+$m_{i,j}=m_{j,0}m_{i,1}-m_{j,1}m_{i,0}$ for all $i$ and $j$.
+\end{lemma}
 
-Conjecture~\ref{conj:initpair} holds for all $1510$ positive friezes of width five over
-$\lat$ with $N\le14$ (\texttt{code/initial\_pair.py}). The weaker choice $g_0/K$ replaced by
-$1$ does not suffice: it fails for $15$ friezes at $N=12$. Conjecture~\ref{conj:initpair} is
-the one step of the correspondence left open here.
+\begin{proof}
+For fixed $j$ both sides, as functions of $i$, satisfy the three-term recurrence
+$x_{i+2}=a_ix_{i+1}-x_i$: the left side because it is a column of the frieze, the right side
+because it is a fixed linear combination of two columns. At $i=j$ both are $0$, and at
+$i=j+1$ both are $1$, the right side because the $2\times2$ minor of columns $0$ and $1$ in
+rows $j$ and $j+1$ equals $1$. A solution of a three-term recurrence is determined by two
+consecutive values.
+\end{proof}
+
+Multiplying Lemma~\ref{lem:twocol} by $N^2$ gives
+\begin{equation}\label{eq:twocolnum}
+  \mu_i\nu_j-\nu_i\mu_j=N\,w_{j,i},\qquad w_{j,i}:=Nm_{j,i},
+\end{equation}
+and $K$ divides every $w_{j,i}$, being the greatest common divisor of all the numerators.
+
+\begin{theorem}\label{thm:initpair}
+Choose integers $\lambda_j$ with $\sum_j\lambda_j\mu_j=g_0$, and set
+$e=\tfrac1K\sum_j\lambda_j\nu_j$, which is an integer because $K$ divides every $\nu_j$.
+Then \eqref{eq:econg} holds for every $i$. Consequently every positive frieze over $\lat$ of
+width $n$ and greatest common divisor $K$ arises from a path in $\mathcal F_R$, $R=N/K$.
+\end{theorem}
+
+\begin{proof}
+Write $d=g_0/K$. Using $Ke=\sum_j\lambda_j\nu_j$ and $Kd=g_0=\sum_j\lambda_j\mu_j$,
+\[
+  K\bigl(\mu_ie-\nu_id\bigr)
+    =\mu_i\sum_j\lambda_j\nu_j-\nu_i\sum_j\lambda_j\mu_j
+    =\sum_j\lambda_j\bigl(\mu_i\nu_j-\nu_i\mu_j\bigr)
+    =N\sum_j\lambda_jw_{j,i}
+\]
+by \eqref{eq:twocolnum}. Since $K$ divides every $w_{j,i}$, the sum on the right is $K$ times
+an integer, so $K(\mu_ie-\nu_id)=NK\cdot(\text{integer})$. Cancelling $K$, which is nonzero,
+gives $N\mid\mu_ie-\nu_id$. The remaining coordinate is integral by
+Proposition~\ref{prop:secondcoord}, and $[v_0,v_1]=R$ by construction, so
+\eqref{eq:initpair} is an initial pair realising the frieze.
+\end{proof}
+
+Theorem~\ref{thm:initpair} is constructive: $e$ is exhibited rather than shown to exist, and
+the construction is width-uniform. The naive choice $g_0/K$ replaced by $1$ does not work,
+failing for $15$ friezes at $N=12$, which is why the greatest common divisor of column zero
+enters.
 
 \begin{lemma}\label{lem:sl2inv}
 If $A\in SL_2(\Z)$ then $[Au,Aw]=[u,w]$.
@@ -1340,15 +1377,18 @@ with $T(d,5)$ given by Theorem~\ref{thm:fordsum}. For every prime $p\ge5$,
 \end{theorem}
 
 \begin{proof}
-The sum over $R\mid N$ partitions the friezes over $\lat$ by greatest common divisor, and
-Theorem~B of \cite{KSSZ} identifies the class with divisor $K$ with the path classes in
-$\mathcal F_{N/K}$, so the count depends only on $R=N/K$. M\"obius inversion gives the first
+The sum over $R\mid N$ partitions the friezes over $\lat$ by greatest common divisor. The
+class with divisor $K$ is identified with the path classes in $\mathcal F_{N/K}$ by
+Theorems~\ref{thm:pathfrieze}, \ref{thm:clockpos}, \ref{thm:forced},
+\ref{thm:transfer} and~\ref{thm:initpair}, so the count depends only on $R=N/K$. M\"obius inversion gives the first
 display. At $R=p$ the divisors are $1$ and $p$, so $P(p)=T(p,5)-T(1,5)$, which is
 $5+5C(p)-5$ by Theorem~\ref{thm:orbit} and \eqref{eq:catalan}.
 \end{proof}
 
 So $\mathcal F_p$ carries exactly $5C(p)$ closed clockwise pentagons up to $SL_2(\Z)$, and
-counting them is the problem of Ford; Corollary~\ref{cor:fordpent} exhibits them. The values
+counting them is the problem of Ford; Corollary~\ref{cor:fordpent} exhibits them. The
+classification of \cite{KSSZ} is cited for context; the correspondence used here is proved
+above. The values
 of $P$ are $5,15,35,40,55,55,65,85,100,95$ for $R=1,\dots,10$
 (\texttt{code/farey\_paths.py}).
 
@@ -1398,10 +1438,13 @@ development establishes independently of that citation is the correspondence at 
 width five, as set out after Lemma~\ref{lem:sl2inv}: surjectivity onto paths
 (Theorem~\ref{thm:forced}), the frieze relations (Theorem~\ref{thm:pathfrieze}), positivity
 (Theorem~\ref{thm:clockpos}) and injectivity modulo $SL_2(\Z)$
-(Theorem~\ref{thm:transfer}). At general $R$ and general width the remaining step is
-Conjecture~\ref{conj:initpair}. The criterion \eqref{eq:econg} and
-Proposition~\ref{prop:secondcoord} are formalized; the solvability of \eqref{eq:econg} is
-not, and is stated as a conjecture rather than assumed.
+(Theorem~\ref{thm:transfer}). The correspondence is therefore established here for all $R$ and all widths, and no longer
+rests on Theorem~B of \cite{KSSZ}: surjectivity onto paths is Theorem~\ref{thm:forced},
+the frieze relations are Theorem~\ref{thm:pathfrieze}, positivity is
+Theorem~\ref{thm:clockpos}, injectivity modulo $SL_2(\Z)$ is Theorem~\ref{thm:transfer},
+and the existence of an initial pair is Theorem~\ref{thm:initpair}. Each ingredient is a
+Lean declaration; the packaging of the five into a single statement about sets in bijection
+is assembled here rather than in Lean.
 Proposition~\ref{prop:sliceform} is formalized as the slice bijection together with the
 automatic congruence on the complementary divisor. The external inputs of Shiu and of Linnik are
 cited, not proved; and the passages to $O_\varepsilon$ in
