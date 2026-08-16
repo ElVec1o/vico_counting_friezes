@@ -1267,10 +1267,40 @@ Lemma~\ref{lem:plucker3} with $(u,w,x)=(v_0,v_1,v_i)$.
 So a path realising a prescribed frieze has no freedom once the initial pair is fixed, and
 the remaining question is integrality. Writing the two leading columns as
 $m_{i,0}=\mu_i/N$ and $m_{i,1}=\nu_i/N$, the vertex $v_i$ lies in $\Z^2$ if and only if $N$
-divides both components of $\mu_iv_1-\nu_iv_0$. The choice of an initial pair is therefore
-that single congruence at every index, with $(v_0,v_1)$ otherwise free subject to
-$[v_0,v_1]=R$; it is not an unspecified normalisation. Whether such a pair exists for every
-$R$ and every width is the one step of the correspondence left open here.
+divides both components of $\mu_iv_1-\nu_iv_0$.
+
+The initial pair can be written down. Let $g_0=\gcd_i\mu_i$ be the greatest common divisor
+of the numerators in column zero, and set
+\begin{equation}\label{eq:initpair}
+  v_0=\left(\tfrac{g_0}{K},\,0\right),\qquad v_1=\left(e,\,\tfrac{N}{g_0}\right),
+\end{equation}
+so that $[v_0,v_1]=\tfrac{g_0}{K}\cdot\tfrac{N}{g_0}=\tfrac NK=R$ as required.
+
+\begin{proposition}\label{prop:secondcoord}
+With the choice \eqref{eq:initpair}, the second coordinate of every vertex is an integer.
+\end{proposition}
+
+\begin{proof}
+The second coordinate of $v_i$ is $m_{i,0}\cdot N/g_0=\mu_i/g_0$, an integer because $g_0$
+divides every $\mu_i$.
+\end{proof}
+
+So the scale of the initial pair is forced rather than chosen, and only the first coordinate
+remains, which is the congruence
+\begin{equation}\label{eq:econg}
+  N \mid \mu_i e-\nu_i\,\tfrac{g_0}{K}\qquad\text{for every } i
+\end{equation}
+in the single unknown $e$.
+
+\begin{conjecture}\label{conj:initpair}
+For every positive frieze over $\lat$ there is a rotation of its quiddity for which
+\eqref{eq:econg} is solvable.
+\end{conjecture}
+
+Conjecture~\ref{conj:initpair} holds for all $1510$ positive friezes of width five over
+$\lat$ with $N\le14$ (\texttt{code/initial\_pair.py}). The weaker choice $g_0/K$ replaced by
+$1$ does not suffice: it fails for $15$ friezes at $N=12$. Conjecture~\ref{conj:initpair} is
+the one step of the correspondence left open here.
 
 \begin{lemma}\label{lem:sl2inv}
 If $A\in SL_2(\Z)$ then $[Au,Aw]=[u,w]$.
@@ -1368,9 +1398,10 @@ development establishes independently of that citation is the correspondence at 
 width five, as set out after Lemma~\ref{lem:sl2inv}: surjectivity onto paths
 (Theorem~\ref{thm:forced}), the frieze relations (Theorem~\ref{thm:pathfrieze}), positivity
 (Theorem~\ref{thm:clockpos}) and injectivity modulo $SL_2(\Z)$
-(Theorem~\ref{thm:transfer}). At general $R$ and general width the remaining step is the
-existence of an initial pair satisfying the congruence of Theorem~\ref{thm:pathrecon}; the
-criterion itself is formalized, its solvability in general is not.
+(Theorem~\ref{thm:transfer}). At general $R$ and general width the remaining step is
+Conjecture~\ref{conj:initpair}. The criterion \eqref{eq:econg} and
+Proposition~\ref{prop:secondcoord} are formalized; the solvability of \eqref{eq:econg} is
+not, and is stated as a conjecture rather than assumed.
 Proposition~\ref{prop:sliceform} is formalized as the slice bijection together with the
 automatic congruence on the complementary divisor. The external inputs of Shiu and of Linnik are
 cited, not proved; and the passages to $O_\varepsilon$ in

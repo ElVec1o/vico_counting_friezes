@@ -112,6 +112,7 @@ jobs:
           #print axioms VicoEnum.solution_of_divisor
           #print axioms VicoEnum.path_from_frieze
           #print axioms VicoEnum.vertex_exists_iff
+          #print axioms VicoEnum.second_coord_integral
           #print axioms VicoEnum.paper_count4
           #print axioms VicoEnum.friezes4_ncard
           #print axioms VicoEnum.friezes5_ncard

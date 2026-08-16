@@ -137,4 +137,36 @@ theorem vertex_exists_iff {N : ℤ} (hN : N ≠ 0) (μ ν : ℤ) (v₀ v₁ : �
   · rintro ⟨w, h1, h2⟩; exact ⟨⟨w.1, h1.symm⟩, ⟨w.2, h2.symm⟩⟩
   · rintro ⟨⟨c, hc⟩, ⟨d, hd⟩⟩; exact ⟨(c, d), hc.symm, hd.symm⟩
 
+/-! ### The canonical initial pair
+
+`vertex_exists_iff` reduces the choice of an initial pair to one congruence. The choice is
+not arbitrary. Let `g₀` be the greatest common divisor of the numerators in column zero of
+the frieze, and take
+
+    v₀ = (g₀/K, 0),     v₁ = (e, N/g₀).
+
+Then `[v₀,v₁] = (g₀/K)(N/g₀) = N/K = R` as required, and the second coordinate of every
+vertex is integral automatically: it is `μ_i * (N/g₀) / N = μ_i / g₀`, an integer by the
+definition of `g₀`. That is `second_coord_integral` below.
+
+What is not proved here is the solvability of the remaining congruence in the single
+unknown `e`, namely `N ∣ μ_i e - ν_i (g₀/K)` for every `i`. That statement is checked on
+1510 friezes for `N ≤ 14` and is stated as a conjecture in the paper. -/
+
+/-- **The second coordinate is forced, not chosen.** Taking the second component of `v₁` to
+be `N/g₀`, where `g₀` divides `N` and divides every column-zero numerator, makes the second
+coordinate of every vertex integral. This is why `g₀` is the right scale for the initial
+pair. -/
+theorem second_coord_integral {N g μ : ℤ} (hg : g ∣ N) (hμ : g ∣ μ) :
+    N ∣ μ * (N / g) := by
+  obtain ⟨m, hm⟩ := hμ
+  obtain ⟨k, hk⟩ := hg
+  rcases eq_or_ne g 0 with h0 | h0
+  · subst h0
+    simp only [zero_mul] at hm hk
+    simp [hm, hk]
+  · have hdiv : N / g = k := by rw [hk]; exact Int.mul_ediv_cancel_left k h0
+    refine ⟨m, ?_⟩
+    rw [hdiv, hm, hk]; ring
+
 end VicoEnum

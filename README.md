@@ -154,6 +154,14 @@ so that `K_k(a_i,...) = C_k(p_i,...) / N^k`.
   size `p^(1/2)` against a quantity of size `p^(1/3)`. The analytic half is not a missing
   trick, it is this problem at that modulus.
 
+- **The canonical initial pair.** With `g0` the gcd of the column-zero numerators, taking
+  `v0 = (g0/K, 0)` and `v1 = (e, N/g0)` gives `[v0,v1] = R`, and the second coordinate of
+  every vertex is then integral automatically, being `mu_i/g0` (`second_coord_integral`,
+  VERIFIED). The scale of the pair is forced, not chosen. What remains is one congruence in
+  the single unknown `e`, namely `N | mu_i e - nu_i g0/K`; its solvability is CONJECTURE,
+  checked on 1510 width-five friezes for `N <= 14` (`code/initial_pair.py`). Replacing
+  `g0/K` by `1` does not suffice: it fails for 15 friezes at `N = 12`.
+
 - **The initial pair is a congruence, not a normalisation.** With `[v0,v1] = R` every vertex
   is `m_{i,0} v1 - m_{i,1} v0` (`path_from_frieze`, VERIFIED), so a path realising a
   prescribed frieze has no freedom once the initial pair is fixed. Writing the two leading
