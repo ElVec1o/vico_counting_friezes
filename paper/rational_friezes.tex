@@ -843,6 +843,33 @@ technology stops.
 $T(N,5)=N^{o(1)}$.
 \end{conjecture}
 
+Proposition~\ref{prop:sliceform} reduces Conjecture~\ref{conj:order} to an equidistribution
+statement. Write
+\[
+  H(n)=\sum_{a=1}^{n+2}\frac{d(an+1)}{a},
+\]
+the count predicted by assuming the divisors of $an+1$ fall equally often into each residue
+class modulo $a$.
+
+\begin{proposition}\label{prop:equidist}
+If $C(p)=O\bigl(H(p)\bigr)$ then $C(p)=p^{o(1)}$, so Conjecture~\ref{conj:order} holds.
+\end{proposition}
+
+\begin{proof}
+For $a\le n+2$ we have $an+1\le(n+1)^2$, so every $d(an+1)$ is at most
+$D(n):=\max_{m\le(n+1)^2}d(m)$ and
+\[
+  H(n)\le D(n)\sum_{a=1}^{n+2}\frac1a\ll D(n)\log n .
+\]
+The divisor function satisfies $d(m)=m^{o(1)}$, so $D(n)=n^{o(1)}$, and $\log n=n^{o(1)}$.
+\end{proof}
+
+The hypothesis is a bound in one direction only, and it is what the standard technology does
+not supply at these moduli. Numerically $C(p)/H(p)$ lies in $[0.426,1.074]$ over $72$ primes
+below $2000$ and is stable from $p\approx60$ onwards, with mean $0.752$
+(\texttt{code/equidistribution.py}). So the predicted and actual counts agree up to a bounded
+factor across the range tested, which is the content of the hypothesis.
+
 The natural sharper guess, $T(N,5)\asymp d(N^2)\log^2 N$, is false, and the reason is a
 lower bound that the numerics cannot see.
 

@@ -126,6 +126,7 @@ jobs:
           #print axioms VicoEnum.fibre_eq_orbit
           #print axioms VicoEnum.numerator_relation
           #print axioms VicoEnum.numerator_relation_int
+          #print axioms VicoEnum.weighted_sum_le
           #print axioms VicoEnum.paper_count4
           #print axioms VicoEnum.friezes4_ncard
           #print axioms VicoEnum.friezes5_ncard

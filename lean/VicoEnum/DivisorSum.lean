@@ -27,6 +27,7 @@
 import Mathlib.Tactic.LinearCombination
 import Mathlib.Data.Int.GCD
 import Mathlib.Tactic.Linarith
+import Mathlib.Algebra.Order.BigOperators.Group.Finset
 
 namespace VicoEnum
 
@@ -64,5 +65,27 @@ theorem solution_of_divisor {a d e n u v : ℤ} (ha : a ≠ 0)
   refine (cubic_slice_factor ha u v n).mpr ?_
   rw [show a * u - 1 = d by linarith, show a * v - 1 = e by linarith]
   exact hde
+
+/-! ### Reducing the conjectured order to equidistribution
+
+`C(n)` is the sum over `a` of the divisors of `an+1` in one residue class mod `a`. If those
+divisors equidistribute, each slice contributes about `d(an+1)/a`, and the whole sum is at
+most `(max divisor count) * (harmonic sum)`. Since the divisor function is `m^{o(1)}` and
+the harmonic sum is `O(log n)`, that bound is `n^{o(1)}`.
+
+So the conjecture `C(p) = p^{o(1)}` follows from the equidistribution statement
+`C(p) = O(∑_a d(ap+1)/a)`. `weighted_sum_le` is the finite core of the elementary step.
+
+The remaining input, `d(m) = m^{o(1)}`, is not in Mathlib at the version used here; that gap
+is recorded in the paper. -/
+
+/-- **The elementary half of the reduction.** If every term of a weighted sum is bounded by
+`D`, the weighted sum is at most `D` times the sum of the weights. Applied with
+`f a = d(a n + 1)` and weights `1/(a+1)`, this bounds `∑ d(an+1)/a` by the largest divisor
+count times the harmonic sum. -/
+theorem weighted_sum_le {A : ℕ} {D : ℚ} (f w : ℕ → ℚ)
+    (hD : ∀ a ∈ Finset.range A, f a ≤ D) (hw : ∀ a ∈ Finset.range A, 0 ≤ w a) :
+    ∑ a ∈ Finset.range A, f a * w a ≤ ∑ a ∈ Finset.range A, D * w a :=
+  Finset.sum_le_sum fun a ha => mul_le_mul_of_nonneg_right (hD a ha) (hw a ha)
 
 end VicoEnum

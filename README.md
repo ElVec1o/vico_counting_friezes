@@ -157,6 +157,22 @@ so that `K_k(a_i,...) = C_k(p_i,...) / N^k`.
 - **The N direction is different.** A closed form for `T(N,5)` is Ford-hard: `T(p,5) = 5 + 5C(p)`
   means it would determine the order of `C(p)`.
 
+## The conjectured order, reduced
+
+- **Equidistribution implies the conjecture.** Write `H(n) = sum over a of d(an+1)/a`, the
+  count predicted by assuming the divisors of `an+1` fall equally often into each class
+  mod `a`. Then `C(p) = O(H(p))` implies `C(p) = p^{o(1)}`. PROVED, elementary: every
+  `an+1` with `a <= n+2` is at most `(n+1)^2`, so `H(n) <= (max divisor count) * (harmonic
+  sum)`, and `d(m) = m^{o(1)}`. `weighted_sum_le` is the finite core, VERIFIED; the
+  remaining input `d(m) = m^{o(1)}` is the Mathlib gap already recorded.
+
+  This does not prove the conjecture. It replaces it by a one-sided bound of standard shape,
+  at exactly the moduli where the technology stops.
+
+- **Numerically.** `C(p)/H(p)` lies in `[0.426, 1.074]` over 72 primes below 2000, stable
+  from `p` about 60 onwards, mean `0.752`. Three predictions were fixed before the
+  computation and all held (`code/equidistribution.py`).
+
 ## Where the analytic difficulty sits
 
 - **The cubic is a divisor sum in progressions.** Multiplying `auv = n+u+v` by `a` gives
