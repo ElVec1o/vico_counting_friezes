@@ -77,3 +77,4 @@ import VicoEnum.Surjectivity
 import VicoEnum.DivisorSum
 import VicoEnum.InitialPair
 import VicoEnum.Transfer
+import VicoEnum.FibreOrbit

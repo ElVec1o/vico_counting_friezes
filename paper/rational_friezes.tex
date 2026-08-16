@@ -1362,6 +1362,26 @@ $[T(v_k),T(v_l)]=[v'_k,v'_l]=[v_k,v_l]$ by hypothesis, and a linear map multiply
 determinant by its own determinant has determinant $1$ once some $[v_k,v_l]\neq0$.
 \end{proof}
 
+\begin{theorem}\label{thm:fibre}
+Let $\gamma=(v_i)$ and $\gamma'=(v'_i)$ be paths, suppose
+$a[v_{i_0},v_{j_0}]+b[v_{i_1},v_{j_1}]=1$ for some integers $a,b$, and suppose
+$[v_{k_0},v_{l_0}]\neq0$ for some $k_0,l_0$. Then
+\[
+  [v_i,v_j]=[v'_i,v'_j]\ \text{ for all } i,j
+  \qquad\Longleftrightarrow\qquad
+  \gamma'=A\gamma \text{ for some } A\in SL_2(\Z).
+\]
+\end{theorem}
+
+\begin{proof}
+For the forward implication, Proposition~\ref{prop:transferlin} gives the integer matrix
+$A$ with $Av_k=v'_k$ for every $k$; its entries are the values of $T$ at the two standard
+basis vectors. Applying $[\,\cdot,\cdot\,]$ to $v_{k_0}$ and $v_{l_0}$ gives
+$\det(A)\,[v_{k_0},v_{l_0}]=[v'_{k_0},v'_{l_0}]=[v_{k_0},v_{l_0}]$, so
+$(\det(A)-1)[v_{k_0},v_{l_0}]=0$ and $\det(A)=1$. The reverse implication is
+Lemma~\ref{lem:sl2inv}.
+\end{proof}
+
 So the fibres of the map from paths to friezes are exactly the $SL_2(\Z)$ orbits.
 
 \begin{lemma}\label{lem:sl2inv}
@@ -1468,8 +1488,9 @@ rests on Theorem~B of \cite{KSSZ}: surjectivity onto paths is Theorem~\ref{thm:f
 the frieze relations are Theorem~\ref{thm:pathfrieze}, positivity is
 Theorem~\ref{thm:clockpos}, injectivity modulo $SL_2(\Z)$ is Theorem~\ref{thm:transfer},
 and the existence of an initial pair is Theorem~\ref{thm:initpair}. Each ingredient is a
-Lean declaration; the packaging of the five into a single statement about sets in bijection
-is assembled here rather than in Lean.
+Lean declaration, and the fibre description is one as well: Theorem~\ref{thm:fibre} is a
+single formalized biconditional, so the quotient by $SL_2(\Z)$ is machine-checked rather
+than assembled in prose.
 Proposition~\ref{prop:sliceform} is formalized as the slice bijection together with the
 automatic congruence on the complementary divisor. The external inputs of Shiu and of Linnik are
 cited, not proved; and the passages to $O_\varepsilon$ in

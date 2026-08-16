@@ -121,6 +121,9 @@ jobs:
           #print axioms VicoEnum.transferMap_smul
           #print axioms VicoEnum.transferMap_apply
           #print axioms VicoEnum.transferMap_det
+          #print axioms VicoEnum.fdet_linear_map
+          #print axioms VicoEnum.transferMap_matrix
+          #print axioms VicoEnum.fibre_eq_orbit
           #print axioms VicoEnum.paper_count4
           #print axioms VicoEnum.friezes4_ncard
           #print axioms VicoEnum.friezes5_ncard

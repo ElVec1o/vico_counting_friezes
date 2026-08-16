@@ -154,6 +154,13 @@ so that `K_k(a_i,...) = C_k(p_i,...) / N^k`.
   size `p^(1/2)` against a quantity of size `p^(1/3)`. The analytic half is not a missing
   trick, it is this problem at that modulus.
 
+- **The fibre description is one theorem.** `fibre_eq_orbit` (VERIFIED): two paths have the
+  same frieze **if and only if** they differ by an integer matrix of determinant one. A
+  single biconditional, no quotient types, no prose assembly. The forward direction reads
+  the four matrix entries off the transfer map by linearity (`transferMap_matrix`) and gets
+  the determinant from `fdet_linear_map`, since the matrix preserves a nonzero determinant.
+  The backward direction is `fdet_sl2_invariant`.
+
 - **The fibres are exactly the SL_2(Z) orbits.** The transfer formula, read as a function
   of an arbitrary vector, is additive and homogeneous (`transferMap_add`,
   `transferMap_smul`, VERIFIED), so it is an integer matrix; it carries `v k` to `v' k`
