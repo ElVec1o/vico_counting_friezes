@@ -127,7 +127,7 @@ jobs:
           #print axioms VicoEnum.dM_dvd_iff
           EOF
           lake env lean /tmp/axioms.lean | tee /tmp/axioms.out
-          if grep -vE '^.*depends on axioms: \[propext(, Classical\.choice)?(, Quot\.sound)?\]$' /tmp/axioms.out; then
+          if grep -vE '^.*(depends on axioms: \[propext(, Classical\.choice)?(, Quot\.sound)?\]|does not depend on any axioms)$' /tmp/axioms.out; then
             echo "::error::a declaration depends on a non-standard axiom"
             exit 1
           fi
