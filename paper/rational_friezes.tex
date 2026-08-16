@@ -1156,6 +1156,91 @@ Corollary~\ref{cor:fordpent} is checked for every solution of the cubic at each 
 $p\le31$ by \texttt{code/ford\_to\_pentagon.py} and \texttt{code/clockwise\_certificate.py},
 and the passage back from the pentagon to the frieze by \texttt{code/path\_to\_frieze.py}.
 
+\subsection{Surjectivity and the quotient}
+
+The construction produces closed clockwise minimal paths. It also produces all of them, and
+this is not a classification argument: it is forced by the three-vector Pl\"ucker identity.
+
+\begin{lemma}\label{lem:plucker3}
+For any $u,w,x\in\Z^2$, $\;[w,x]\,u-[u,x]\,w+[u,w]\,x=0$.
+\end{lemma}
+
+\begin{proof}
+Both coordinates expand to zero.
+\end{proof}
+
+\begin{theorem}[The recurrence is forced]\label{thm:forced}
+Let $u,w,x$ be three consecutive vertices of a path in $\mathcal F_R$, so $[u,w]=[w,x]=R$.
+Then
+\[
+  R\,x=[u,x]\,w-R\,u .
+\]
+In particular every path in $\mathcal F_R$ satisfies the recurrence of
+Definition~\ref{def:path}, with $c=[u,x]/R$ the frieze entry, whether or not it was
+constructed that way.
+\end{theorem}
+
+\begin{proof}
+Substitute $[u,w]=[w,x]=R$ into Lemma~\ref{lem:plucker3}.
+\end{proof}
+
+So the paths of Definition~\ref{def:path} are not a special family: a path in $\mathcal F_R$
+has no freedom beyond its first two vertices, and its coefficients are read off itself.
+
+\begin{theorem}[Minimality generates the lattice]\label{thm:minspan}
+Let $u,w,u',w'$ be vertices of a path with $a[u,w]+b[u',w']=1$ for some integers $a,b$. Then
+every $x\in\Z^2$ is an integer combination of $u,w,u',w'$, namely
+\[
+  x=a[u,x]\,w-a[w,x]\,u+b[u',x]\,w'-b[w',x]\,u' .
+\]
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:plucker3}, $[u,w]\,x=[u,x]\,w-[w,x]\,u$ and likewise for $u',w'$.
+Multiply the first by $a$, the second by $b$ and add; the left side is
+$\bigl(a[u,w]+b[u',w']\bigr)x=x$.
+\end{proof}
+
+This is what minimality is for. A path whose determinants have greatest common divisor $1$
+has vertices generating $\Z^2$, so a change of basis between two such paths is integral and
+not merely rational.
+
+\begin{theorem}[Transfer]\label{thm:transfer}
+Let $\gamma=(v_i)$ and $\gamma'=(v'_i)$ be paths with $[v_i,v_j]=[v'_i,v'_j]$ for all $i,j$,
+and suppose $a[v_{i_0},v_{j_0}]+b[v_{i_1},v_{j_1}]=1$. Then for every $k$,
+\[
+  v'_k=a[v_{i_0},v_k]\,v'_{j_0}-a[v_{j_0},v_k]\,v'_{i_0}
+        +b[v_{i_1},v_k]\,v'_{j_1}-b[v_{j_1},v_k]\,v'_{i_1}.
+\]
+\end{theorem}
+
+\begin{proof}
+The hypothesis gives $a[v'_{i_0},v'_{j_0}]+b[v'_{i_1},v'_{j_1}]=1$, so
+Theorem~\ref{thm:minspan} applies to $\gamma'$ with $x=v'_k$. Rewriting each
+$[v'_\bullet,v'_k]$ as $[v_\bullet,v_k]$ gives the display.
+\end{proof}
+
+\begin{lemma}\label{lem:sl2inv}
+If $A\in SL_2(\Z)$ then $[Au,Aw]=[u,w]$.
+\end{lemma}
+
+\begin{proof}
+$[Au,Aw]=\det(A)[u,w]$.
+\end{proof}
+
+Lemma~\ref{lem:sl2inv} says the frieze is constant on $SL_2(\Z)$ orbits of paths, and
+Theorem~\ref{thm:transfer} says a path is determined on its orbit by the frieze together
+with a minimal path in the class. Together with Theorem~\ref{thm:forced} this settles the
+correspondence at a prime without appeal to \cite{KSSZ}: at $R=p$ and width $5$, every
+non-integral frieze over $\tfrac1p\Z$ comes from a solution of the cubic by
+Theorem~\ref{thm:orbit} and hence from a pentagon by Corollary~\ref{cor:fordpent}; every
+pentagon in $\mathcal F_p$ is a path of Definition~\ref{def:path} by
+Theorem~\ref{thm:forced} and so carries a frieze by Theorem~\ref{thm:pathfrieze}; and two
+pentagons carrying the same frieze are $SL_2(\Z)$-equivalent by Theorem~\ref{thm:transfer}.
+
+At general $R$ and general width, what remains is the choice of the initial pair
+$(v_0,v_1)$ realising a given frieze, which is a normalisation and not an identity.
+
 Write $P(R)$ for the number of path classes at width five. Every frieze over $\lat$ has a
 greatest common divisor dividing $N$, so $T(N,5)=\sum_{R\mid N}P(R)$, and M\"obius inversion
 evaluates $P$ from the counts of Theorem~\ref{thm:fordsum}.
@@ -1218,11 +1303,21 @@ Lemma~\ref{lem:pathdet}, Theorems~\ref{thm:pathfrieze}, \ref{thm:clockpos},
 \ref{thm:pathback} and~\ref{thm:pentclose} are each a declaration, with the Pl\"ucker
 relation isolated as its own lemma.
 
-What is not machine-checked is stated as such. Theorem~\ref{thm:farey} rests on Theorem~B
-of \cite{KSSZ}, which is cited and not reproved: the quotient by $SL_2(\Z)$ and the
-surjectivity of the correspondence are not formalized here, and the results of
-Section~\ref{sec:farey} are statements about the explicit construction rather than a proof
-of that classification. The external inputs of Shiu and of Linnik are
+The conditions of the classification are formalized as predicates, not paraphrased:
+minimality as the greatest common divisor of the determinants $[v_i,v_j]$, and the clockwise
+condition as positivity of those determinants together with positive second coordinates,
+both stated without division. Lemma~\ref{lem:plucker3} and
+Theorems~\ref{thm:forced}, \ref{thm:minspan} and~\ref{thm:transfer} are separate
+declarations, as is Lemma~\ref{lem:sl2inv}.
+
+What is not machine-checked is stated as such. Theorem~\ref{thm:farey} is proved for all $R$
+through Theorem~B of \cite{KSSZ}, which is cited and not reproved. What the present
+development establishes independently of that citation is the correspondence at a prime and
+width five, as set out after Lemma~\ref{lem:sl2inv}: surjectivity onto paths
+(Theorem~\ref{thm:forced}), the frieze relations (Theorem~\ref{thm:pathfrieze}), positivity
+(Theorem~\ref{thm:clockpos}) and injectivity modulo $SL_2(\Z)$
+(Theorem~\ref{thm:transfer}). At general $R$ and general width the remaining step is the
+choice of an initial pair realising a prescribed frieze, which is not formalized. The external inputs of Shiu and of Linnik are
 cited, not proved; and the passages to $O_\varepsilon$ in
 Theorem~\ref{thm:primecube} and Corollary~\ref{cor:t5upper} are written proofs.
 

@@ -98,6 +98,13 @@ jobs:
           #print axioms VicoEnum.ford_determines_l
           #print axioms VicoEnum.ford_degenerate_branch
           #print axioms VicoEnum.ford_min_norm_bound
+          #print axioms VicoEnum.plucker3
+          #print axioms VicoEnum.path_recurrence_forced
+          #print axioms VicoEnum.path_recurrence_forced_of_dvd
+          #print axioms VicoEnum.fdet_smul_eq
+          #print axioms VicoEnum.span_of_coprime_dets
+          #print axioms VicoEnum.transfer_of_same_frieze
+          #print axioms VicoEnum.fdet_sl2_invariant
           #print axioms VicoEnum.paper_count4
           #print axioms VicoEnum.friezes4_ncard
           #print axioms VicoEnum.friezes5_ncard

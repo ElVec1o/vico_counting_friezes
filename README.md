@@ -85,6 +85,23 @@ so that `K_k(a_i,...) = C_k(p_i,...) / N^k`.
   Not formalized: the quotient by `SL_2(Z)` and surjectivity, which are what make Theorem B
   of arXiv:2601.21445 a bijection of sets. That theorem is cited, not reproved.
 
+- **Surjectivity, from the three-vector Plucker identity.** `[w,x]u - [u,x]w + [u,w]x = 0`
+  applied to three consecutive vertices of a path in `F_R`, where `[u,w] = [w,x] = R`, gives
+  `R x = [u,x] w - R u` (`plucker3`, `path_recurrence_forced`, VERIFIED). So every path in
+  `F_R` satisfies the recurrence of the construction, with coefficient its own frieze entry,
+  whether or not it was built that way. The construction is not a special family.
+
+- **Minimality means the vertices generate the lattice.** The same identity with `x`
+  arbitrary reads `[u,w]x = [u,x]w - [w,x]u`, so if some integer combination of determinants
+  equals `1` then every integer vector is an integer combination of vertices
+  (`fdet_smul_eq`, `span_of_coprime_dets`, VERIFIED). That is what makes the change of basis
+  between two paths integral rather than rational. `transfer_of_same_frieze` is then
+  injectivity modulo `SL_2(Z)`, and `fdet_sl2_invariant` is well-definedness. VERIFIED.
+
+  At a prime and width five the correspondence is complete without citing Theorem B of
+  arXiv:2601.21445. At general `R` and general width the remaining step is the choice of an
+  initial pair realising a prescribed frieze, which is not formalized.
+
 - **The width-six reduced form.** With `A = pq - N^2`, `B = qr - N^2`, `g = gcd(A,B)`,
   `U = A/g`, `V = B/g`, `R = q`, the defining relation is the single master identity
 
